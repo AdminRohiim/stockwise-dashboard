@@ -457,6 +457,30 @@
   .single-label-preview .qr-slot canvas, .single-label-preview .qr-slot img { max-width:112px; max-height:112px; }
   .print-toolbar { display:flex; align-items:flex-end; justify-content:space-between; gap:10px; flex-wrap:wrap; }
 
+  /* ============================================================
+     CSV IMPORT DROP ZONE
+  ============================================================ */
+  .csv-drop-zone {
+    border: 2px dashed var(--border-strong);
+    border-radius: var(--radius);
+    background: var(--bg);
+    padding: 32px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .csv-drop-zone:hover, .csv-drop-zone.drag-over {
+    border-color: var(--accent-mid);
+    background: var(--accent-light);
+  }
+  .csv-row-skip td:last-child { color: var(--amber); font-weight: 600; font-size:11px; }
+  .csv-row-ok td:last-child { color: var(--accent); font-weight: 600; font-size:11px; }
+  .csv-row-skip { opacity: 0.6; }
+
   @media print {
     body { background:#fff; }
     .sidebar, .topbar, #toast, .no-print, .modal-overlay { display:none !important; }
@@ -604,6 +628,26 @@
 
     <!-- ========== INVENTORY ========== -->
     <div id="page-inventory" class="hidden">
+      <div class="section-header" style="margin-bottom:14px">
+        <div>
+          <h2 style="font-size:15px;font-weight:600">All Items</h2>
+          <p style="font-size:12px;color:var(--text-muted)" id="inventoryCount"></p>
+        </div>
+        <div class="gap-row" style="flex-wrap:wrap">
+          <button class="btn btn-secondary btn-sm" onclick="downloadCsvTemplate()">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+            Sample CSV
+          </button>
+          <button class="btn btn-secondary btn-sm" onclick="openImportCsvModal()">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4-4m0 0l4-4m-4 4h14"/></svg>
+            Import CSV
+          </button>
+          <button class="btn btn-primary btn-sm" onclick="openAddItemModal()">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M12 5v14M5 12h14"/></svg>
+            Add Item
+          </button>
+        </div>
+      </div>
       <div class="search-bar">
         <div class="search-input-wrap">
           <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
@@ -656,7 +700,6 @@
           <h3>No items found</h3>
           <p>Try adjusting your search or filters</p>
         </div>
-        <div id="inventoryCount" style="padding:12px 16px; border-top:1px solid var(--border); font-size:12px; color:var(--text-faint);"></div>
       </div>
     </div>
 
@@ -1160,6 +1203,64 @@
         <button class="btn btn-secondary" onclick="closeModal('syncSetupModal')">Cancel</button>
         <button class="btn btn-primary" onclick="saveSupabaseConfigFromModal()">Save and reload</button>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     MODAL: Import CSV
+============================================================ -->
+<div class="modal-overlay" id="importCsvModal">
+  <div class="modal" style="max-width:640px">
+    <div class="modal-header">
+      <h2>Import items from CSV</h2>
+      <button class="close-btn" onclick="closeModal('importCsvModal')">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="setup-note" style="margin-bottom:16px">
+        <strong>Expected columns:</strong> name, sku, assetId, category, quantity, minQuantity, unitCost, supplier, location, notes.<br>
+        The first row must be the header. Only <strong>name</strong> and <strong>sku</strong> are required. Items with a duplicate assetId will be skipped.
+      </div>
+
+      <!-- Drop zone -->
+      <div id="csvDropZone" class="csv-drop-zone" onclick="document.getElementById('csvFileInput').click()" ondragover="csvDragOver(event)" ondragleave="csvDragLeave(event)" ondrop="csvDrop(event)">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" width="36" height="36" style="color:var(--text-faint);margin-bottom:10px"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+        <div style="font-weight:600;font-size:13px;margin-bottom:4px">Drop your CSV file here</div>
+        <div class="text-muted text-small">or click to browse</div>
+        <input type="file" id="csvFileInput" accept=".csv,text/csv" style="display:none" onchange="csvFileSelected(event)">
+      </div>
+
+      <!-- Preview table -->
+      <div id="csvPreviewWrap" class="hidden" style="margin-top:16px">
+        <div class="section-header" style="margin-bottom:10px">
+          <div>
+            <h2 id="csvPreviewTitle">Preview</h2>
+            <p id="csvPreviewSub" class="text-muted text-small"></p>
+          </div>
+          <button class="btn btn-ghost btn-sm" onclick="clearCsvPreview()">Clear</button>
+        </div>
+        <!-- warnings -->
+        <div id="csvWarnings" class="hidden" style="background:var(--amber-light);border:1px solid #FDE68A;border-radius:var(--radius-sm);padding:10px 14px;margin-bottom:12px;font-size:12px;color:var(--amber)"></div>
+        <div class="table-wrap" style="max-height:240px;overflow-y:auto">
+          <table id="csvPreviewTable">
+            <thead>
+              <tr>
+                <th>#</th><th>Name</th><th>SKU</th><th>Asset ID</th><th>Category</th><th>Qty</th><th>Min Qty</th><th>Cost</th><th>Supplier</th><th>Location</th><th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="csvPreviewBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('importCsvModal')">Cancel</button>
+      <button class="btn btn-primary" id="csvImportBtn" onclick="confirmCsvImport()" disabled>
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+        Import items
+      </button>
     </div>
   </div>
 </div>
@@ -1950,7 +2051,7 @@ function renderInventory() {
   if (items.length === 0) {
     tbody.innerHTML = '';
     empty.classList.remove('hidden');
-    count.textContent = '';
+    count.textContent = 'No items match your filters';
     return;
   }
   empty.classList.add('hidden');
@@ -2889,6 +2990,261 @@ async function initApp() {
 }
 
 initApp();
+
+// ============================================================
+// BULK CSV IMPORT
+// ============================================================
+
+// Parsed rows ready to import (after preview validation)
+let csvPendingRows = [];
+
+// Column aliases: maps header names (lowercase, trimmed) → canonical field
+const CSV_ALIASES = {
+  name: 'name', item: 'name', 'item name': 'name',
+  sku: 'sku', 'sku / item code': 'sku', 'item code': 'sku', code: 'sku',
+  assetid: 'assetId', 'asset id': 'assetId', 'asset id / label code': 'assetId', 'label code': 'assetId', asset: 'assetId',
+  category: 'category',
+  quantity: 'quantity', qty: 'quantity', 'current stock': 'quantity', stock: 'quantity',
+  minquantity: 'minQuantity', 'min quantity': 'minQuantity', 'min qty': 'minQuantity', 'minimum qty': 'minQuantity', 'min level': 'minQuantity',
+  unitcost: 'unitCost', 'unit cost': 'unitCost', cost: 'unitCost', price: 'unitCost',
+  supplier: 'supplier',
+  location: 'location',
+  notes: 'notes', note: 'notes', description: 'notes'
+};
+
+function openImportCsvModal() {
+  clearCsvPreview();
+  openModal('importCsvModal');
+}
+
+function clearCsvPreview() {
+  csvPendingRows = [];
+  document.getElementById('csvFileInput').value = '';
+  document.getElementById('csvPreviewWrap').classList.add('hidden');
+  document.getElementById('csvImportBtn').disabled = true;
+  const dz = document.getElementById('csvDropZone');
+  dz.classList.remove('drag-over');
+}
+
+// ---- Drag & drop helpers ----
+function csvDragOver(e) { e.preventDefault(); document.getElementById('csvDropZone').classList.add('drag-over'); }
+function csvDragLeave()  { document.getElementById('csvDropZone').classList.remove('drag-over'); }
+function csvDrop(e) {
+  e.preventDefault();
+  document.getElementById('csvDropZone').classList.remove('drag-over');
+  const file = e.dataTransfer.files[0];
+  if (file) processCsvFile(file);
+}
+function csvFileSelected(e) {
+  const file = e.target.files[0];
+  if (file) processCsvFile(file);
+}
+
+// ---- Parse a raw CSV string into [{header:value}] rows ----
+function parseCsv(text) {
+  const lines = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n').split('\n').filter(l => l.trim());
+  if (lines.length < 2) return { headers: [], rows: [] };
+
+  function splitRow(line) {
+    const cells = [];
+    let cur = '', inQ = false;
+    for (let i = 0; i < line.length; i++) {
+      const ch = line[i];
+      if (ch === '"') {
+        if (inQ && line[i+1] === '"') { cur += '"'; i++; }
+        else inQ = !inQ;
+      } else if (ch === ',' && !inQ) {
+        cells.push(cur.trim()); cur = '';
+      } else { cur += ch; }
+    }
+    cells.push(cur.trim());
+    return cells;
+  }
+
+  const rawHeaders = splitRow(lines[0]);
+  const headers = rawHeaders.map(h => CSV_ALIASES[h.toLowerCase().trim()] || h.toLowerCase().trim());
+
+  const rows = [];
+  for (let i = 1; i < lines.length; i++) {
+    if (!lines[i].trim()) continue;
+    const cells = splitRow(lines[i]);
+    const obj = {};
+    headers.forEach((h, idx) => { obj[h] = (cells[idx] || '').trim(); });
+    rows.push(obj);
+  }
+  return { headers, rows };
+}
+
+function processCsvFile(file) {
+  if (!file.name.toLowerCase().endsWith('.csv') && file.type !== 'text/csv') {
+    showToast('Please upload a .csv file'); return;
+  }
+  const reader = new FileReader();
+  reader.onload = e => buildCsvPreview(e.target.result);
+  reader.onerror = () => showToast('Could not read file');
+  reader.readAsText(file);
+}
+
+function buildCsvPreview(text) {
+  const { rows } = parseCsv(text);
+  if (!rows.length) { showToast('No data rows found in CSV'); return; }
+
+  const existingItems = getItems();
+  const existingAssetIds = new Set(existingItems.map(i => (i.assetId || i.labelCode || '').trim().toLowerCase()).filter(Boolean));
+  const existingSkus    = new Set(existingItems.map(i => (i.sku || '').trim().toLowerCase()).filter(Boolean));
+
+  const warnings = [];
+  const seenAssetIdsThisImport = new Set();
+  const seenSkusThisImport     = new Set();
+
+  csvPendingRows = [];
+
+  const tbody = document.getElementById('csvPreviewBody');
+  tbody.innerHTML = '';
+
+  rows.forEach((row, idx) => {
+    const name     = row.name || '';
+    const sku      = row.sku || '';
+    const assetId  = row.assetId || '';
+    const category = row.category || '';
+    const qty      = parseInt(row.quantity) || 0;
+    const minQty   = parseInt(row.minQuantity) || 0;
+    const cost     = parseFloat(row.unitCost) || 0;
+    const supplier = row.supplier || '';
+    const location = row.location || '';
+    const notes    = row.notes || '';
+
+    let skipReason = '';
+
+    if (!name) { skipReason = 'Missing name'; }
+    else if (!sku)  { skipReason = 'Missing SKU'; }
+    else if (assetId && existingAssetIds.has(assetId.toLowerCase())) {
+      skipReason = 'Duplicate Asset ID';
+      warnings.push(`Row ${idx + 2}: Asset ID "${assetId}" already exists — skipped.`);
+    }
+    else if (assetId && seenAssetIdsThisImport.has(assetId.toLowerCase())) {
+      skipReason = 'Duplicate in file';
+      warnings.push(`Row ${idx + 2}: Asset ID "${assetId}" appears more than once in this file — skipped.`);
+    }
+
+    if (assetId) seenAssetIdsThisImport.add(assetId.toLowerCase());
+
+    const statusCell = skipReason
+      ? `<span title="${skipReason}">⚠ Skip: ${skipReason}</span>`
+      : '<span>✓ Import</span>';
+    const rowClass = skipReason ? 'csv-row-skip' : 'csv-row-ok';
+
+    const tr = document.createElement('tr');
+    tr.className = rowClass;
+    tr.innerHTML = `
+      <td class="text-muted">${idx + 2}</td>
+      <td class="fw-600">${esc(name) || '<span class="text-faint">—</span>'}</td>
+      <td class="text-muted">${esc(sku)}</td>
+      <td>${assetId ? `<span class="asset-pill">${esc(assetId)}</span>` : '<span class="text-faint">—</span>'}</td>
+      <td class="text-muted">${esc(category)}</td>
+      <td>${qty}</td>
+      <td>${minQty}</td>
+      <td>$${cost.toFixed(2)}</td>
+      <td class="text-muted">${esc(supplier)}</td>
+      <td class="text-muted">${esc(location)}</td>
+      <td>${statusCell}</td>
+    `;
+    tbody.appendChild(tr);
+
+    if (!skipReason) {
+      csvPendingRows.push({ name, sku, assetId, category, qty, minQty, cost, supplier, location, notes });
+    }
+  });
+
+  // Show warnings box
+  const warnBox = document.getElementById('csvWarnings');
+  if (warnings.length) {
+    warnBox.innerHTML = '<strong>Warnings:</strong><br>' + warnings.map(w => `• ${w}`).join('<br>');
+    warnBox.classList.remove('hidden');
+  } else {
+    warnBox.classList.add('hidden');
+  }
+
+  const total = rows.length;
+  const importing = csvPendingRows.length;
+  const skipped = total - importing;
+
+  document.getElementById('csvPreviewTitle').textContent = `Preview — ${total} row${total !== 1 ? 's' : ''} found`;
+  document.getElementById('csvPreviewSub').textContent =
+    importing > 0
+      ? `${importing} will be imported${skipped > 0 ? `, ${skipped} skipped` : ''}`
+      : `All rows will be skipped`;
+
+  document.getElementById('csvPreviewWrap').classList.remove('hidden');
+  document.getElementById('csvImportBtn').disabled = importing === 0;
+}
+
+function esc(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+async function confirmCsvImport() {
+  if (!csvPendingRows.length) { showToast('Nothing to import'); return; }
+
+  const btn = document.getElementById('csvImportBtn');
+  btn.disabled = true;
+  btn.textContent = 'Importing…';
+
+  const newItems = csvPendingRows.map(row => ({
+    id: uid(),
+    name: row.name,
+    sku: row.sku,
+    assetId: row.assetId,
+    labelCode: row.assetId,
+    category: row.category,
+    qty: row.qty,
+    minQty: row.minQty,
+    cost: row.cost,
+    supplier: row.supplier,
+    location: row.location,
+    notes: row.notes,
+    reordered: false,
+    updated: today()
+  }));
+
+  const allItems = [...getItems(), ...newItems];
+  setItems(allItems); // saves local + triggers cloud upsert via persistCloudCollection
+
+  // If cloud is active, explicitly upsert just the new items for speed
+  if (cloudState.enabled && cloudState.client) {
+    try {
+      const rows = newItems.map(itemToDb);
+      const res = await cloudState.client.from('items').upsert(rows, { onConflict: 'id' });
+      if (res.error) throw res.error;
+      updateSyncStatus('cloud', 'Cloud sync active');
+    } catch (err) {
+      console.error('Cloud import failed:', err);
+      showToast(`Saved locally. Cloud sync failed: ${err.message}`);
+    }
+  }
+
+  const count = newItems.length;
+  showToast(`${count} item${count !== 1 ? 's' : ''} imported successfully`);
+  csvPendingRows = [];
+  closeModal('importCsvModal');
+  renderPage('inventory');
+  navigate(document.querySelector('[data-page=inventory]'));
+  document.getElementById('lowStockBadge').textContent = getItems().filter(i => i.qty < i.minQty).length;
+}
+
+// ---- Sample CSV template download ----
+function downloadCsvTemplate() {
+  const headers = 'name,sku,assetId,category,quantity,minQuantity,unitCost,supplier,location,notes';
+  const example = 'Laptop Dell XPS 13,LAP-001,ASSET-LAP-001,Electronics,5,2,1200.00,Tech Supplies Co,IT Room,"15-inch, i7 model"';
+  const csv = [headers, example].join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url;
+  a.download = 'stockwise_import_template.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+}
 
 </script>
 </body>
