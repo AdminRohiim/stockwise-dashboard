@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>StockWise — Inventory Manager</title>
+<!-- Final clean advanced template: no demo auto-seeding -->
 <style>
   /* ============================================================
      TOKENS & RESET
@@ -3347,23 +3348,14 @@ function downloadCsvTemplate() {
 async function initApp() {
   hydrateStateFromLocal();
 
-  // Keep the original demo-data behaviour for Local mode only.
-  // Once Supabase is configured, the cloud database becomes the main source of truth.
-  if (!isSupabaseConfigured()) {
-    loadDemoData();
-    hydrateStateFromLocal();
-  }
-
+  // Clean template behaviour:
+  // Do NOT auto-load demo inventory. New users should start with an empty
+  // dashboard and add items manually, import CSV, or connect their own Supabase.
   ensureDataSchema();
   renderDashboard();
   document.getElementById('lowStockBadge').textContent = getItems().filter(i => i.qty < i.minQty).length;
 
-  const cloudReady = await initSupabase();
-  if (!cloudReady && !getItems().length) {
-    loadDemoData();
-    hydrateStateFromLocal();
-    ensureDataSchema();
-  }
+  await initSupabase();
 
   renderPage(currentPage);
   document.getElementById('lowStockBadge').textContent = getItems().filter(i => i.qty < i.minQty).length;
