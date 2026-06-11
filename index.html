@@ -451,48 +451,6 @@
   .single-label-preview .qr-slot canvas, .single-label-preview .qr-slot img { max-width:112px; max-height:112px; }
   .print-toolbar { display:flex; align-items:flex-end; justify-content:space-between; gap:10px; flex-wrap:wrap; }
 
-  /* ============================================================
-     MOBILE INVENTORY CARDS + UTILITY PANELS
-  ============================================================ */
-  .mobile-item-cards { display:none; }
-  .mobile-item-card { border:1px solid var(--border); border-radius:var(--radius); background:var(--surface); padding:14px; margin-bottom:10px; box-shadow:var(--shadow); }
-  .mobile-item-card-title { font-weight:700; font-size:14px; margin-bottom:6px; }
-  .mobile-item-card-meta { display:grid; grid-template-columns:1fr 1fr; gap:6px 10px; font-size:12px; color:var(--text-muted); margin:10px 0; }
-  .mobile-item-card-meta strong { color:var(--text); font-weight:600; }
-  .mobile-card-actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
-  .mobile-card-actions .btn { flex:1 1 auto; justify-content:center; }
-  .asset-inactive { opacity:.68; }
-  .danger-note { background:var(--red-light); color:var(--red); border:1px solid #FCA5A5; border-radius:var(--radius-sm); padding:10px 12px; font-size:12px; }
-
-  @media (max-width: 768px) {
-    #inventoryDesktopTable { display:none; }
-    .mobile-item-cards { display:block; }
-  }
-
-
-  /* ============================================================
-     CSV IMPORT + MOBILE INVENTORY HELPERS
-  ============================================================ */
-  .csv-drop-zone {
-    border: 2px dashed var(--border-strong);
-    border-radius: var(--radius);
-    background: var(--bg);
-    padding: 32px 20px;
-    text-align: center;
-    cursor: pointer;
-    transition: border-color 0.15s, background 0.15s;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-  .csv-drop-zone:hover, .csv-drop-zone.drag-over { border-color: var(--accent-mid); background: var(--accent-light); }
-  .csv-row-skip { opacity: 0.6; }
-  .csv-row-skip td:last-child { color: var(--amber); font-weight: 600; font-size: 11px; }
-  .csv-row-ok td:last-child { color: var(--accent); font-weight: 600; font-size: 11px; }
-  .asset-inactive { opacity: 0.72; }
-  .mobile-card-actions { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
-
   @media print {
     body { background:#fff; }
     .sidebar, .topbar, #toast, .no-print, .modal-overlay { display:none !important; }
@@ -584,14 +542,6 @@
         <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M21 12a9 9 0 11-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
         Refresh
       </button>
-      <button class="btn btn-secondary btn-sm topbar-icon-btn" onclick="exportAllData()" title="Export full backup">
-        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-        <span class="btn-label">Backup</span>
-      </button>
-      <button class="btn btn-secondary btn-sm topbar-icon-btn" onclick="startFresh()" title="Clear demo/local data or refresh cloud">
-        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg>
-        <span class="btn-label">Start Fresh</span>
-      </button>
       <button class="btn btn-secondary" onclick="openScannerModal()">
         <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M3 7V5a2 2 0 012-2h2M17 3h2a2 2 0 012 2v2M21 17v2a2 2 0 01-2 2h-2M7 21H5a2 2 0 01-2-2v-2"/><path d="M7 8h10M7 12h10M7 16h6"/></svg>
         Scan Asset
@@ -645,26 +595,6 @@
 
     <!-- ========== INVENTORY ========== -->
     <div id="page-inventory" class="hidden">
-      <div class="section-header" style="margin-bottom:14px">
-        <div>
-          <h2 style="font-size:15px;font-weight:600">All Items</h2>
-          <p style="font-size:12px;color:var(--text-muted)" id="inventoryCountHeader"></p>
-        </div>
-        <div class="gap-row" style="flex-wrap:wrap">
-          <button class="btn btn-secondary btn-sm" onclick="downloadCsvTemplate()">
-            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-            Sample CSV
-          </button>
-          <button class="btn btn-secondary btn-sm" onclick="openImportCsvModal()">
-            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4-4m0 0l4-4m-4 4h14"/></svg>
-            Import CSV
-          </button>
-          <button class="btn btn-primary btn-sm" onclick="openAddItemModal()">
-            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M12 5v14M5 12h14"/></svg>
-            Add Item
-          </button>
-        </div>
-      </div>
       <div class="search-bar">
         <div class="search-input-wrap">
           <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
@@ -680,28 +610,10 @@
           <option value="">All locations</option>
         </select>
         <select class="form-input" id="filterStatus" onchange="renderInventory()" style="width:auto">
-          <option value="">All stock status</option>
+          <option value="">All status</option>
           <option value="low">Low stock</option>
           <option value="out">Out of stock</option>
           <option value="ok">In stock</option>
-        </select>
-        <select class="form-input" id="filterAssetStatus" onchange="renderInventory()" style="width:auto">
-          <option value="active">Active assets</option>
-          <option value="">All asset status</option>
-          <option value="Available">Available</option>
-          <option value="Assigned">Assigned</option>
-          <option value="In Repair">In Repair</option>
-          <option value="Missing">Missing</option>
-          <option value="Retired">Retired</option>
-          <option value="Disposed">Disposed</option>
-        </select>
-        <select class="form-input" id="filterCondition" onchange="renderInventory()" style="width:auto">
-          <option value="">All conditions</option>
-          <option value="New">New</option>
-          <option value="Good">Good</option>
-          <option value="Fair">Fair</option>
-          <option value="Needs Repair">Needs Repair</option>
-          <option value="Damaged">Damaged</option>
         </select>
         <button class="btn btn-secondary" onclick="openScannerModal()">
           <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M3 7V5a2 2 0 012-2h2M17 3h2a2 2 0 012 2v2M21 17v2a2 2 0 01-2 2h-2M7 21H5a2 2 0 01-2-2v-2"/><path d="M7 8h10M7 12h10M7 16h6"/></svg>
@@ -710,7 +622,7 @@
         <button class="btn btn-secondary" onclick="navigate(document.querySelector('[data-page=labels]'))">Print Labels</button>
       </div>
       <div class="card" style="padding:0">
-        <div class="table-wrap" id="inventoryDesktopTable">
+        <div class="table-wrap">
           <table>
             <thead>
               <tr>
@@ -730,7 +642,6 @@
             <tbody id="inventoryTableBody"></tbody>
           </table>
         </div>
-        <div id="inventoryMobileCards" class="mobile-item-cards"></div>
         <div id="inventoryEmpty" class="hidden empty-state">
           <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M20 7H4a1 1 0 00-1 1v10a1 1 0 001 1h16a1 1 0 001-1V8a1 1 0 00-1-1z"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
           <h3>No items found</h3>
@@ -1007,47 +918,6 @@
           <datalist id="locationList"></datalist>
         </div>
       </div>
-      <div class="form-row cols-3">
-        <div class="form-group">
-          <label class="form-label">Serial number</label>
-          <input type="text" class="form-input" id="itemSerialNumber" placeholder="e.g. SN123456">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Condition</label>
-          <select class="form-input" id="itemCondition">
-            <option value="Good">Good</option>
-            <option value="New">New</option>
-            <option value="Fair">Fair</option>
-            <option value="Needs Repair">Needs Repair</option>
-            <option value="Damaged">Damaged</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Asset status</label>
-          <select class="form-input" id="itemAssetStatus">
-            <option value="Available">Available</option>
-            <option value="Assigned">Assigned</option>
-            <option value="In Repair">In Repair</option>
-            <option value="Missing">Missing</option>
-            <option value="Retired">Retired</option>
-            <option value="Disposed">Disposed</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-row cols-3">
-        <div class="form-group">
-          <label class="form-label">Assigned to</label>
-          <input type="text" class="form-input" id="itemAssignedTo" placeholder="Person/team/department">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Purchase date</label>
-          <input type="date" class="form-input" id="itemPurchaseDate">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Warranty expiry</label>
-          <input type="date" class="form-input" id="itemWarrantyExpiry">
-        </div>
-      </div>
       <div class="form-row">
         <div class="form-group">
           <label class="form-label">Notes</label>
@@ -1285,53 +1155,6 @@
   </div>
 </div>
 
-
-<!-- ============================================================
-     MODAL: Import CSV
-============================================================ -->
-<div class="modal-overlay" id="importCsvModal">
-  <div class="modal" style="max-width:760px">
-    <div class="modal-header">
-      <h2>Import items from CSV</h2>
-      <button class="close-btn" onclick="closeModal('importCsvModal')">
-        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M6 18L18 6M6 6l12 12"/></svg>
-      </button>
-    </div>
-    <div class="modal-body">
-      <div class="setup-note" style="margin-bottom:16px">
-        <strong>Expected columns:</strong> name, sku, assetId, category, quantity, minQuantity, unitCost, supplier, location, notes, serialNumber, condition, assignedTo, purchaseDate, warrantyExpiry, assetStatus.<br>
-        The first row must be the header. Only <strong>name</strong> and <strong>sku</strong> are required. Items with a duplicate assetId will be skipped.
-      </div>
-      <div id="csvDropZone" class="csv-drop-zone" onclick="document.getElementById('csvFileInput').click()" ondragover="csvDragOver(event)" ondragleave="csvDragLeave(event)" ondrop="csvDrop(event)">
-        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" width="36" height="36" style="color:var(--text-faint);margin-bottom:10px"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
-        <div style="font-weight:600;font-size:13px;margin-bottom:4px">Drop your CSV file here</div>
-        <div class="text-muted text-small">or click to browse</div>
-        <input type="file" id="csvFileInput" accept=".csv,text/csv" style="display:none" onchange="csvFileSelected(event)">
-      </div>
-      <div id="csvPreviewWrap" class="hidden" style="margin-top:16px">
-        <div class="section-header" style="margin-bottom:10px">
-          <div>
-            <h2 id="csvPreviewTitle">Preview</h2>
-            <p id="csvPreviewSub" class="text-muted text-small"></p>
-          </div>
-          <button class="btn btn-ghost btn-sm" onclick="clearCsvPreview()">Clear</button>
-        </div>
-        <div id="csvWarnings" class="hidden" style="background:var(--amber-light);border:1px solid #FDE68A;border-radius:var(--radius-sm);padding:10px 14px;margin-bottom:12px;font-size:12px;color:var(--amber)"></div>
-        <div class="table-wrap" style="max-height:280px;overflow-y:auto">
-          <table id="csvPreviewTable">
-            <thead><tr><th>#</th><th>Name</th><th>SKU</th><th>Asset ID</th><th>Category</th><th>Qty</th><th>Condition</th><th>Assigned</th><th>Status</th></tr></thead>
-            <tbody id="csvPreviewBody"></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-secondary" onclick="closeModal('importCsvModal')">Cancel</button>
-      <button class="btn btn-primary" id="csvImportBtn" onclick="confirmCsvImport()" disabled>Import items</button>
-    </div>
-  </div>
-</div>
-
 <script src="https://unpkg.com/html5-qrcode" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" crossorigin="anonymous"></script>
@@ -1523,12 +1346,6 @@ function dbToItem(row) {
     supplier: row.supplier || '',
     location: row.location || '',
     notes: row.notes || '',
-    serialNumber: row.serial_number || '',
-    condition: row.condition || 'Good',
-    assignedTo: row.assigned_to || '',
-    purchaseDate: normaliseMaybeDate(row.purchase_date) || '',
-    warrantyExpiry: normaliseMaybeDate(row.warranty_expiry) || '',
-    assetStatus: row.asset_status || 'Available',
     reordered: Boolean(row.reordered),
     updated: normaliseMaybeDate(row.updated_at || row.created_at) || today()
   };
@@ -1548,12 +1365,6 @@ function itemToDb(item) {
     supplier: item.supplier || '',
     location: item.location || '',
     notes: item.notes || '',
-    serial_number: item.serialNumber || '',
-    condition: item.condition || 'Good',
-    assigned_to: item.assignedTo || '',
-    purchase_date: item.purchaseDate || null,
-    warranty_expiry: item.warrantyExpiry || null,
-    asset_status: item.assetStatus || 'Available',
     reordered: Boolean(item.reordered),
     updated_at: new Date().toISOString()
   };
@@ -1806,12 +1617,6 @@ function ensureDataSchema() {
     if (typeof item.assetId === 'undefined') { item.assetId = item.labelCode || ''; changed = true; }
     if (typeof item.labelCode === 'undefined') { item.labelCode = item.assetId || ''; changed = true; }
     if (typeof item.reordered === 'undefined') { item.reordered = false; changed = true; }
-    if (typeof item.serialNumber === 'undefined') { item.serialNumber = ''; changed = true; }
-    if (typeof item.condition === 'undefined') { item.condition = 'Good'; changed = true; }
-    if (typeof item.assignedTo === 'undefined') { item.assignedTo = ''; changed = true; }
-    if (typeof item.purchaseDate === 'undefined') { item.purchaseDate = ''; changed = true; }
-    if (typeof item.warrantyExpiry === 'undefined') { item.warrantyExpiry = ''; changed = true; }
-    if (typeof item.assetStatus === 'undefined') { item.assetStatus = 'Available'; changed = true; }
   });
   if (changed) setItems(items);
 }
@@ -1863,7 +1668,7 @@ function movementQtyColour(type) {
 }
 
 // ============================================================
-// DEMO DATA — loaded once on first visit
+// DEMO DATA — disabled in clean template mode; function kept only for reference
 // ============================================================
 
 function loadDemoData() {
@@ -1894,15 +1699,6 @@ function loadDemoData() {
     { id: uid(), name: 'Hand Sanitiser (500ml)', sku: 'CLN-003', assetId: 'ASSET-CLN-003', category: 'Cleaning', qty: 18, minQty: 8, cost: 4.50, supplier: 'CleanPro Supplies', location: 'Counter Area', notes: '', updated: today() },
     { id: uid(), name: 'Mop Head Replacement', sku: 'CLN-004', assetId: 'ASSET-CLN-004', category: 'Cleaning', qty: 5, minQty: 2, cost: 6.00, supplier: 'CleanPro Supplies', location: 'Cleaning Cupboard', notes: '', updated: today() },
   ];
-
-  items.forEach((item, idx) => {
-    item.serialNumber = item.serialNumber || `DEMO-SN-${String(idx + 1).padStart(4, '0')}`;
-    item.condition = item.condition || 'Good';
-    item.assignedTo = item.assignedTo || '';
-    item.purchaseDate = item.purchaseDate || '';
-    item.warrantyExpiry = item.warrantyExpiry || '';
-    item.assetStatus = item.assetStatus || 'Available';
-  });
 
   // Generate realistic movement history
   const movements = [];
@@ -1992,10 +1788,9 @@ function renderDashboard() {
   const items = getItems();
   const movements = getMovements();
 
-  const activeItems = items.filter(i => !['Missing','Retired','Disposed'].includes(i.assetStatus || 'Available'));
-  const totalItems = activeItems.length;
-  const lowStock = activeItems.filter(i => i.qty > 0 && i.qty < i.minQty).length;
-  const outOfStock = activeItems.filter(i => i.qty === 0).length;
+  const totalItems = items.length;
+  const lowStock = items.filter(i => i.qty > 0 && i.qty < i.minQty).length;
+  const outOfStock = items.filter(i => i.qty === 0).length;
   const totalValue = items.reduce((s, i) => s + (i.qty * i.cost), 0);
 
   // Update badge
@@ -2026,7 +1821,7 @@ function renderDashboard() {
   `;
 
   // Low stock list
-  const lowItems = activeItems.filter(i => i.qty < i.minQty).slice(0, 6);
+  const lowItems = items.filter(i => i.qty < i.minQty).slice(0, 6);
   const dashLow = document.getElementById('dashLowStock');
   if (lowItems.length === 0) {
     dashLow.innerHTML = '<div class="empty-state" style="padding:24px"><h3>All good!</h3><p>No items need reordering</p></div>';
@@ -2124,9 +1919,6 @@ function renderInventory() {
   const sup = document.getElementById('filterSupplier').value;
   const loc = document.getElementById('filterLocation').value;
   const status = document.getElementById('filterStatus').value;
-  const assetStatus = document.getElementById('filterAssetStatus')?.value || 'active';
-  const condition = document.getElementById('filterCondition')?.value || '';
-  const inactiveStatuses = ['Missing','Retired','Disposed'];
 
   let items = getItems().filter(i => {
     const asset = (i.assetId || i.labelCode || '').toLowerCase();
@@ -2137,9 +1929,6 @@ function renderInventory() {
     if (status === 'out' && i.qty !== 0) return false;
     if (status === 'low' && !(i.qty > 0 && i.qty < i.minQty)) return false;
     if (status === 'ok' && i.qty < i.minQty) return false;
-    if (assetStatus === 'active' && inactiveStatuses.includes(i.assetStatus || 'Available')) return false;
-    if (assetStatus && assetStatus !== 'active' && (i.assetStatus || 'Available') !== assetStatus) return false;
-    if (condition && (i.condition || 'Good') !== condition) return false;
     return true;
   });
 
@@ -2149,15 +1938,12 @@ function renderInventory() {
 
   if (items.length === 0) {
     tbody.innerHTML = '';
-    const mobileCards = document.getElementById('inventoryMobileCards'); if (mobileCards) mobileCards.innerHTML = '';
     empty.classList.remove('hidden');
     count.textContent = '';
     return;
   }
   empty.classList.add('hidden');
   count.textContent = `Showing ${items.length} of ${getItems().length} items`;
-  const countHeader = document.getElementById('inventoryCountHeader');
-  if (countHeader) countHeader.textContent = count.textContent;
 
   const pct = (qty, min) => min > 0 ? Math.min(100, Math.round(qty / (min * 2) * 100)) : 100;
   const barColor = (qty, min) => qty === 0 ? 'var(--red)' : qty < min ? '#F59E0B' : 'var(--accent-mid)';
@@ -2169,7 +1955,7 @@ function renderInventory() {
       : item.qty < item.minQty ? '<span class="badge badge-warning">Low stock</span>'
       : '<span class="badge badge-success">In stock</span>';
     return `<tr>
-      <td><div class="fw-600">${item.name}</div><div class="text-muted text-small mt-4">${item.assetStatus || 'Available'} · ${item.condition || 'Good'}${item.assignedTo ? ' · Assigned to ' + item.assignedTo : ''}</div></td>
+      <td><div class="fw-600">${item.name}</div><div class="text-muted text-small mt-4">${item.notes||''}</div></td>
       <td class="text-muted">${item.sku}</td>
       <td>${asset ? `<span class="asset-pill">${asset}</span>` : '<span class="text-muted">—</span>'}</td>
       <td>${item.category ? `<span class="badge badge-neutral">${item.category}</span>` : ''}</td>
@@ -2198,34 +1984,6 @@ function renderInventory() {
       </td>
     </tr>`;
   }).join('');
-
-  const mobileCards = document.getElementById('inventoryMobileCards');
-  if (mobileCards) {
-    mobileCards.innerHTML = items.map(item => {
-      const inactive = ['Missing','Retired','Disposed'].includes(item.assetStatus || 'Available');
-      const asset = item.assetId || item.labelCode || '—';
-      return `<div class="mobile-item-card ${inactive ? 'asset-inactive' : ''}">
-        <div class="gap-row" style="justify-content:space-between;align-items:flex-start">
-          <div>
-            <div class="mobile-item-card-title">${item.name}</div>
-            <div class="text-muted text-small">${item.sku || '—'} · ${asset}</div>
-          </div>
-          <span class="badge badge-neutral">${item.assetStatus || 'Available'}</span>
-        </div>
-        <div class="mobile-item-card-meta">
-          <div><strong>Location</strong><br>${item.location || '—'}</div>
-          <div><strong>Condition</strong><br>${item.condition || 'Good'}</div>
-          <div><strong>Stock</strong><br>${item.qty} / Min ${item.minQty}</div>
-          <div><strong>Assigned</strong><br>${item.assignedTo || '—'}</div>
-        </div>
-        <div class="mobile-card-actions">
-          <button class="btn btn-secondary btn-sm" onclick="openAssetDetails('${item.id}')">View</button>
-          <button class="btn btn-secondary btn-sm" onclick="openLabelModal('${item.id}')">QR</button>
-          <button class="btn btn-primary btn-sm" onclick="editItem('${item.id}')">Edit</button>
-        </div>
-      </div>`;
-    }).join('');
-  }
 }
 
 // ============================================================
@@ -2265,7 +2023,7 @@ function renderMovements() {
 // ============================================================
 
 function renderLowStock() {
-  const items = getItems().filter(i => i.qty < i.minQty && !['Missing','Retired','Disposed'].includes(i.assetStatus || 'Available')).sort((a,b) => (a.qty/Math.max(a.minQty,1)) - (b.qty/Math.max(b.minQty,1)));
+  const items = getItems().filter(i => i.qty < i.minQty).sort((a,b) => (a.qty/Math.max(a.minQty,1)) - (b.qty/Math.max(b.minQty,1)));
   const tbody = document.getElementById('lowStockTableBody');
   const empty = document.getElementById('lowStockEmpty');
 
@@ -2565,12 +2323,6 @@ function openAddItemModal(prefillAssetId = '') {
   document.getElementById('itemCost').value = '';
   document.getElementById('itemSupplier').value = '';
   document.getElementById('itemLocation').value = '';
-  document.getElementById('itemSerialNumber').value = '';
-  document.getElementById('itemCondition').value = 'Good';
-  document.getElementById('itemAssignedTo').value = '';
-  document.getElementById('itemPurchaseDate').value = '';
-  document.getElementById('itemWarrantyExpiry').value = '';
-  document.getElementById('itemAssetStatus').value = 'Available';
   document.getElementById('itemNotes').value = '';
   openModal('itemModal');
 }
@@ -2590,12 +2342,6 @@ function editItem(id) {
   document.getElementById('itemCost').value = item.cost;
   document.getElementById('itemSupplier').value = item.supplier||'';
   document.getElementById('itemLocation').value = item.location||'';
-  document.getElementById('itemSerialNumber').value = item.serialNumber || '';
-  document.getElementById('itemCondition').value = item.condition || 'Good';
-  document.getElementById('itemAssignedTo').value = item.assignedTo || '';
-  document.getElementById('itemPurchaseDate').value = item.purchaseDate || '';
-  document.getElementById('itemWarrantyExpiry').value = item.warrantyExpiry || '';
-  document.getElementById('itemAssetStatus').value = item.assetStatus || 'Available';
   document.getElementById('itemNotes').value = item.notes||'';
   openModal('itemModal');
 }
@@ -2624,12 +2370,6 @@ function saveItem() {
     cost: parseFloat(document.getElementById('itemCost').value)||0,
     supplier: document.getElementById('itemSupplier').value.trim(),
     location: document.getElementById('itemLocation').value.trim(),
-    serialNumber: document.getElementById('itemSerialNumber').value.trim(),
-    condition: document.getElementById('itemCondition').value || 'Good',
-    assignedTo: document.getElementById('itemAssignedTo').value.trim(),
-    purchaseDate: document.getElementById('itemPurchaseDate').value,
-    warrantyExpiry: document.getElementById('itemWarrantyExpiry').value,
-    assetStatus: document.getElementById('itemAssetStatus').value || 'Available',
     notes: document.getElementById('itemNotes').value.trim(),
     updated: today()
   };
@@ -2648,48 +2388,12 @@ function saveItem() {
   document.getElementById('lowStockBadge').textContent = getItems().filter(i => i.qty < i.minQty).length;
 }
 
-
-async function deleteItem(id) {
-  const item = getItems().find(i => i.id === id);
-  if (!item) return;
-  if (!confirm(`Permanently delete "${item.name}"?
-
-This removes the asset from active inventory. Movement and scan history are kept for audit, but this item record will be deleted. This cannot be undone.`)) return;
-
+function deleteItem(id) {
+  if (!confirm('Delete this item? This cannot be undone.')) return;
   setItems(getItems().filter(i => i.id !== id));
-
-  if (cloudState.enabled && cloudState.client) {
-    try {
-      const res = await cloudState.client.from('items').delete().eq('id', id);
-      if (res.error) throw res.error;
-      updateSyncStatus('cloud', 'Cloud sync active');
-    } catch (err) {
-      console.error('Cloud delete failed:', err);
-      showToast('Local delete done. Cloud delete failed — refresh and try again.');
-    }
-  }
-
-  closeModal('assetDetailsModal');
-  showToast(`"${item.name}" permanently deleted`);
+  showToast('Item deleted');
   renderPage(currentPage);
 }
-
-function archiveAsset(id, status = 'Retired') {
-  const items = getItems();
-  const item = items.find(i => i.id === id);
-  if (!item) return;
-  if (!['Missing','Retired','Disposed'].includes(status)) status = 'Retired';
-  if (!confirm(`Archive "${item.name}" as ${status}?
-
-It will be hidden from Active assets, but can still be viewed by changing the asset status filter.`)) return;
-  item.assetStatus = status;
-  item.updated = today();
-  setItems(items);
-  closeModal('assetDetailsModal');
-  showToast(`"${item.name}" archived as ${status}`);
-  renderPage(currentPage);
-}
-
 
 // ============================================================
 // MOVEMENT MODAL
@@ -3006,13 +2710,7 @@ function openAssetDetails(itemId) {
       <div class="asset-detail-card"><div class="label">Quantity</div><div class="value">${item.qty} units · Min ${item.minQty}</div></div>
       <div class="asset-detail-card"><div class="label">Location</div><div class="value">${item.location || '—'}</div></div>
       <div class="asset-detail-card"><div class="label">Supplier</div><div class="value">${item.supplier || '—'}</div></div>
-      <div class="asset-detail-card"><div class="label">Serial Number</div><div class="value">${item.serialNumber || '—'}</div></div>
-      <div class="asset-detail-card"><div class="label">Condition</div><div class="value">${item.condition || 'Good'}</div></div>
-      <div class="asset-detail-card"><div class="label">Assigned To</div><div class="value">${item.assignedTo || '—'}</div></div>
-      <div class="asset-detail-card"><div class="label">Purchase Date</div><div class="value">${item.purchaseDate ? fmtDate(item.purchaseDate) : '—'}</div></div>
-      <div class="asset-detail-card"><div class="label">Warranty Expiry</div><div class="value">${item.warrantyExpiry ? fmtDate(item.warrantyExpiry) : '—'}</div></div>
-      <div class="asset-detail-card"><div class="label">Asset Status</div><div class="value"><span class="badge badge-neutral">${item.assetStatus || 'Available'}</span></div></div>
-      <div class="asset-detail-card"><div class="label">Stock Status</div><div class="value">${status}</div></div>
+      <div class="asset-detail-card"><div class="label">Status</div><div class="value">${status}</div></div>
       <div class="asset-detail-card"><div class="label">Unit Cost</div><div class="value">$${Number(item.cost || 0).toFixed(2)}</div></div>
     </div>
     <div class="card" style="box-shadow:none;padding:14px;margin-bottom:14px">
@@ -3051,8 +2749,6 @@ function openAssetDetails(itemId) {
     <button class="btn btn-secondary" onclick="quickChangeLocation('${item.id}')">Change Location</button>
     <button class="btn btn-secondary" onclick="openLabelModal('${item.id}')">Generate QR Label</button>
     <button class="btn btn-primary" onclick="closeModal('assetDetailsModal'); editItem('${item.id}')">Edit Item</button>
-    <button class="btn btn-secondary" onclick="archiveAsset('${item.id}','Retired')">Archive / Retire</button>
-    <button class="btn btn-ghost" style="color:var(--red)" onclick="deleteItem('${item.id}')">Permanent Delete</button>
   `;
   openModal('assetDetailsModal');
 }
@@ -3132,214 +2828,6 @@ function fmtDateTime(d) {
   return date.toLocaleString('en-GB', { day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
 }
 
-function exportAllData() {
-  const backup = {
-    exportedAt: new Date().toISOString(),
-    version: 'stockwise-lifecycle-fields',
-    items: getItems(),
-    movements: getMovements(),
-    suppliers: getSuppliers(),
-    scan_history: getScanHistory()
-  };
-  const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `stockwise-backup-${today()}.json`;
-  a.click();
-  URL.revokeObjectURL(url);
-  showToast('Full backup exported');
-}
-
-function startFresh() {
-  const msg = cloudState.enabled
-    ? 'Clear local demo data/cache on this browser only? Cloud data in Supabase will not be deleted.'
-    : 'Clear all local demo/inventory data in this browser? This cannot be undone.';
-  if (!confirm(msg)) return;
-  ['items','movements','suppliers','scanHistory'].forEach(k => localStorage.removeItem('stockwise_' + k));
-  localStorage.removeItem('stockwise_seeded');
-  hydrateStateFromLocal();
-  if (!cloudState.enabled) {
-    appState.items = [];
-    appState.movements = [];
-    appState.suppliers = [];
-    appState.scanHistory = [];
-    ['items','movements','suppliers','scanHistory'].forEach(k => saveLocalData(k, appState[k] || []));
-    localStorage.setItem('stockwise_seeded', '1');
-  } else {
-    refreshFromCloud({ silent: true });
-  }
-  renderPage(currentPage);
-  showToast('Started fresh on this browser');
-}
-
-
-// ============================================================
-// BULK CSV IMPORT
-// ============================================================
-let csvPendingRows = [];
-
-const CSV_ALIASES = {
-  name: 'name', item: 'name', 'item name': 'name',
-  sku: 'sku', 'sku / item code': 'sku', 'item code': 'sku', code: 'sku',
-  assetid: 'assetId', 'asset id': 'assetId', 'asset id / label code': 'assetId', 'label code': 'assetId', asset: 'assetId',
-  category: 'category',
-  quantity: 'quantity', qty: 'quantity', 'current stock': 'quantity', stock: 'quantity',
-  minquantity: 'minQuantity', 'min quantity': 'minQuantity', 'min qty': 'minQuantity', 'minimum qty': 'minQuantity', 'min level': 'minQuantity',
-  unitcost: 'unitCost', 'unit cost': 'unitCost', cost: 'unitCost', price: 'unitCost',
-  supplier: 'supplier', location: 'location', notes: 'notes', note: 'notes', description: 'notes',
-  serialnumber: 'serialNumber', 'serial number': 'serialNumber', serial: 'serialNumber',
-  condition: 'condition', assignedto: 'assignedTo', 'assigned to': 'assignedTo', owner: 'assignedTo', user: 'assignedTo',
-  purchasedate: 'purchaseDate', 'purchase date': 'purchaseDate',
-  warrantyexpiry: 'warrantyExpiry', 'warranty expiry': 'warrantyExpiry', 'warranty end': 'warrantyExpiry',
-  assetstatus: 'assetStatus', 'asset status': 'assetStatus', status: 'assetStatus'
-};
-
-function openImportCsvModal() {
-  clearCsvPreview();
-  openModal('importCsvModal');
-}
-
-function clearCsvPreview() {
-  csvPendingRows = [];
-  const input = document.getElementById('csvFileInput');
-  if (input) input.value = '';
-  document.getElementById('csvPreviewWrap')?.classList.add('hidden');
-  const btn = document.getElementById('csvImportBtn');
-  if (btn) { btn.disabled = true; btn.textContent = 'Import items'; }
-  document.getElementById('csvDropZone')?.classList.remove('drag-over');
-}
-
-function csvDragOver(e) { e.preventDefault(); document.getElementById('csvDropZone').classList.add('drag-over'); }
-function csvDragLeave() { document.getElementById('csvDropZone').classList.remove('drag-over'); }
-function csvDrop(e) { e.preventDefault(); document.getElementById('csvDropZone').classList.remove('drag-over'); const file = e.dataTransfer.files[0]; if (file) processCsvFile(file); }
-function csvFileSelected(e) { const file = e.target.files[0]; if (file) processCsvFile(file); }
-
-function parseCsv(text) {
-  const lines = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n').split('\n').filter(l => l.trim());
-  if (lines.length < 2) return { headers: [], rows: [] };
-  function splitRow(line) {
-    const cells = []; let cur = '', inQ = false;
-    for (let i = 0; i < line.length; i++) {
-      const ch = line[i];
-      if (ch === '"') { if (inQ && line[i+1] === '"') { cur += '"'; i++; } else inQ = !inQ; }
-      else if (ch === ',' && !inQ) { cells.push(cur.trim()); cur = ''; }
-      else cur += ch;
-    }
-    cells.push(cur.trim()); return cells;
-  }
-  const headers = splitRow(lines[0]).map(h => CSV_ALIASES[h.toLowerCase().trim()] || h.toLowerCase().trim());
-  const rows = lines.slice(1).map(line => { const cells = splitRow(line); const obj = {}; headers.forEach((h, idx) => obj[h] = (cells[idx] || '').trim()); return obj; });
-  return { headers, rows };
-}
-
-function processCsvFile(file) {
-  if (!file.name.toLowerCase().endsWith('.csv') && file.type !== 'text/csv') { showToast('Please upload a .csv file'); return; }
-  const reader = new FileReader();
-  reader.onload = e => buildCsvPreview(e.target.result);
-  reader.onerror = () => showToast('Could not read file');
-  reader.readAsText(file);
-}
-
-function validAssetStatus(value) {
-  return ['Available','Assigned','In Repair','Missing','Retired','Disposed'].includes(value) ? value : 'Available';
-}
-function validCondition(value) {
-  return ['New','Good','Fair','Needs Repair','Damaged'].includes(value) ? value : 'Good';
-}
-function normaliseDateInput(value) {
-  if (!value) return '';
-  const d = new Date(value);
-  return isNaN(d.getTime()) ? value : d.toISOString().split('T')[0];
-}
-function esc(s) { return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-
-function buildCsvPreview(text) {
-  const { rows } = parseCsv(text);
-  if (!rows.length) { showToast('No data rows found in CSV'); return; }
-  const existingAssetIds = new Set(getItems().map(i => (i.assetId || i.labelCode || '').trim().toLowerCase()).filter(Boolean));
-  const seenAssetIds = new Set();
-  const warnings = [];
-  csvPendingRows = [];
-  const tbody = document.getElementById('csvPreviewBody');
-  tbody.innerHTML = '';
-
-  rows.forEach((row, idx) => {
-    const name = row.name || '';
-    const sku = row.sku || '';
-    const assetId = row.assetId || '';
-    const category = row.category || '';
-    const qty = parseInt(row.quantity) || 0;
-    const minQty = parseInt(row.minQuantity) || 0;
-    const cost = parseFloat(row.unitCost) || 0;
-    const supplier = row.supplier || '';
-    const location = row.location || '';
-    const notes = row.notes || '';
-    const serialNumber = row.serialNumber || '';
-    const condition = validCondition(row.condition || 'Good');
-    const assignedTo = row.assignedTo || '';
-    const purchaseDate = normaliseDateInput(row.purchaseDate || '');
-    const warrantyExpiry = normaliseDateInput(row.warrantyExpiry || '');
-    const assetStatus = validAssetStatus(row.assetStatus || 'Available');
-    let skipReason = '';
-    if (!name) skipReason = 'Missing name';
-    else if (!sku) skipReason = 'Missing SKU';
-    else if (assetId && existingAssetIds.has(assetId.toLowerCase())) { skipReason = 'Duplicate Asset ID'; warnings.push(`Row ${idx+2}: Asset ID "${assetId}" already exists — skipped.`); }
-    else if (assetId && seenAssetIds.has(assetId.toLowerCase())) { skipReason = 'Duplicate in file'; warnings.push(`Row ${idx+2}: Asset ID "${assetId}" appears more than once — skipped.`); }
-    if (assetId) seenAssetIds.add(assetId.toLowerCase());
-    const statusCell = skipReason ? `⚠ Skip: ${skipReason}` : '✓ Import';
-    const tr = document.createElement('tr');
-    tr.className = skipReason ? 'csv-row-skip' : 'csv-row-ok';
-    tr.innerHTML = `<td class="text-muted">${idx+2}</td><td class="fw-600">${esc(name)}</td><td class="text-muted">${esc(sku)}</td><td>${assetId ? `<span class="asset-pill">${esc(assetId)}</span>` : '—'}</td><td class="text-muted">${esc(category)}</td><td>${qty}</td><td>${esc(condition)}</td><td class="text-muted">${esc(assignedTo)}</td><td>${statusCell}</td>`;
-    tbody.appendChild(tr);
-    if (!skipReason) csvPendingRows.push({ name, sku, assetId, category, qty, minQty, cost, supplier, location, notes, serialNumber, condition, assignedTo, purchaseDate, warrantyExpiry, assetStatus });
-  });
-
-  const warnBox = document.getElementById('csvWarnings');
-  if (warnings.length) { warnBox.innerHTML = '<strong>Warnings:</strong><br>' + warnings.map(w => `• ${esc(w)}`).join('<br>'); warnBox.classList.remove('hidden'); }
-  else warnBox.classList.add('hidden');
-  const total = rows.length, importing = csvPendingRows.length, skipped = total - importing;
-  document.getElementById('csvPreviewTitle').textContent = `Preview — ${total} row${total !== 1 ? 's' : ''} found`;
-  document.getElementById('csvPreviewSub').textContent = importing > 0 ? `${importing} will be imported${skipped ? `, ${skipped} skipped` : ''}` : 'All rows will be skipped';
-  document.getElementById('csvPreviewWrap').classList.remove('hidden');
-  document.getElementById('csvImportBtn').disabled = importing === 0;
-}
-
-async function confirmCsvImport() {
-  if (!csvPendingRows.length) { showToast('Nothing to import'); return; }
-  const btn = document.getElementById('csvImportBtn');
-  btn.disabled = true; btn.textContent = 'Importing…';
-  const newItems = csvPendingRows.map(row => ({
-    id: uid(), name: row.name, sku: row.sku, assetId: row.assetId, labelCode: row.assetId,
-    category: row.category, qty: row.qty, minQty: row.minQty, cost: row.cost, supplier: row.supplier,
-    location: row.location, notes: row.notes, serialNumber: row.serialNumber, condition: row.condition,
-    assignedTo: row.assignedTo, purchaseDate: row.purchaseDate, warrantyExpiry: row.warrantyExpiry,
-    assetStatus: row.assetStatus, reordered: false, updated: today()
-  }));
-  setItems([...getItems(), ...newItems]);
-  if (cloudState.enabled && cloudState.client) {
-    try {
-      const res = await cloudState.client.from('items').upsert(newItems.map(itemToDb), { onConflict: 'id' });
-      if (res.error) throw res.error;
-      updateSyncStatus('cloud', 'Cloud sync active');
-    } catch (err) { console.error('Cloud import failed:', err); showToast(`Saved locally. Cloud sync failed: ${err.message || err}`); }
-  }
-  showToast(`${newItems.length} item${newItems.length !== 1 ? 's' : ''} imported successfully`);
-  csvPendingRows = [];
-  closeModal('importCsvModal');
-  navigate(document.querySelector('[data-page=inventory]'));
-}
-
-function downloadCsvTemplate() {
-  const headers = 'name,sku,assetId,category,quantity,minQuantity,unitCost,supplier,location,notes,serialNumber,condition,assignedTo,purchaseDate,warrantyExpiry,assetStatus';
-  const example = 'Dell Latitude 5450,LAP-DELL-LAT5450,LAP-2026-001,Laptop,1,1,1200.00,Dell,IT Store Room,"Serial noted on underside",SN-ABC001,Good,Haziqah,2026-06-10,2029-06-09,Available';
-  const blob = new Blob([[headers, example].join('\n')], { type: 'text/csv' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a'); a.href = url; a.download = 'stockwise_import_template.csv'; a.click();
-  URL.revokeObjectURL(url);
-  showToast('Sample CSV downloaded');
-}
-
 // ============================================================
 // INIT
 // ============================================================
@@ -3347,20 +2835,18 @@ function downloadCsvTemplate() {
 async function initApp() {
   hydrateStateFromLocal();
 
-  // Keep the original demo-data behaviour for Local mode only.
-  // Once Supabase is configured, the cloud database becomes the main source of truth.
-  if (!isSupabaseConfigured()) {
-    loadDemoData();
-    hydrateStateFromLocal();
-  }
-
+  // CLEAN TEMPLATE MODE
+  // Do not auto-load demo/sample inventory. This keeps the dashboard blank
+  // for new users so they can add their own assets manually or via CSV import.
   ensureDataSchema();
   renderDashboard();
   document.getElementById('lowStockBadge').textContent = getItems().filter(i => i.qty < i.minQty).length;
 
   const cloudReady = await initSupabase();
-  if (!cloudReady && !getItems().length) {
-    loadDemoData();
+
+  // If cloud sync is not configured or fails, stay in Local mode with whatever
+  // the user has already saved in this browser. Do not seed demo data.
+  if (!cloudReady) {
     hydrateStateFromLocal();
     ensureDataSchema();
   }
