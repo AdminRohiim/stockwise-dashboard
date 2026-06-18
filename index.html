@@ -452,6 +452,116 @@
   .single-label-preview .qr-slot canvas, .single-label-preview .qr-slot img { max-width:112px; max-height:112px; }
   .print-toolbar { display:flex; align-items:flex-end; justify-content:space-between; gap:10px; flex-wrap:wrap; }
 
+
+  /* ============================================================
+     INVENTORY TABLE USABILITY
+  ============================================================ */
+  .inventory-bulk-toolbar {
+    border-bottom: 1px solid var(--border);
+    padding: 12px 14px;
+    background: var(--surface);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .inventory-bulk-toolbar .bulk-left,
+  .inventory-bulk-toolbar .bulk-actions,
+  .inventory-pagination,
+  .pagination-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .selected-count-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 10px;
+    border-radius: 999px;
+    background: var(--blue-light);
+    color: var(--blue);
+    border: 1px solid #BFDBFE;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .bulk-action-select,
+  .page-size-select {
+    min-height: 32px;
+    padding: 5px 9px;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    color: var(--text);
+    font-size: 12px;
+  }
+  .sort-header {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    width: 100%;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    text-transform: inherit;
+    letter-spacing: inherit;
+    padding: 0;
+    text-align: left;
+  }
+  .sort-header:hover { color: var(--accent); }
+  .sort-indicator {
+    color: var(--text-faint);
+    font-size: 10px;
+    min-width: 10px;
+  }
+  .sort-header.active .sort-indicator { color: var(--accent); }
+  .select-col { width: 38px; text-align: center; }
+  .select-col input { width: 15px; height: 15px; cursor: pointer; }
+  tr.inventory-selected td { background: var(--blue-light); }
+  .inventory-pagination {
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .pagination-btn {
+    min-width: 30px;
+    height: 30px;
+    padding: 0 8px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-strong);
+    background: var(--surface);
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .pagination-btn:hover:not(:disabled) { background: var(--bg); color: var(--text); }
+  .pagination-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .pagination-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+  .pagination-ellipsis { color: var(--text-faint); padding: 0 2px; }
+  .mobile-item-card.inventory-selected { border-color: #BFDBFE; background: var(--blue-light); }
+  .mobile-card-select { display:flex; align-items:center; gap:8px; margin-bottom:8px; font-size:12px; font-weight:700; color:var(--text-muted); }
+
+  @media (max-width: 768px) {
+    .inventory-bulk-toolbar { align-items: stretch; }
+    .inventory-bulk-toolbar .bulk-left,
+    .inventory-bulk-toolbar .bulk-actions,
+    .inventory-pagination,
+    .pagination-controls { width: 100%; align-items: stretch; }
+    .inventory-bulk-toolbar .bulk-actions { display: grid; grid-template-columns: 1fr 1fr; }
+    .inventory-bulk-toolbar .bulk-actions .btn,
+    .inventory-bulk-toolbar .bulk-actions select,
+    .inventory-pagination .btn,
+    .pagination-btn,
+    .page-size-select { width: 100%; justify-content: center; }
+    .inventory-pagination { flex-direction: column; align-items: stretch; gap: 10px; }
+    .pagination-controls { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  }
+
   /* ============================================================
      MOBILE INVENTORY CARDS + UTILITY PANELS
   ============================================================ */
@@ -669,24 +779,24 @@
       <div class="search-bar">
         <div class="search-input-wrap">
           <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-          <input type="text" placeholder="Search by name, SKU or asset ID…" id="inventorySearch" oninput="renderInventory()">
+          <input type="text" placeholder="Search by name, SKU or asset ID…" id="inventorySearch" oninput="resetInventoryPageAndRender()">
         </div>
-        <select class="form-input" id="filterCategory" onchange="renderInventory()" style="width:auto">
+        <select class="form-input" id="filterCategory" onchange="resetInventoryPageAndRender()" style="width:auto">
           <option value="">All categories</option>
         </select>
-        <select class="form-input" id="filterSupplier" onchange="renderInventory()" style="width:auto">
+        <select class="form-input" id="filterSupplier" onchange="resetInventoryPageAndRender()" style="width:auto">
           <option value="">All suppliers</option>
         </select>
-        <select class="form-input" id="filterLocation" onchange="renderInventory()" style="width:auto">
+        <select class="form-input" id="filterLocation" onchange="resetInventoryPageAndRender()" style="width:auto">
           <option value="">All locations</option>
         </select>
-        <select class="form-input" id="filterStatus" onchange="renderInventory()" style="width:auto">
+        <select class="form-input" id="filterStatus" onchange="resetInventoryPageAndRender()" style="width:auto">
           <option value="">All stock status</option>
           <option value="low">Low stock</option>
           <option value="out">Out of stock</option>
           <option value="ok">In stock</option>
         </select>
-        <select class="form-input" id="filterAssetStatus" onchange="renderInventory()" style="width:auto">
+        <select class="form-input" id="filterAssetStatus" onchange="resetInventoryPageAndRender()" style="width:auto">
           <option value="active">Active assets</option>
           <option value="">All asset status</option>
           <option value="Available">Available</option>
@@ -696,7 +806,7 @@
           <option value="Retired">Retired</option>
           <option value="Disposed">Disposed</option>
         </select>
-        <select class="form-input" id="filterCondition" onchange="renderInventory()" style="width:auto">
+        <select class="form-input" id="filterCondition" onchange="resetInventoryPageAndRender()" style="width:auto">
           <option value="">All conditions</option>
           <option value="New">New</option>
           <option value="Good">Good</option>
@@ -711,21 +821,60 @@
         <button class="btn btn-secondary" onclick="navigate(document.querySelector('[data-page=labels]'))">Print Labels</button>
       </div>
       <div class="card" style="padding:0">
+        <div class="inventory-bulk-toolbar no-print" id="inventoryBulkToolbar">
+          <div class="bulk-left">
+            <span class="selected-count-pill" id="inventorySelectedCount">0 selected</span>
+            <button class="btn btn-ghost btn-sm" onclick="clearInventorySelection()">Clear selection</button>
+            <button class="btn btn-secondary btn-sm" onclick="selectAllFilteredInventory()">Select all filtered</button>
+          </div>
+          <div class="bulk-actions">
+            <select class="bulk-action-select" id="bulkAssetStatus" title="Bulk asset status">
+              <option value="">Asset status…</option>
+              <option value="Available">Available</option>
+              <option value="Assigned">Assigned</option>
+              <option value="In Repair">In Repair</option>
+              <option value="Missing">Missing</option>
+              <option value="Retired">Retired</option>
+              <option value="Disposed">Disposed</option>
+            </select>
+            <button class="btn btn-secondary btn-sm" data-requires-selection onclick="bulkChangeAssetStatus()">Apply status</button>
+            <select class="bulk-action-select" id="bulkCondition" title="Bulk condition">
+              <option value="">Condition…</option>
+              <option value="New">New</option>
+              <option value="Good">Good</option>
+              <option value="Fair">Fair</option>
+              <option value="Needs Repair">Needs Repair</option>
+              <option value="Damaged">Damaged</option>
+            </select>
+            <button class="btn btn-secondary btn-sm" data-requires-selection onclick="bulkChangeCondition()">Apply condition</button>
+            <button class="btn btn-secondary btn-sm" data-requires-selection onclick="bulkChangeLocation()">Change location</button>
+            <button class="btn btn-secondary btn-sm" data-requires-selection onclick="bulkAssignTo()">Assign to</button>
+            <button class="btn btn-secondary btn-sm" data-requires-selection onclick="exportSelectedInventoryCSV()">Export selected CSV</button>
+            <button class="btn btn-secondary btn-sm" data-requires-selection onclick="printSelectedInventoryLabels()">Print labels</button>
+            <button class="btn btn-danger btn-sm" data-requires-selection onclick="bulkDeleteSelected()">Delete selected</button>
+          </div>
+        </div>
         <div class="table-wrap" id="inventoryDesktopTable">
           <table>
             <thead>
               <tr>
-                <th>Item name</th>
-                <th>SKU</th>
-                <th>Asset ID</th>
-                <th>Category</th>
-                <th>Stock level</th>
-                <th>Min level</th>
-                <th>Unit cost</th>
-                <th>Supplier</th>
-                <th>Location</th>
-                <th>Status</th>
-                <th></th>
+                <th class="select-col"><input type="checkbox" id="inventorySelectAll" onchange="toggleSelectVisibleInventory(this.checked)" title="Select visible rows"></th>
+                <th><button class="sort-header" data-sort-key="name" onclick="setInventorySort('name')">Item name <span class="sort-indicator" id="sortIndicator-name">↕</span></button></th>
+                <th><button class="sort-header" data-sort-key="sku" onclick="setInventorySort('sku')">SKU <span class="sort-indicator" id="sortIndicator-sku">↕</span></button></th>
+                <th><button class="sort-header" data-sort-key="assetId" onclick="setInventorySort('assetId')">Asset ID <span class="sort-indicator" id="sortIndicator-assetId">↕</span></button></th>
+                <th><button class="sort-header" data-sort-key="category" onclick="setInventorySort('category')">Category <span class="sort-indicator" id="sortIndicator-category">↕</span></button></th>
+                <th><button class="sort-header" data-sort-key="qty" onclick="setInventorySort('qty')">Quantity <span class="sort-indicator" id="sortIndicator-qty">↕</span></button></th>
+                <th><button class="sort-header" data-sort-key="minQty" onclick="setInventorySort('minQty')">Min level <span class="sort-indicator" id="sortIndicator-minQty">↕</span></button></th>
+                <th><button class="sort-header" data-sort-key="cost" onclick="setInventorySort('cost')">Unit cost <span class="sort-indicator" id="sortIndicator-cost">↕</span></button></th>
+                <th><button class="sort-header" data-sort-key="supplier" onclick="setInventorySort('supplier')">Supplier <span class="sort-indicator" id="sortIndicator-supplier">↕</span></button></th>
+                <th><button class="sort-header" data-sort-key="location" onclick="setInventorySort('location')">Location <span class="sort-indicator" id="sortIndicator-location">↕</span></button></th>
+                <th><button class="sort-header" data-sort-key="stockStatus" onclick="setInventorySort('stockStatus')">Stock status <span class="sort-indicator" id="sortIndicator-stockStatus">↕</span></button></th>
+                <th><button class="sort-header" data-sort-key="assetStatus" onclick="setInventorySort('assetStatus')">Asset status <span class="sort-indicator" id="sortIndicator-assetStatus">↕</span></button></th>
+                <th><button class="sort-header" data-sort-key="condition" onclick="setInventorySort('condition')">Condition <span class="sort-indicator" id="sortIndicator-condition">↕</span></button></th>
+                <th><button class="sort-header" data-sort-key="assignedTo" onclick="setInventorySort('assignedTo')">Assigned to <span class="sort-indicator" id="sortIndicator-assignedTo">↕</span></button></th>
+                <th><button class="sort-header" data-sort-key="purchaseDate" onclick="setInventorySort('purchaseDate')">Purchase date <span class="sort-indicator" id="sortIndicator-purchaseDate">↕</span></button></th>
+                <th><button class="sort-header" data-sort-key="warrantyExpiry" onclick="setInventorySort('warrantyExpiry')">Warranty expiry <span class="sort-indicator" id="sortIndicator-warrantyExpiry">↕</span></button></th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody id="inventoryTableBody"></tbody>
@@ -737,7 +886,7 @@
           <h3>No items found</h3>
           <p>Try adjusting your search or filters</p>
         </div>
-        <div id="inventoryCount" style="padding:12px 16px; border-top:1px solid var(--border); font-size:12px; color:var(--text-faint);"></div>
+        <div id="inventoryCount"></div>
       </div>
     </div>
 
@@ -2091,6 +2240,20 @@ function renderDashboard() {
 // INVENTORY
 // ============================================================
 
+const inventoryState = {
+  sortKey: 'name',
+  sortDir: 'asc',
+  page: 1,
+  pageSize: 25,
+  selectedIds: new Set()
+};
+
+const INVENTORY_SORT_LABELS = {
+  name: 'Item name', sku: 'SKU', assetId: 'Asset ID', category: 'Category', qty: 'Quantity', minQty: 'Min level',
+  cost: 'Unit cost', supplier: 'Supplier', location: 'Location', stockStatus: 'Stock status', assetStatus: 'Asset status',
+  condition: 'Condition', assignedTo: 'Assigned to', purchaseDate: 'Purchase date', warrantyExpiry: 'Warranty expiry'
+};
+
 function populateFilters() {
   const items = getItems();
   const cats = [...new Set(items.map(i => i.category).filter(Boolean))].sort();
@@ -2099,92 +2262,384 @@ function populateFilters() {
 
   const fc = document.getElementById('filterCategory');
   const cur = fc.value;
-  fc.innerHTML = '<option value="">All categories</option>' + cats.map(c => `<option value="${c}">${c}</option>`).join('');
+  fc.innerHTML = '<option value="">All categories</option>' + cats.map(c => `<option value="${escAttr(c)}">${esc(c)}</option>`).join('');
   fc.value = cur;
 
   const fs = document.getElementById('filterSupplier');
   const curs = fs.value;
-  fs.innerHTML = '<option value="">All suppliers</option>' + sups.map(s => `<option value="${s}">${s}</option>`).join('');
+  fs.innerHTML = '<option value="">All suppliers</option>' + sups.map(s => `<option value="${escAttr(s)}">${esc(s)}</option>`).join('');
   fs.value = curs;
 
   const fl = document.getElementById('filterLocation');
   const curl = fl.value;
-  fl.innerHTML = '<option value="">All locations</option>' + locs.map(l => `<option value="${l}">${l}</option>`).join('');
+  fl.innerHTML = '<option value="">All locations</option>' + locs.map(l => `<option value="${escAttr(l)}">${esc(l)}</option>`).join('');
   fl.value = curl;
 
   // Datalists in modal
-  document.getElementById('categoryList').innerHTML = cats.map(c => `<option value="${c}">`).join('');
-  const allSups = getSuppliers().map(s => s.name).concat(sups);
-  document.getElementById('supplierList').innerHTML = [...new Set(allSups)].map(s => `<option value="${s}">`).join('');
-  document.getElementById('locationList').innerHTML = locs.map(l => `<option value="${l}">`).join('');
+  document.getElementById('categoryList').innerHTML = cats.map(c => `<option value="${escAttr(c)}">`).join('');
+  const allSups = getSuppliers().map(s => s.name).concat(sups).filter(Boolean);
+  document.getElementById('supplierList').innerHTML = [...new Set(allSups)].map(s => `<option value="${escAttr(s)}">`).join('');
+  document.getElementById('locationList').innerHTML = locs.map(l => `<option value="${escAttr(l)}">`).join('');
 }
 
-function renderInventory() {
-  const q = (document.getElementById('inventorySearch').value||'').toLowerCase();
-  const cat = document.getElementById('filterCategory').value;
-  const sup = document.getElementById('filterSupplier').value;
-  const loc = document.getElementById('filterLocation').value;
-  const status = document.getElementById('filterStatus').value;
+function resetInventoryPageAndRender() {
+  inventoryState.page = 1;
+  renderInventory();
+}
+
+function getStockStatusKey(item) {
+  if (Number(item.qty || 0) === 0) return 'out';
+  if (Number(item.qty || 0) < Number(item.minQty || 0)) return 'low';
+  return 'ok';
+}
+
+function getStockStatusLabel(item) {
+  const key = getStockStatusKey(item);
+  if (key === 'out') return 'Out of stock';
+  if (key === 'low') return 'Low stock';
+  return 'In stock';
+}
+
+function getStockStatusBadge(item) {
+  const key = getStockStatusKey(item);
+  if (key === 'out') return '<span class="badge badge-danger">Out of stock</span>';
+  if (key === 'low') return '<span class="badge badge-warning">Low stock</span>';
+  return '<span class="badge badge-success">In stock</span>';
+}
+
+function getInventoryFilteredItems() {
+  const q = (document.getElementById('inventorySearch')?.value || '').toLowerCase();
+  const cat = document.getElementById('filterCategory')?.value || '';
+  const sup = document.getElementById('filterSupplier')?.value || '';
+  const loc = document.getElementById('filterLocation')?.value || '';
+  const status = document.getElementById('filterStatus')?.value || '';
   const assetStatus = document.getElementById('filterAssetStatus')?.value || 'active';
   const condition = document.getElementById('filterCondition')?.value || '';
   const inactiveStatuses = ['Missing','Retired','Disposed'];
 
-  let items = getItems().filter(i => {
+  return getItems().filter(i => {
     const asset = (i.assetId || i.labelCode || '').toLowerCase();
-    if (q && !i.name.toLowerCase().includes(q) && !i.sku.toLowerCase().includes(q) && !asset.includes(q)) return false;
+    const searchHaystack = [i.name, i.sku, asset, i.serialNumber, i.assignedTo, i.location].join(' ').toLowerCase();
+    if (q && !searchHaystack.includes(q)) return false;
     if (cat && i.category !== cat) return false;
     if (sup && i.supplier !== sup) return false;
     if (loc && i.location !== loc) return false;
-    if (status === 'out' && i.qty !== 0) return false;
-    if (status === 'low' && !(i.qty > 0 && i.qty < i.minQty)) return false;
-    if (status === 'ok' && i.qty < i.minQty) return false;
+    if (status === 'out' && getStockStatusKey(i) !== 'out') return false;
+    if (status === 'low' && getStockStatusKey(i) !== 'low') return false;
+    if (status === 'ok' && getStockStatusKey(i) !== 'ok') return false;
     if (assetStatus === 'active' && inactiveStatuses.includes(i.assetStatus || 'Available')) return false;
     if (assetStatus && assetStatus !== 'active' && (i.assetStatus || 'Available') !== assetStatus) return false;
     if (condition && (i.condition || 'Good') !== condition) return false;
     return true;
   });
+}
 
+function dateSortValue(value) {
+  if (!value) return Number.POSITIVE_INFINITY;
+  const d = new Date(String(value).includes('T') ? value : value + 'T00:00:00');
+  return isNaN(d.getTime()) ? Number.POSITIVE_INFINITY : d.getTime();
+}
+
+function getInventorySortValue(item, key) {
+  if (key === 'assetId') return (item.assetId || item.labelCode || '').toLowerCase();
+  if (key === 'qty') return Number(item.qty || 0);
+  if (key === 'minQty') return Number(item.minQty || 0);
+  if (key === 'cost') return Number(item.cost || 0);
+  if (key === 'stockStatus') return { out: 0, low: 1, ok: 2 }[getStockStatusKey(item)] || 3;
+  if (key === 'assetStatus') return (item.assetStatus || 'Available').toLowerCase();
+  if (key === 'condition') return (item.condition || 'Good').toLowerCase();
+  if (key === 'assignedTo') return (item.assignedTo || '').toLowerCase();
+  if (key === 'purchaseDate') return dateSortValue(item.purchaseDate);
+  if (key === 'warrantyExpiry') return dateSortValue(item.warrantyExpiry);
+  return String(item[key] || '').toLowerCase();
+}
+
+function sortInventoryItems(items) {
+  const key = inventoryState.sortKey;
+  const dir = inventoryState.sortDir === 'desc' ? -1 : 1;
+  return [...items].sort((a, b) => {
+    const av = getInventorySortValue(a, key);
+    const bv = getInventorySortValue(b, key);
+    let result = 0;
+    if (typeof av === 'number' && typeof bv === 'number') result = av - bv;
+    else result = String(av).localeCompare(String(bv), undefined, { numeric: true, sensitivity: 'base' });
+    if (result === 0) result = String(a.name || '').localeCompare(String(b.name || ''), undefined, { numeric: true, sensitivity: 'base' });
+    return result * dir;
+  });
+}
+
+function setInventorySort(key) {
+  if (!INVENTORY_SORT_LABELS[key]) return;
+  if (inventoryState.sortKey === key) inventoryState.sortDir = inventoryState.sortDir === 'asc' ? 'desc' : 'asc';
+  else { inventoryState.sortKey = key; inventoryState.sortDir = 'asc'; }
+  inventoryState.page = 1;
+  renderInventory();
+}
+
+function updateInventorySortIndicators() {
+  document.querySelectorAll('.sort-header').forEach(btn => {
+    const key = btn.dataset.sortKey;
+    const span = document.getElementById('sortIndicator-' + key);
+    const active = key === inventoryState.sortKey;
+    btn.classList.toggle('active', active);
+    if (span) span.textContent = active ? (inventoryState.sortDir === 'asc' ? '▲' : '▼') : '↕';
+  });
+}
+
+function getInventoryPageItems(items) {
+  const totalPages = Math.max(1, Math.ceil(items.length / inventoryState.pageSize));
+  if (inventoryState.page > totalPages) inventoryState.page = totalPages;
+  if (inventoryState.page < 1) inventoryState.page = 1;
+  const start = (inventoryState.page - 1) * inventoryState.pageSize;
+  return items.slice(start, start + inventoryState.pageSize);
+}
+
+function setInventoryPageSize(value) {
+  inventoryState.pageSize = parseInt(value, 10) || 25;
+  inventoryState.page = 1;
+  renderInventory();
+}
+
+function goToInventoryPage(page) {
+  inventoryState.page = Number(page) || 1;
+  renderInventory();
+}
+
+function inventoryPageNumbers(totalPages) {
+  const current = inventoryState.page;
+  const pages = new Set([1, totalPages, current - 1, current, current + 1]);
+  if (current <= 3) { pages.add(2); pages.add(3); }
+  if (current >= totalPages - 2) { pages.add(totalPages - 1); pages.add(totalPages - 2); }
+  return [...pages].filter(p => p >= 1 && p <= totalPages).sort((a, b) => a - b);
+}
+
+function cleanupInventorySelection() {
+  const existingIds = new Set(getItems().map(i => i.id));
+  [...inventoryState.selectedIds].forEach(id => { if (!existingIds.has(id)) inventoryState.selectedIds.delete(id); });
+}
+
+function getSelectedInventoryIds() {
+  cleanupInventorySelection();
+  return [...inventoryState.selectedIds];
+}
+
+function toggleInventorySelection(id, checked) {
+  if (checked) inventoryState.selectedIds.add(id);
+  else inventoryState.selectedIds.delete(id);
+  renderInventory();
+}
+
+function toggleSelectVisibleInventory(checked) {
+  const filtered = sortInventoryItems(getInventoryFilteredItems());
+  const visible = getInventoryPageItems(filtered);
+  visible.forEach(item => checked ? inventoryState.selectedIds.add(item.id) : inventoryState.selectedIds.delete(item.id));
+  renderInventory();
+}
+
+function selectAllFilteredInventory() {
+  const filtered = getInventoryFilteredItems();
+  if (!filtered.length) { showToast('No filtered items to select'); return; }
+  filtered.forEach(item => inventoryState.selectedIds.add(item.id));
+  renderInventory();
+  showToast(`${filtered.length} filtered item${filtered.length !== 1 ? 's' : ''} selected`);
+}
+
+function clearInventorySelection() {
+  inventoryState.selectedIds.clear();
+  renderInventory();
+}
+
+function updateInventoryBulkUi(visibleItems) {
+  cleanupInventorySelection();
+  const selectedCount = inventoryState.selectedIds.size;
+  const countEl = document.getElementById('inventorySelectedCount');
+  if (countEl) countEl.textContent = `${selectedCount} selected`;
+
+  document.querySelectorAll('[data-requires-selection]').forEach(el => { el.disabled = selectedCount === 0; });
+
+  const selectAll = document.getElementById('inventorySelectAll');
+  if (selectAll) {
+    const visibleIds = visibleItems.map(i => i.id);
+    const selectedVisible = visibleIds.filter(id => inventoryState.selectedIds.has(id)).length;
+    selectAll.checked = visibleIds.length > 0 && selectedVisible === visibleIds.length;
+    selectAll.indeterminate = selectedVisible > 0 && selectedVisible < visibleIds.length;
+  }
+}
+
+function updateSelectedInventoryItems(mutator, message) {
+  const selected = new Set(getSelectedInventoryIds());
+  if (!selected.size) { showToast('Select at least one item first'); return; }
+  const items = getItems();
+  let count = 0;
+  items.forEach(item => {
+    if (selected.has(item.id)) {
+      mutator(item);
+      item.updated = today();
+      count++;
+    }
+  });
+  setItems(items);
+  showToast(message(count));
+  renderPage(currentPage);
+}
+
+function bulkChangeAssetStatus() {
+  const status = document.getElementById('bulkAssetStatus')?.value || '';
+  if (!status) { showToast('Choose an asset status first'); return; }
+  updateSelectedInventoryItems(item => { item.assetStatus = status; }, count => `Asset status updated for ${count} item${count !== 1 ? 's' : ''}`);
+}
+
+function bulkChangeCondition() {
+  const condition = document.getElementById('bulkCondition')?.value || '';
+  if (!condition) { showToast('Choose a condition first'); return; }
+  updateSelectedInventoryItems(item => { item.condition = condition; }, count => `Condition updated for ${count} item${count !== 1 ? 's' : ''}`);
+}
+
+function bulkChangeLocation() {
+  const selectedCount = getSelectedInventoryIds().length;
+  if (!selectedCount) { showToast('Select at least one item first'); return; }
+  const location = prompt(`Enter the new location for ${selectedCount} selected item${selectedCount !== 1 ? 's' : ''}:`);
+  if (location === null) return;
+  updateSelectedInventoryItems(item => { item.location = location.trim(); }, count => `Location updated for ${count} item${count !== 1 ? 's' : ''}`);
+}
+
+function bulkAssignTo() {
+  const selectedCount = getSelectedInventoryIds().length;
+  if (!selectedCount) { showToast('Select at least one item first'); return; }
+  const assignee = prompt(`Assign ${selectedCount} selected item${selectedCount !== 1 ? 's' : ''} to:`);
+  if (assignee === null) return;
+  updateSelectedInventoryItems(item => { item.assignedTo = assignee.trim(); item.assetStatus = assignee.trim() ? 'Assigned' : (item.assetStatus || 'Available'); }, count => `Assignment updated for ${count} item${count !== 1 ? 's' : ''}`);
+}
+
+function bulkDeleteSelected() {
+  const selectedIds = getSelectedInventoryIds();
+  if (!selectedIds.length) { showToast('Select at least one item first'); return; }
+  const selectedItems = getItems().filter(i => selectedIds.includes(i.id));
+  const sampleNames = selectedItems.slice(0, 5).map(i => `• ${i.name}`).join('\n');
+  const extra = selectedItems.length > 5 ? `\n…and ${selectedItems.length - 5} more` : '';
+  if (!confirm(`Permanently delete ${selectedItems.length} selected item${selectedItems.length !== 1 ? 's' : ''}?\n\n${sampleNames}${extra}\n\nMovement and scan history are kept, but the item records will be deleted. This cannot be undone.`)) return;
+  const selected = new Set(selectedIds);
+  setItems(getItems().filter(item => !selected.has(item.id)));
+  inventoryState.selectedIds.clear();
+  showToast(`${selectedItems.length} item${selectedItems.length !== 1 ? 's' : ''} deleted`);
+  renderPage(currentPage);
+}
+
+function exportSelectedInventoryCSV() {
+  const selected = new Set(getSelectedInventoryIds());
+  if (!selected.size) { showToast('Select at least one item first'); return; }
+  const rows = [[
+    'Item Name','SKU','Asset ID','Category','Quantity','Min Level','Unit Cost','Supplier','Location','Stock Status',
+    'Asset Status','Condition','Assigned To','Serial Number','Purchase Date','Warranty Expiry','Notes','Updated'
+  ]];
+  getItems().filter(i => selected.has(i.id)).forEach(i => rows.push([
+    i.name || '', i.sku || '', i.assetId || i.labelCode || '', i.category || '', i.qty || 0, i.minQty || 0,
+    Number(i.cost || 0).toFixed(2), i.supplier || '', i.location || '', getStockStatusLabel(i),
+    i.assetStatus || 'Available', i.condition || 'Good', i.assignedTo || '', i.serialNumber || '',
+    i.purchaseDate || '', i.warrantyExpiry || '', i.notes || '', i.updated || ''
+  ]));
+  downloadCSV(rows, `stockwise-selected-${today()}.csv`);
+}
+
+function printSelectedInventoryLabels() {
+  const selected = new Set(getSelectedInventoryIds());
+  if (!selected.size) { showToast('Select at least one item first'); return; }
+  const labelItems = getItems().filter(i => selected.has(i.id) && getItemCode(i));
+  if (!labelItems.length) { showToast('Selected items need an Asset ID or SKU before labels can be printed'); return; }
+  selectedLabelIds = new Set(labelItems.map(i => i.id));
+  navigate(document.querySelector('[data-page=labels]'));
+  showToast(`${labelItems.length} selected label${labelItems.length !== 1 ? 's' : ''} ready to print`);
+  setTimeout(() => window.print(), 250);
+}
+
+function renderInventoryPagination(totalFiltered, totalAll, visibleCount) {
+  const count = document.getElementById('inventoryCount');
+  const countHeader = document.getElementById('inventoryCountHeader');
+  const totalPages = Math.max(1, Math.ceil(totalFiltered / inventoryState.pageSize));
+  const start = totalFiltered === 0 ? 0 : ((inventoryState.page - 1) * inventoryState.pageSize) + 1;
+  const end = totalFiltered === 0 ? 0 : Math.min(start + visibleCount - 1, totalFiltered);
+  const summary = totalFiltered === totalAll
+    ? `Showing ${start}–${end} of ${totalFiltered} items`
+    : `Showing ${start}–${end} of ${totalFiltered} filtered items (${totalAll} total)`;
+  if (countHeader) countHeader.textContent = summary;
+
+  const pages = inventoryPageNumbers(totalPages);
+  let pageButtons = '';
+  let last = 0;
+  pages.forEach(p => {
+    if (p - last > 1) pageButtons += '<span class="pagination-ellipsis">…</span>';
+    pageButtons += `<button class="pagination-btn ${p === inventoryState.page ? 'active' : ''}" onclick="goToInventoryPage(${p})" ${p === inventoryState.page ? 'aria-current="page"' : ''}>${p}</button>`;
+    last = p;
+  });
+
+  count.innerHTML = `<div class="inventory-pagination">
+    <div>${summary}</div>
+    <div class="pagination-controls">
+      <label class="gap-row" style="gap:6px">Rows
+        <select class="page-size-select" onchange="setInventoryPageSize(this.value)">
+          ${[10,25,50,100].map(size => `<option value="${size}" ${size === inventoryState.pageSize ? 'selected' : ''}>${size}</option>`).join('')}
+        </select>
+      </label>
+      <button class="pagination-btn" onclick="goToInventoryPage(${inventoryState.page - 1})" ${inventoryState.page <= 1 ? 'disabled' : ''}>Prev</button>
+      ${pageButtons}
+      <button class="pagination-btn" onclick="goToInventoryPage(${inventoryState.page + 1})" ${inventoryState.page >= totalPages ? 'disabled' : ''}>Next</button>
+    </div>
+  </div>`;
+}
+
+function renderInventory() {
+  cleanupInventorySelection();
+  updateInventorySortIndicators();
+
+  const filteredItems = getInventoryFilteredItems();
+  const items = sortInventoryItems(filteredItems);
+  const pageItems = getInventoryPageItems(items);
   const tbody = document.getElementById('inventoryTableBody');
   const empty = document.getElementById('inventoryEmpty');
-  const count = document.getElementById('inventoryCount');
-
-  if (items.length === 0) {
-    tbody.innerHTML = '';
-    const mobileCards = document.getElementById('inventoryMobileCards'); if (mobileCards) mobileCards.innerHTML = '';
-    empty.classList.remove('hidden');
-    count.textContent = '';
-    return;
-  }
-  empty.classList.add('hidden');
-  count.textContent = `Showing ${items.length} of ${getItems().length} items`;
-  const countHeader = document.getElementById('inventoryCountHeader');
-  if (countHeader) countHeader.textContent = count.textContent;
+  const mobileCards = document.getElementById('inventoryMobileCards');
+  const totalAll = getItems().length;
 
   const pct = (qty, min) => min > 0 ? Math.min(100, Math.round(qty / (min * 2) * 100)) : 100;
   const barColor = (qty, min) => qty === 0 ? 'var(--red)' : qty < min ? '#F59E0B' : 'var(--accent-mid)';
 
-  tbody.innerHTML = items.map(item => {
-    const p = pct(item.qty, item.minQty);
+  if (items.length === 0) {
+    tbody.innerHTML = '';
+    if (mobileCards) mobileCards.innerHTML = '';
+    empty.classList.remove('hidden');
+    renderInventoryPagination(0, totalAll, 0);
+    updateInventoryBulkUi([]);
+    return;
+  }
+
+  empty.classList.add('hidden');
+
+  tbody.innerHTML = pageItems.map(item => {
+    const p = pct(Number(item.qty || 0), Number(item.minQty || 0));
     const asset = item.assetId || item.labelCode || '';
-    const status = item.qty === 0 ? '<span class="badge badge-danger">Out of stock</span>'
-      : item.qty < item.minQty ? '<span class="badge badge-warning">Low stock</span>'
-      : '<span class="badge badge-success">In stock</span>';
-    return `<tr>
-      <td><div class="fw-600">${item.name}</div><div class="text-muted text-small mt-4">${item.assetStatus || 'Available'} · ${item.condition || 'Good'}${item.assignedTo ? ' · Assigned to ' + item.assignedTo : ''}</div></td>
-      <td class="text-muted">${item.sku}</td>
-      <td>${asset ? `<span class="asset-pill">${asset}</span>` : '<span class="text-muted">—</span>'}</td>
-      <td>${item.category ? `<span class="badge badge-neutral">${item.category}</span>` : ''}</td>
+    const checked = inventoryState.selectedIds.has(item.id) ? 'checked' : '';
+    const selectedClass = inventoryState.selectedIds.has(item.id) ? 'inventory-selected' : '';
+    return `<tr class="${selectedClass}">
+      <td class="select-col"><input type="checkbox" ${checked} onchange="toggleInventorySelection('${item.id}', this.checked)" title="Select ${escAttr(item.name)}"></td>
+      <td><div class="fw-600">${esc(item.name)}</div><div class="text-muted text-small mt-4">${esc(item.serialNumber || 'No serial')} · ${esc(item.notes || 'No notes')}</div></td>
+      <td class="text-muted">${esc(item.sku || '—')}</td>
+      <td>${asset ? `<span class="asset-pill">${esc(asset)}</span>` : '<span class="text-muted">—</span>'}</td>
+      <td>${item.category ? `<span class="badge badge-neutral">${esc(item.category)}</span>` : '<span class="text-muted">—</span>'}</td>
       <td>
         <div class="stock-bar-wrap">
-          <span class="fw-600" style="min-width:28px">${item.qty}</span>
-          <div class="stock-bar-track"><div class="stock-bar-fill" style="width:${p}%;background:${barColor(item.qty,item.minQty)}"></div></div>
+          <span class="fw-600" style="min-width:28px">${Number(item.qty || 0)}</span>
+          <div class="stock-bar-track"><div class="stock-bar-fill" style="width:${p}%;background:${barColor(Number(item.qty || 0),Number(item.minQty || 0))}"></div></div>
         </div>
       </td>
-      <td class="text-muted">${item.minQty}</td>
-      <td>$${Number(item.cost).toFixed(2)}</td>
-      <td class="text-muted">${item.supplier||'—'}</td>
-      <td class="text-muted">${item.location||'—'}</td>
-      <td>${status}</td>
+      <td class="text-muted">${Number(item.minQty || 0)}</td>
+      <td>$${Number(item.cost || 0).toFixed(2)}</td>
+      <td class="text-muted">${esc(item.supplier || '—')}</td>
+      <td class="text-muted">${esc(item.location || '—')}</td>
+      <td>${getStockStatusBadge(item)}</td>
+      <td><span class="badge badge-neutral">${esc(item.assetStatus || 'Available')}</span></td>
+      <td class="text-muted">${esc(item.condition || 'Good')}</td>
+      <td class="text-muted">${esc(item.assignedTo || '—')}</td>
+      <td class="text-muted text-small">${item.purchaseDate ? fmtDate(item.purchaseDate) : '—'}</td>
+      <td class="text-muted text-small">${item.warrantyExpiry ? fmtDate(item.warrantyExpiry) : '—'}</td>
       <td>
         <div class="gap-row">
           <button class="btn btn-ghost btn-sm" onclick="openAssetDetails('${item.id}')" title="View asset details">View</button>
@@ -2200,24 +2655,30 @@ function renderInventory() {
     </tr>`;
   }).join('');
 
-  const mobileCards = document.getElementById('inventoryMobileCards');
   if (mobileCards) {
-    mobileCards.innerHTML = items.map(item => {
+    mobileCards.innerHTML = pageItems.map(item => {
       const inactive = ['Missing','Retired','Disposed'].includes(item.assetStatus || 'Available');
       const asset = item.assetId || item.labelCode || '—';
-      return `<div class="mobile-item-card ${inactive ? 'asset-inactive' : ''}">
+      const checked = inventoryState.selectedIds.has(item.id) ? 'checked' : '';
+      const selectedClass = inventoryState.selectedIds.has(item.id) ? 'inventory-selected' : '';
+      return `<div class="mobile-item-card ${inactive ? 'asset-inactive' : ''} ${selectedClass}">
+        <label class="mobile-card-select"><input type="checkbox" ${checked} onchange="toggleInventorySelection('${item.id}', this.checked)"> Select asset</label>
         <div class="gap-row" style="justify-content:space-between;align-items:flex-start">
           <div>
-            <div class="mobile-item-card-title">${item.name}</div>
-            <div class="text-muted text-small">${item.sku || '—'} · ${asset}</div>
+            <div class="mobile-item-card-title">${esc(item.name)}</div>
+            <div class="text-muted text-small">${esc(item.sku || '—')} · ${esc(asset)}</div>
           </div>
-          <span class="badge badge-neutral">${item.assetStatus || 'Available'}</span>
+          <span class="badge badge-neutral">${esc(item.assetStatus || 'Available')}</span>
+        </div>
+        <div class="chip-row" style="margin-top:8px">
+          ${getStockStatusBadge(item)}
+          <span class="badge badge-neutral">${esc(item.condition || 'Good')}</span>
         </div>
         <div class="mobile-item-card-meta">
-          <div><strong>Location</strong><br>${item.location || '—'}</div>
-          <div><strong>Condition</strong><br>${item.condition || 'Good'}</div>
-          <div><strong>Stock</strong><br>${item.qty} / Min ${item.minQty}</div>
-          <div><strong>Assigned</strong><br>${item.assignedTo || '—'}</div>
+          <div><strong>Location</strong><br>${esc(item.location || '—')}</div>
+          <div><strong>Stock</strong><br>${Number(item.qty || 0)} / Min ${Number(item.minQty || 0)}</div>
+          <div><strong>Assigned</strong><br>${esc(item.assignedTo || '—')}</div>
+          <div><strong>Warranty</strong><br>${item.warrantyExpiry ? fmtDate(item.warrantyExpiry) : '—'}</div>
         </div>
         <div class="mobile-card-actions">
           <button class="btn btn-secondary btn-sm" onclick="openAssetDetails('${item.id}')">View</button>
@@ -2227,6 +2688,9 @@ function renderInventory() {
       </div>`;
     }).join('');
   }
+
+  renderInventoryPagination(items.length, totalAll, pageItems.length);
+  updateInventoryBulkUi(pageItems);
 }
 
 // ============================================================
@@ -2653,6 +3117,7 @@ function saveItem() {
 async function deleteItem(id) {
   const item = getItems().find(i => i.id === id);
   if (!item) return;
+  if (typeof inventoryState !== 'undefined' && inventoryState.selectedIds) inventoryState.selectedIds.delete(id);
   if (!confirm(`Permanently delete "${item.name}"?
 
 This removes the asset from active inventory. Movement and scan history are kept for audit, but this item record will be deleted. This cannot be undone.`)) return;
@@ -3254,6 +3719,7 @@ function normaliseDateInput(value) {
   return isNaN(d.getTime()) ? value : d.toISOString().split('T')[0];
 }
 function esc(s) { return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function escAttr(s) { return esc(s).replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
 
 function buildCsvPreview(text) {
   const { rows } = parseCsv(text);
