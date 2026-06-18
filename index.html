@@ -338,6 +338,55 @@
   .mov-out { color: var(--red); background: var(--red-light); }
   .mov-adj { color: var(--blue); background: var(--blue-light); }
 
+
+  /* ============================================================
+     OPERATIONS, BULK TOOLBARS, PAGINATION & HELP
+  ============================================================ */
+  .toolbar-panel {
+    display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;
+    padding:12px 14px; border:1px solid var(--border); background:var(--surface); border-radius:var(--radius); margin-bottom:12px;
+    box-shadow:var(--shadow);
+  }
+  .bulk-toolbar { background:var(--accent-light); border-color:#B7E4C7; }
+  .bulk-toolbar.hidden { display:none !important; }
+  .bulk-controls { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+  .bulk-controls .form-input { min-width:130px; }
+  .sortable-th { cursor:pointer; user-select:none; position:relative; }
+  .sortable-th:hover { color:var(--accent); }
+  .sort-indicator { font-size:10px; margin-left:4px; color:var(--text-faint); }
+  .row-checkbox, .select-all-checkbox { width:15px; height:15px; accent-color:var(--accent); cursor:pointer; }
+  .pagination-bar { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; padding:12px 16px; border-top:1px solid var(--border); }
+  .pagination-pages { display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
+  .page-btn { min-width:30px; padding:5px 8px; border:1px solid var(--border-strong); border-radius:var(--radius-sm); background:var(--surface); color:var(--text-muted); font-size:12px; }
+  .page-btn.active { background:var(--accent); color:#fff; border-color:var(--accent); }
+  .page-btn:disabled { opacity:.45; cursor:not-allowed; }
+  .operation-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:14px; margin-bottom:16px; }
+  .operation-card { border:1px solid var(--border); border-radius:var(--radius); padding:16px; background:var(--surface); box-shadow:var(--shadow); }
+  .operation-card h3 { font-size:14px; margin-bottom:6px; }
+  .operation-card .big { font-size:26px; font-weight:700; margin-top:6px; }
+  .status-dot { width:8px; height:8px; border-radius:50%; display:inline-block; margin-right:6px; background:var(--text-faint); }
+  .status-dot.ok { background:var(--accent-mid); }
+  .status-dot.warn { background:#F59E0B; }
+  .status-dot.danger { background:var(--red); }
+  .timeline-list { display:flex; flex-direction:column; gap:10px; }
+  .timeline-item { padding:10px 12px; border:1px solid var(--border); border-radius:var(--radius-sm); background:var(--bg); }
+  .help-block { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:18px; margin-bottom:14px; box-shadow:var(--shadow); }
+  .help-block h3 { font-size:15px; margin-bottom:8px; }
+  .help-block ol, .help-block ul { margin-left:18px; color:var(--text-muted); font-size:13px; }
+  .help-block li { margin-bottom:5px; }
+  .stocktake-found { outline:2px solid #B7E4C7; background:var(--accent-light); }
+  .mobile-select-row { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:8px; }
+  .mini-kpi { display:flex; gap:8px; flex-wrap:wrap; }
+  .mini-kpi span { background:var(--bg); border:1px solid var(--border); border-radius:999px; padding:4px 8px; font-size:11px; color:var(--text-muted); }
+
+  @media (max-width: 768px) {
+    .toolbar-panel { align-items:stretch; }
+    .bulk-controls { display:grid; grid-template-columns:1fr; width:100%; }
+    .bulk-controls .form-input, .bulk-controls .btn { width:100%; justify-content:center; }
+    .pagination-bar { align-items:stretch; }
+    .pagination-pages { justify-content:center; }
+  }
+
   /* ============================================================
      RESPONSIVE
   ============================================================ */
@@ -452,116 +501,6 @@
   .single-label-preview .qr-slot canvas, .single-label-preview .qr-slot img { max-width:112px; max-height:112px; }
   .print-toolbar { display:flex; align-items:flex-end; justify-content:space-between; gap:10px; flex-wrap:wrap; }
 
-
-  /* ============================================================
-     INVENTORY TABLE USABILITY
-  ============================================================ */
-  .inventory-bulk-toolbar {
-    border-bottom: 1px solid var(--border);
-    padding: 12px 14px;
-    background: var(--surface);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
-  .inventory-bulk-toolbar .bulk-left,
-  .inventory-bulk-toolbar .bulk-actions,
-  .inventory-pagination,
-  .pagination-controls {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-  .selected-count-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 5px 10px;
-    border-radius: 999px;
-    background: var(--blue-light);
-    color: var(--blue);
-    border: 1px solid #BFDBFE;
-    font-size: 12px;
-    font-weight: 700;
-    white-space: nowrap;
-  }
-  .bulk-action-select,
-  .page-size-select {
-    min-height: 32px;
-    padding: 5px 9px;
-    border: 1px solid var(--border-strong);
-    border-radius: var(--radius-sm);
-    background: var(--surface);
-    color: var(--text);
-    font-size: 12px;
-  }
-  .sort-header {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    width: 100%;
-    background: transparent;
-    color: inherit;
-    font: inherit;
-    text-transform: inherit;
-    letter-spacing: inherit;
-    padding: 0;
-    text-align: left;
-  }
-  .sort-header:hover { color: var(--accent); }
-  .sort-indicator {
-    color: var(--text-faint);
-    font-size: 10px;
-    min-width: 10px;
-  }
-  .sort-header.active .sort-indicator { color: var(--accent); }
-  .select-col { width: 38px; text-align: center; }
-  .select-col input { width: 15px; height: 15px; cursor: pointer; }
-  tr.inventory-selected td { background: var(--blue-light); }
-  .inventory-pagination {
-    justify-content: space-between;
-    padding: 12px 16px;
-    border-top: 1px solid var(--border);
-    font-size: 12px;
-    color: var(--text-muted);
-  }
-  .pagination-btn {
-    min-width: 30px;
-    height: 30px;
-    padding: 0 8px;
-    border-radius: var(--radius-sm);
-    border: 1px solid var(--border-strong);
-    background: var(--surface);
-    color: var(--text-muted);
-    font-size: 12px;
-    font-weight: 600;
-  }
-  .pagination-btn:hover:not(:disabled) { background: var(--bg); color: var(--text); }
-  .pagination-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
-  .pagination-btn:disabled { opacity: 0.45; cursor: not-allowed; }
-  .pagination-ellipsis { color: var(--text-faint); padding: 0 2px; }
-  .mobile-item-card.inventory-selected { border-color: #BFDBFE; background: var(--blue-light); }
-  .mobile-card-select { display:flex; align-items:center; gap:8px; margin-bottom:8px; font-size:12px; font-weight:700; color:var(--text-muted); }
-
-  @media (max-width: 768px) {
-    .inventory-bulk-toolbar { align-items: stretch; }
-    .inventory-bulk-toolbar .bulk-left,
-    .inventory-bulk-toolbar .bulk-actions,
-    .inventory-pagination,
-    .pagination-controls { width: 100%; align-items: stretch; }
-    .inventory-bulk-toolbar .bulk-actions { display: grid; grid-template-columns: 1fr 1fr; }
-    .inventory-bulk-toolbar .bulk-actions .btn,
-    .inventory-bulk-toolbar .bulk-actions select,
-    .inventory-pagination .btn,
-    .pagination-btn,
-    .page-size-select { width: 100%; justify-content: center; }
-    .inventory-pagination { flex-direction: column; align-items: stretch; gap: 10px; }
-    .pagination-controls { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
-  }
-
   /* ============================================================
      MOBILE INVENTORY CARDS + UTILITY PANELS
   ============================================================ */
@@ -665,6 +604,35 @@
       Suppliers
     </div>
 
+
+    <div class="nav-section-label" style="margin-top:8px">Operations</div>
+    <div class="nav-item" data-page="maintenance" onclick="navigate(this)">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.1-3.1a6 6 0 01-7.9 7.9l-5.8 5.8a2 2 0 01-2.8-2.8l5.8-5.8a6 6 0 017.9-7.9l-3.3 3.0z"/></svg>
+      Maintenance
+      <span class="nav-badge" id="maintenanceBadge">0</span>
+    </div>
+    <div class="nav-item" data-page="loans" onclick="navigate(this)">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M16 3h5v5"/><path d="M4 20L21 3"/><path d="M21 16v5h-5"/><path d="M15 15l6 6"/><path d="M4 4l5 5"/></svg>
+      Loans
+      <span class="nav-badge" id="loanBadge">0</span>
+    </div>
+    <div class="nav-item" data-page="stocktake" onclick="navigate(this)">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+      Stocktake
+    </div>
+    <div class="nav-item" data-page="audit" onclick="navigate(this)">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="10"/></svg>
+      Audit History
+    </div>
+    <div class="nav-item" data-page="settings" onclick="navigate(this)">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 15.5A3.5 3.5 0 1012 8a3.5 3.5 0 000 7.5z"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09a1.65 1.65 0 00-1-1.51 1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 005 15.08a1.65 1.65 0 00-1.51-1H3.4a2 2 0 010-4h.09A1.65 1.65 0 005 8.57a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06a1.65 1.65 0 001.82.33A1.65 1.65 0 0010.91 3V2.9a2 2 0 014 0V3a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019 8.92c.14.48.51.85 1 1h.09a2 2 0 010 4H20a1.65 1.65 0 00-.6 1.08z"/></svg>
+      Settings
+    </div>
+    <div class="nav-item" data-page="help" onclick="navigate(this)">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 115.83 1c0 2-3 2-3 4"/><path d="M12 17h.01"/></svg>
+      Help Guide
+    </div>
+
     <div class="nav-section-label" style="margin-top:8px">Reports</div>
     <div class="nav-item" data-page="reports" onclick="navigate(this)">
       <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 17v-2m3 2v-4m3 4v-6M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z"/></svg>
@@ -747,6 +715,23 @@
         </div>
       </div>
 
+      <div class="dashboard-two-col">
+        <div class="card">
+          <div class="section-header">
+            <div><h2>Warranty alerts</h2><p>Expiring and expired asset warranties</p></div>
+            <button class="btn btn-secondary btn-sm" onclick="navigate(document.querySelector('[data-page=inventory]'))">Review assets</button>
+          </div>
+          <div id="dashWarrantyAlerts"></div>
+        </div>
+        <div class="card">
+          <div class="section-header">
+            <div><h2>Operational follow-ups</h2><p>Maintenance, loans, and stocktake checks</p></div>
+            <button class="btn btn-secondary btn-sm" onclick="navigate(document.querySelector('[data-page=maintenance]'))">View operations</button>
+          </div>
+          <div id="dashOperationalAlerts"></div>
+        </div>
+      </div>
+
       <!-- Stock by category -->
       <div class="card">
         <div class="section-header"><div><h2>Inventory by category</h2><p>Item count and value per category</p></div></div>
@@ -779,24 +764,24 @@
       <div class="search-bar">
         <div class="search-input-wrap">
           <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-          <input type="text" placeholder="Search by name, SKU or asset ID…" id="inventorySearch" oninput="resetInventoryPageAndRender()">
+          <input type="text" placeholder="Search by name, SKU or asset ID…" id="inventorySearch" oninput="resetInventoryPage()">
         </div>
-        <select class="form-input" id="filterCategory" onchange="resetInventoryPageAndRender()" style="width:auto">
+        <select class="form-input" id="filterCategory" onchange="resetInventoryPage()" style="width:auto">
           <option value="">All categories</option>
         </select>
-        <select class="form-input" id="filterSupplier" onchange="resetInventoryPageAndRender()" style="width:auto">
+        <select class="form-input" id="filterSupplier" onchange="resetInventoryPage()" style="width:auto">
           <option value="">All suppliers</option>
         </select>
-        <select class="form-input" id="filterLocation" onchange="resetInventoryPageAndRender()" style="width:auto">
+        <select class="form-input" id="filterLocation" onchange="resetInventoryPage()" style="width:auto">
           <option value="">All locations</option>
         </select>
-        <select class="form-input" id="filterStatus" onchange="resetInventoryPageAndRender()" style="width:auto">
+        <select class="form-input" id="filterStatus" onchange="resetInventoryPage()" style="width:auto">
           <option value="">All stock status</option>
           <option value="low">Low stock</option>
           <option value="out">Out of stock</option>
           <option value="ok">In stock</option>
         </select>
-        <select class="form-input" id="filterAssetStatus" onchange="resetInventoryPageAndRender()" style="width:auto">
+        <select class="form-input" id="filterAssetStatus" onchange="resetInventoryPage()" style="width:auto">
           <option value="active">Active assets</option>
           <option value="">All asset status</option>
           <option value="Available">Available</option>
@@ -806,7 +791,7 @@
           <option value="Retired">Retired</option>
           <option value="Disposed">Disposed</option>
         </select>
-        <select class="form-input" id="filterCondition" onchange="resetInventoryPageAndRender()" style="width:auto">
+        <select class="form-input" id="filterCondition" onchange="resetInventoryPage()" style="width:auto">
           <option value="">All conditions</option>
           <option value="New">New</option>
           <option value="Good">Good</option>
@@ -821,60 +806,52 @@
         <button class="btn btn-secondary" onclick="navigate(document.querySelector('[data-page=labels]'))">Print Labels</button>
       </div>
       <div class="card" style="padding:0">
-        <div class="inventory-bulk-toolbar no-print" id="inventoryBulkToolbar">
-          <div class="bulk-left">
-            <span class="selected-count-pill" id="inventorySelectedCount">0 selected</span>
-            <button class="btn btn-ghost btn-sm" onclick="clearInventorySelection()">Clear selection</button>
-            <button class="btn btn-secondary btn-sm" onclick="selectAllFilteredInventory()">Select all filtered</button>
+        <div id="inventoryBulkToolbar" class="toolbar-panel bulk-toolbar hidden">
+          <div>
+            <div class="fw-600"><span id="inventorySelectedCount">0</span> selected</div>
+            <div class="text-muted text-small">Bulk update selected assets. Selection can include rows across pages.</div>
           </div>
-          <div class="bulk-actions">
-            <select class="bulk-action-select" id="bulkAssetStatus" title="Bulk asset status">
-              <option value="">Asset status…</option>
-              <option value="Available">Available</option>
-              <option value="Assigned">Assigned</option>
-              <option value="In Repair">In Repair</option>
-              <option value="Missing">Missing</option>
-              <option value="Retired">Retired</option>
-              <option value="Disposed">Disposed</option>
+          <div class="bulk-controls">
+            <select class="form-input" id="bulkAssetStatus">
+              <option value="">Asset status…</option><option value="Available">Available</option><option value="Assigned">Assigned</option><option value="In Repair">In Repair</option><option value="Missing">Missing</option><option value="Retired">Retired</option><option value="Disposed">Disposed</option>
             </select>
-            <button class="btn btn-secondary btn-sm" data-requires-selection onclick="bulkChangeAssetStatus()">Apply status</button>
-            <select class="bulk-action-select" id="bulkCondition" title="Bulk condition">
-              <option value="">Condition…</option>
-              <option value="New">New</option>
-              <option value="Good">Good</option>
-              <option value="Fair">Fair</option>
-              <option value="Needs Repair">Needs Repair</option>
-              <option value="Damaged">Damaged</option>
+            <button class="btn btn-secondary btn-sm" onclick="bulkChangeAssetStatus()">Apply</button>
+            <select class="form-input" id="bulkCondition">
+              <option value="">Condition…</option><option value="New">New</option><option value="Good">Good</option><option value="Fair">Fair</option><option value="Needs Repair">Needs Repair</option><option value="Damaged">Damaged</option>
             </select>
-            <button class="btn btn-secondary btn-sm" data-requires-selection onclick="bulkChangeCondition()">Apply condition</button>
-            <button class="btn btn-secondary btn-sm" data-requires-selection onclick="bulkChangeLocation()">Change location</button>
-            <button class="btn btn-secondary btn-sm" data-requires-selection onclick="bulkAssignTo()">Assign to</button>
-            <button class="btn btn-secondary btn-sm" data-requires-selection onclick="exportSelectedInventoryCSV()">Export selected CSV</button>
-            <button class="btn btn-secondary btn-sm" data-requires-selection onclick="printSelectedInventoryLabels()">Print labels</button>
-            <button class="btn btn-danger btn-sm" data-requires-selection onclick="bulkDeleteSelected()">Delete selected</button>
+            <button class="btn btn-secondary btn-sm" onclick="bulkChangeCondition()">Apply</button>
+            <input class="form-input" id="bulkLocation" placeholder="New location">
+            <button class="btn btn-secondary btn-sm" onclick="bulkChangeLocation()">Move</button>
+            <input class="form-input" id="bulkAssignedTo" placeholder="Assign to">
+            <button class="btn btn-secondary btn-sm" onclick="bulkAssignTo()">Assign</button>
+            <button class="btn btn-secondary btn-sm" onclick="selectAllFilteredInventory()">Select all filtered</button>
+            <button class="btn btn-secondary btn-sm" onclick="bulkExportSelectedCSV()">Export selected</button>
+            <button class="btn btn-secondary btn-sm" onclick="bulkPrintSelectedLabels()">Print labels</button>
+            <button class="btn btn-danger btn-sm" onclick="bulkDeleteSelected()">Delete</button>
+            <button class="btn btn-ghost btn-sm" onclick="clearInventorySelection()">Clear</button>
           </div>
         </div>
         <div class="table-wrap" id="inventoryDesktopTable">
-          <table>
+          <table style="min-width:1400px">
             <thead>
               <tr>
-                <th class="select-col"><input type="checkbox" id="inventorySelectAll" onchange="toggleSelectVisibleInventory(this.checked)" title="Select visible rows"></th>
-                <th><button class="sort-header" data-sort-key="name" onclick="setInventorySort('name')">Item name <span class="sort-indicator" id="sortIndicator-name">↕</span></button></th>
-                <th><button class="sort-header" data-sort-key="sku" onclick="setInventorySort('sku')">SKU <span class="sort-indicator" id="sortIndicator-sku">↕</span></button></th>
-                <th><button class="sort-header" data-sort-key="assetId" onclick="setInventorySort('assetId')">Asset ID <span class="sort-indicator" id="sortIndicator-assetId">↕</span></button></th>
-                <th><button class="sort-header" data-sort-key="category" onclick="setInventorySort('category')">Category <span class="sort-indicator" id="sortIndicator-category">↕</span></button></th>
-                <th><button class="sort-header" data-sort-key="qty" onclick="setInventorySort('qty')">Quantity <span class="sort-indicator" id="sortIndicator-qty">↕</span></button></th>
-                <th><button class="sort-header" data-sort-key="minQty" onclick="setInventorySort('minQty')">Min level <span class="sort-indicator" id="sortIndicator-minQty">↕</span></button></th>
-                <th><button class="sort-header" data-sort-key="cost" onclick="setInventorySort('cost')">Unit cost <span class="sort-indicator" id="sortIndicator-cost">↕</span></button></th>
-                <th><button class="sort-header" data-sort-key="supplier" onclick="setInventorySort('supplier')">Supplier <span class="sort-indicator" id="sortIndicator-supplier">↕</span></button></th>
-                <th><button class="sort-header" data-sort-key="location" onclick="setInventorySort('location')">Location <span class="sort-indicator" id="sortIndicator-location">↕</span></button></th>
-                <th><button class="sort-header" data-sort-key="stockStatus" onclick="setInventorySort('stockStatus')">Stock status <span class="sort-indicator" id="sortIndicator-stockStatus">↕</span></button></th>
-                <th><button class="sort-header" data-sort-key="assetStatus" onclick="setInventorySort('assetStatus')">Asset status <span class="sort-indicator" id="sortIndicator-assetStatus">↕</span></button></th>
-                <th><button class="sort-header" data-sort-key="condition" onclick="setInventorySort('condition')">Condition <span class="sort-indicator" id="sortIndicator-condition">↕</span></button></th>
-                <th><button class="sort-header" data-sort-key="assignedTo" onclick="setInventorySort('assignedTo')">Assigned to <span class="sort-indicator" id="sortIndicator-assignedTo">↕</span></button></th>
-                <th><button class="sort-header" data-sort-key="purchaseDate" onclick="setInventorySort('purchaseDate')">Purchase date <span class="sort-indicator" id="sortIndicator-purchaseDate">↕</span></button></th>
-                <th><button class="sort-header" data-sort-key="warrantyExpiry" onclick="setInventorySort('warrantyExpiry')">Warranty expiry <span class="sort-indicator" id="sortIndicator-warrantyExpiry">↕</span></button></th>
-                <th>Actions</th>
+                <th style="width:36px"><input type="checkbox" class="select-all-checkbox" id="inventorySelectAll" onchange="toggleSelectAllVisible(this.checked)"></th>
+                <th class="sortable-th" onclick="setInventorySort('name')">Item name <span class="sort-indicator" data-sort-indicator="name"></span></th>
+                <th class="sortable-th" onclick="setInventorySort('sku')">SKU <span class="sort-indicator" data-sort-indicator="sku"></span></th>
+                <th class="sortable-th" onclick="setInventorySort('assetId')">Asset ID <span class="sort-indicator" data-sort-indicator="assetId"></span></th>
+                <th class="sortable-th" onclick="setInventorySort('category')">Category <span class="sort-indicator" data-sort-indicator="category"></span></th>
+                <th class="sortable-th" onclick="setInventorySort('qty')">Stock level <span class="sort-indicator" data-sort-indicator="qty"></span></th>
+                <th class="sortable-th" onclick="setInventorySort('minQty')">Min level <span class="sort-indicator" data-sort-indicator="minQty"></span></th>
+                <th class="sortable-th" onclick="setInventorySort('cost')">Unit cost <span class="sort-indicator" data-sort-indicator="cost"></span></th>
+                <th class="sortable-th" onclick="setInventorySort('supplier')">Supplier <span class="sort-indicator" data-sort-indicator="supplier"></span></th>
+                <th class="sortable-th" onclick="setInventorySort('location')">Location <span class="sort-indicator" data-sort-indicator="location"></span></th>
+                <th class="sortable-th" onclick="setInventorySort('stockStatus')">Stock status <span class="sort-indicator" data-sort-indicator="stockStatus"></span></th>
+                <th class="sortable-th" onclick="setInventorySort('assetStatus')">Asset status <span class="sort-indicator" data-sort-indicator="assetStatus"></span></th>
+                <th class="sortable-th" onclick="setInventorySort('condition')">Condition <span class="sort-indicator" data-sort-indicator="condition"></span></th>
+                <th class="sortable-th" onclick="setInventorySort('assignedTo')">Assigned to <span class="sort-indicator" data-sort-indicator="assignedTo"></span></th>
+                <th class="sortable-th" onclick="setInventorySort('purchaseDate')">Purchase date <span class="sort-indicator" data-sort-indicator="purchaseDate"></span></th>
+                <th class="sortable-th" onclick="setInventorySort('warrantyExpiry')">Warranty expiry <span class="sort-indicator" data-sort-indicator="warrantyExpiry"></span></th>
+                <th></th>
               </tr>
             </thead>
             <tbody id="inventoryTableBody"></tbody>
@@ -886,7 +863,15 @@
           <h3>No items found</h3>
           <p>Try adjusting your search or filters</p>
         </div>
-        <div id="inventoryCount"></div>
+        <div class="pagination-bar" id="inventoryPagination">
+          <div class="gap-row" style="flex-wrap:wrap">
+            <span id="inventoryCount" class="text-muted text-small"></span>
+            <select class="form-input" id="inventoryPageSize" onchange="changeInventoryPageSize(this.value)" style="width:auto">
+              <option value="10">10 / page</option><option value="25" selected>25 / page</option><option value="50">50 / page</option><option value="100">100 / page</option>
+            </select>
+          </div>
+          <div class="pagination-pages" id="inventoryPageControls"></div>
+        </div>
       </div>
     </div>
 
@@ -1027,6 +1012,83 @@
           <p>Add items with an Asset ID or SKU to generate QR labels.</p>
         </div>
       </div>
+    </div>
+
+
+    <!-- ========== MAINTENANCE ========== -->
+    <div id="page-maintenance" class="hidden">
+      <div class="section-header">
+        <div><h2>Maintenance & Repair Log</h2><p>Track asset issues, vendor repairs, costs, and resolution notes.</p></div>
+        <button class="btn btn-primary" onclick="openMaintenanceModal()">Add maintenance log</button>
+      </div>
+      <div class="operation-grid" id="maintenanceMetrics"></div>
+      <div class="card" style="padding:0">
+        <div class="table-wrap"><table><thead><tr><th>Asset</th><th>Issue</th><th>Status</th><th>Reported</th><th>Vendor</th><th>Cost</th><th>Resolved</th><th></th></tr></thead><tbody id="maintenanceTableBody"></tbody></table></div>
+        <div id="maintenanceEmpty" class="hidden empty-state"><h3>No maintenance logs yet</h3><p>Add one when an asset needs repair or inspection.</p></div>
+      </div>
+    </div>
+
+    <!-- ========== LOANS ========== -->
+    <div id="page-loans" class="hidden">
+      <div class="section-header">
+        <div><h2>Loan / Checkout Tracker</h2><p>Record temporary loans and returns for shared assets.</p></div>
+        <button class="btn btn-primary" onclick="openLoanModal()">Check out asset</button>
+      </div>
+      <div class="operation-grid" id="loanMetrics"></div>
+      <div class="card" style="padding:0">
+        <div class="table-wrap"><table><thead><tr><th>Asset</th><th>Borrower</th><th>Checked out</th><th>Due</th><th>Returned</th><th>Status</th><th>Notes</th><th></th></tr></thead><tbody id="loanTableBody"></tbody></table></div>
+        <div id="loanEmpty" class="hidden empty-state"><h3>No loans yet</h3><p>Use this for cameras, laptops, AV gear, adapters, and other shared items.</p></div>
+      </div>
+    </div>
+
+    <!-- ========== STOCKTAKE ========== -->
+    <div id="page-stocktake" class="hidden">
+      <div class="section-header">
+        <div><h2>Stocktake Mode</h2><p>Start a session, scan or tick found assets, then export discrepancies.</p></div>
+        <div class="gap-row" style="flex-wrap:wrap"><button class="btn btn-secondary" onclick="exportStocktakeDiscrepancyCSV()">Export discrepancy CSV</button><button class="btn btn-primary" onclick="startStocktakeSession()">Start stocktake</button></div>
+      </div>
+      <div class="operation-grid" id="stocktakeMetrics"></div>
+      <div class="toolbar-panel">
+        <div class="search-input-wrap" style="min-width:260px"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg><input type="text" id="stocktakeSearch" placeholder="Scan/type Asset ID, SKU, or name…" oninput="renderStocktake()"></div>
+        <div class="gap-row" style="flex-wrap:wrap"><button class="btn btn-secondary" onclick="markStocktakeCode()">Mark found</button><button class="btn btn-secondary" onclick="clearStocktakeSession()">Clear session</button><button class="btn btn-danger" onclick="closeStocktakeSession()">Close session</button></div>
+      </div>
+      <div class="card" style="padding:0">
+        <div class="table-wrap"><table><thead><tr><th>Found</th><th>Asset</th><th>SKU</th><th>Location</th><th>Expected status</th><th>Verified</th></tr></thead><tbody id="stocktakeTableBody"></tbody></table></div>
+        <div id="stocktakeEmpty" class="hidden empty-state"><h3>No stocktake session active</h3><p>Start a session to verify physical assets.</p></div>
+      </div>
+    </div>
+
+    <!-- ========== AUDIT ========== -->
+    <div id="page-audit" class="hidden">
+      <div class="section-header"><div><h2>Audit History</h2><p>Automatic log of key edits, bulk actions, loans, maintenance, and stocktake actions.</p></div><button class="btn btn-secondary" onclick="exportAuditCSV()">Export audit CSV</button></div>
+      <div class="card"><div id="auditTimeline" class="timeline-list"></div><div id="auditEmpty" class="hidden empty-state"><h3>No audit activity yet</h3><p>Changes will appear here automatically.</p></div></div>
+    </div>
+
+    <!-- ========== SETTINGS ========== -->
+    <div id="page-settings" class="hidden">
+      <div class="section-header"><div><h2>Settings</h2><p>Make the template easier to reuse without editing code.</p></div><button class="btn btn-primary" onclick="saveSettingsFromPage()">Save settings</button></div>
+      <div class="card">
+        <div class="form-row cols-3">
+          <div class="form-group"><label class="form-label">Organisation name</label><input class="form-input" id="settingOrgName" placeholder="e.g. My School / Company"></div>
+          <div class="form-group"><label class="form-label">Currency</label><input class="form-input" id="settingCurrency" placeholder="SGD"></div>
+          <div class="form-group"><label class="form-label">Warranty alert window, days</label><input class="form-input" id="settingWarrantyDays" type="number" min="1" value="90"></div>
+        </div>
+        <div class="form-row cols-3">
+          <div class="form-group"><label class="form-label">Default condition</label><select class="form-input" id="settingDefaultCondition"><option>New</option><option selected>Good</option><option>Fair</option><option>Needs Repair</option><option>Damaged</option></select></div>
+          <div class="form-group"><label class="form-label">Default asset status</label><select class="form-input" id="settingDefaultStatus"><option selected>Available</option><option>Assigned</option><option>In Repair</option><option>Missing</option><option>Retired</option><option>Disposed</option></select></div>
+          <div class="form-group"><label class="form-label">Label size</label><select class="form-input" id="settingLabelSize"><option value="small">Small</option><option value="medium" selected>Medium</option><option value="large">Large</option></select></div>
+        </div>
+        <div class="setup-note" style="margin-top:8px">Settings are stored locally and synced to Supabase if you have run the operations migration script.</div>
+      </div>
+    </div>
+
+    <!-- ========== HELP ========== -->
+    <div id="page-help" class="hidden">
+      <div class="section-header"><div><h2>Getting Started Guide</h2><p>Simple operating instructions for first-time users.</p></div></div>
+      <div class="help-block"><h3>1. First-time setup</h3><ol><li>Add suppliers if you want supplier tracking.</li><li>Add or import inventory items.</li><li>Print QR labels and stick them on physical assets.</li><li>Use Backup before big imports or bulk edits.</li></ol></div>
+      <div class="help-block"><h3>2. Daily use</h3><ul><li>Use <strong>Scan Asset</strong> to find an item quickly.</li><li>Use <strong>Stock Movements</strong> for stock in, stock out, and adjustments.</li><li>Use <strong>Loans</strong> when an item is temporarily borrowed.</li><li>Use <strong>Maintenance</strong> when an item needs repair or inspection.</li></ul></div>
+      <div class="help-block"><h3>3. Monthly checks</h3><ul><li>Run <strong>Stocktake Mode</strong> and mark found assets.</li><li>Export discrepancy CSV to follow up on missing/unverified assets.</li><li>Review warranty alerts and overdue loans from the Dashboard.</li></ul></div>
+      <div class="help-block"><h3>4. Cloud sync</h3><p class="text-muted text-small">Create a Supabase project, run the SQL setup plus operations migration, then paste your project URL and anon/public key in Setup Sync. Do not use the service_role key in this browser app.</p></div>
     </div>
 
     <!-- ========== REPORTS ========== -->
@@ -1482,6 +1544,41 @@
   </div>
 </div>
 
+
+<!-- ============================================================
+     MODAL: Maintenance Log
+============================================================ -->
+<div class="modal-overlay" id="maintenanceModal">
+  <div class="modal" style="max-width:720px">
+    <div class="modal-header"><h2 id="maintenanceModalTitle">Add maintenance log</h2><button class="close-btn" onclick="closeModal('maintenanceModal')"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M6 18L18 6M6 6l12 12"/></svg></button></div>
+    <div class="modal-body">
+      <input type="hidden" id="maintenanceId">
+      <div class="form-row cols-2"><div class="form-group"><label class="form-label">Asset *</label><select class="form-input" id="maintenanceItem"></select></div><div class="form-group"><label class="form-label">Status</label><select class="form-input" id="maintenanceStatus"><option>Open</option><option>In Progress</option><option>Resolved</option><option>Cancelled</option></select></div></div>
+      <div class="form-row"><div class="form-group"><label class="form-label">Issue reported *</label><input class="form-input" id="maintenanceIssue" placeholder="e.g. Screen flickering, battery swollen, lens damaged"></div></div>
+      <div class="form-row cols-3"><div class="form-group"><label class="form-label">Reported by</label><input class="form-input" id="maintenanceReportedBy" placeholder="Name/team"></div><div class="form-group"><label class="form-label">Date reported</label><input class="form-input" type="date" id="maintenanceReportedDate"></div><div class="form-group"><label class="form-label">Date resolved</label><input class="form-input" type="date" id="maintenanceResolvedDate"></div></div>
+      <div class="form-row cols-2"><div class="form-group"><label class="form-label">Vendor / repairer</label><input class="form-input" id="maintenanceVendor" placeholder="Vendor or in-house"></div><div class="form-group"><label class="form-label">Cost</label><input class="form-input" id="maintenanceCost" type="number" min="0" step="0.01" placeholder="0.00"></div></div>
+      <div class="form-row"><div class="form-group"><label class="form-label">Resolution / notes</label><textarea class="form-input" id="maintenanceNotes" placeholder="Repair notes, parts replaced, next action…"></textarea></div></div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal('maintenanceModal')">Cancel</button><button class="btn btn-primary" onclick="saveMaintenanceLog()">Save log</button></div>
+  </div>
+</div>
+
+<!-- ============================================================
+     MODAL: Loan / Checkout
+============================================================ -->
+<div class="modal-overlay" id="loanModal">
+  <div class="modal" style="max-width:680px">
+    <div class="modal-header"><h2 id="loanModalTitle">Check out asset</h2><button class="close-btn" onclick="closeModal('loanModal')"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M6 18L18 6M6 6l12 12"/></svg></button></div>
+    <div class="modal-body">
+      <input type="hidden" id="loanId">
+      <div class="form-row cols-2"><div class="form-group"><label class="form-label">Asset *</label><select class="form-input" id="loanItem"></select></div><div class="form-group"><label class="form-label">Borrower *</label><input class="form-input" id="loanBorrower" placeholder="Name/team"></div></div>
+      <div class="form-row cols-3"><div class="form-group"><label class="form-label">Checkout date</label><input class="form-input" type="date" id="loanCheckoutDate"></div><div class="form-group"><label class="form-label">Expected return date</label><input class="form-input" type="date" id="loanDueDate"></div><div class="form-group"><label class="form-label">Return date</label><input class="form-input" type="date" id="loanReturnDate"></div></div>
+      <div class="form-row"><div class="form-group"><label class="form-label">Notes</label><textarea class="form-input" id="loanNotes" placeholder="Purpose, condition on checkout, accessories included…"></textarea></div></div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal('loanModal')">Cancel</button><button class="btn btn-primary" onclick="saveLoan()">Save loan</button></div>
+  </div>
+</div>
+
 <script src="https://unpkg.com/html5-qrcode" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" crossorigin="anonymous"></script>
@@ -1531,7 +1628,12 @@ const appState = {
   items: [],
   movements: [],
   suppliers: [],
-  scanHistory: []
+  scanHistory: [],
+  maintenance: [],
+  loans: [],
+  stocktakes: [],
+  auditLogs: [],
+  settings: []
 };
 
 const cloudState = {
@@ -1557,6 +1659,11 @@ function hydrateStateFromLocal() {
   appState.movements = getLocalData('movements');
   appState.suppliers = getLocalData('suppliers');
   appState.scanHistory = getLocalData('scanHistory');
+  appState.maintenance = getLocalData('maintenance');
+  appState.loans = getLocalData('loans');
+  appState.stocktakes = getLocalData('stocktakes');
+  appState.auditLogs = getLocalData('auditLogs');
+  appState.settings = getLocalData('settings');
 }
 
 function replaceStateFromCloud(payload) {
@@ -1565,10 +1672,20 @@ function replaceStateFromCloud(payload) {
   appState.movements = payload.movements || [];
   appState.suppliers = payload.suppliers || [];
   appState.scanHistory = payload.scanHistory || [];
+  appState.maintenance = payload.maintenance || [];
+  appState.loans = payload.loans || [];
+  appState.stocktakes = payload.stocktakes || [];
+  appState.auditLogs = payload.auditLogs || [];
+  appState.settings = payload.settings || [];
   saveLocalData('items', appState.items);
   saveLocalData('movements', appState.movements);
   saveLocalData('suppliers', appState.suppliers);
   saveLocalData('scanHistory', appState.scanHistory);
+  saveLocalData('maintenance', appState.maintenance);
+  saveLocalData('loans', appState.loans);
+  saveLocalData('stocktakes', appState.stocktakes);
+  saveLocalData('auditLogs', appState.auditLogs);
+  saveLocalData('settings', appState.settings);
   cloudState.syncMuted = false;
 }
 
@@ -1588,11 +1705,37 @@ function getItems()       { return getData('items'); }
 function getMovements()   { return getData('movements'); }
 function getSuppliers()   { return getData('suppliers'); }
 function getScanHistory() { return getData('scanHistory'); }
+function getMaintenance() { return getData('maintenance'); }
+function getLoans()       { return getData('loans'); }
+function getStocktakes()  { return getData('stocktakes'); }
+function getAuditLogs()   { return getData('auditLogs'); }
+function getSettingsRows(){ return getData('settings'); }
 
 function setItems(d)       { setData('items', d); }
 function setMovements(d)   { setData('movements', d); }
 function setSuppliers(d)   { setData('suppliers', d); }
 function setScanHistory(d) { setData('scanHistory', d); }
+function setMaintenance(d) { setData('maintenance', d); }
+function setLoans(d)       { setData('loans', d); }
+function setStocktakes(d)  { setData('stocktakes', d); }
+function setAuditLogs(d)   { setData('auditLogs', d); }
+function setSettingsRows(d){ setData('settings', d); }
+
+const DEFAULT_APP_SETTINGS = {
+  organisationName: 'StockWise',
+  currency: 'SGD',
+  warrantyAlertDays: 90,
+  defaultCondition: 'Good',
+  defaultAssetStatus: 'Available',
+  labelSize: 'medium'
+};
+function getSettings() {
+  const row = getSettingsRows().find(r => r.id === 'default') || getSettingsRows()[0];
+  return { ...DEFAULT_APP_SETTINGS, ...(row && row.data ? row.data : row || {}) };
+}
+function setSettings(data) {
+  setSettingsRows([{ id:'default', data: { ...DEFAULT_APP_SETTINGS, ...data }, updatedAt:new Date().toISOString() }]);
+}
 
 function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
 
@@ -1788,6 +1931,124 @@ function scanToDb(scan) {
   };
 }
 
+
+function dbToMaintenance(row) {
+  return {
+    id: row.id,
+    itemId: row.item_id || '',
+    itemName: row.item_name || '',
+    assetCode: row.asset_code || '',
+    issue: row.issue || '',
+    reportedBy: row.reported_by || '',
+    reportedDate: normaliseMaybeDate(row.reported_date || row.created_at) || today(),
+    status: row.status || 'Open',
+    vendor: row.vendor || '',
+    cost: Number(row.cost || 0),
+    resolvedDate: normaliseMaybeDate(row.resolved_date) || '',
+    notes: row.notes || '',
+    updatedAt: row.updated_at || row.created_at || new Date().toISOString()
+  };
+}
+function maintenanceToDb(m) {
+  return {
+    id: m.id || uid(),
+    item_id: m.itemId || null,
+    item_name: m.itemName || '',
+    asset_code: m.assetCode || '',
+    issue: m.issue || '',
+    reported_by: m.reportedBy || '',
+    reported_date: m.reportedDate || today(),
+    status: m.status || 'Open',
+    vendor: m.vendor || '',
+    cost: Number(m.cost || 0),
+    resolved_date: m.resolvedDate || null,
+    notes: m.notes || '',
+    updated_at: new Date().toISOString()
+  };
+}
+function dbToLoan(row) {
+  return {
+    id: row.id,
+    itemId: row.item_id || '',
+    itemName: row.item_name || '',
+    assetCode: row.asset_code || '',
+    borrower: row.borrower || '',
+    checkoutDate: normaliseMaybeDate(row.checkout_date || row.created_at) || today(),
+    dueDate: normaliseMaybeDate(row.due_date) || '',
+    returnDate: normaliseMaybeDate(row.return_date) || '',
+    status: row.status || (row.return_date ? 'Returned' : 'Checked Out'),
+    notes: row.notes || '',
+    updatedAt: row.updated_at || row.created_at || new Date().toISOString()
+  };
+}
+function loanToDb(l) {
+  return {
+    id: l.id || uid(),
+    item_id: l.itemId || null,
+    item_name: l.itemName || '',
+    asset_code: l.assetCode || '',
+    borrower: l.borrower || '',
+    checkout_date: l.checkoutDate || today(),
+    due_date: l.dueDate || null,
+    return_date: l.returnDate || null,
+    status: l.status || (l.returnDate ? 'Returned' : 'Checked Out'),
+    notes: l.notes || '',
+    updated_at: new Date().toISOString()
+  };
+}
+function dbToStocktake(row) {
+  return {
+    id: row.id,
+    title: row.title || 'Stocktake',
+    status: row.status || 'Open',
+    startedAt: row.started_at || row.created_at || new Date().toISOString(),
+    closedAt: row.closed_at || '',
+    verifiedItemIds: Array.isArray(row.verified_item_ids) ? row.verified_item_ids : [],
+    missingItemIds: Array.isArray(row.missing_item_ids) ? row.missing_item_ids : [],
+    notes: row.notes || '',
+    updatedAt: row.updated_at || row.created_at || new Date().toISOString()
+  };
+}
+function stocktakeToDb(st) {
+  return {
+    id: st.id || uid(),
+    title: st.title || 'Stocktake',
+    status: st.status || 'Open',
+    started_at: st.startedAt || new Date().toISOString(),
+    closed_at: st.closedAt || null,
+    verified_item_ids: st.verifiedItemIds || [],
+    missing_item_ids: st.missingItemIds || [],
+    notes: st.notes || '',
+    updated_at: new Date().toISOString()
+  };
+}
+function dbToAudit(row) {
+  return {
+    id: row.id,
+    action: row.action || '',
+    itemId: row.item_id || '',
+    itemName: row.item_name || '',
+    details: row.details || {},
+    createdAt: row.created_at || new Date().toISOString()
+  };
+}
+function auditToDb(a) {
+  return {
+    id: a.id || uid(),
+    action: a.action || '',
+    item_id: a.itemId || null,
+    item_name: a.itemName || '',
+    details: a.details || {},
+    created_at: a.createdAt || new Date().toISOString()
+  };
+}
+function dbToSetting(row) {
+  return { id: row.id || 'default', data: row.data || {}, updatedAt: row.updated_at || new Date().toISOString() };
+}
+function settingToDb(row) {
+  return { id: row.id || 'default', data: row.data || {}, updated_at: new Date().toISOString() };
+}
+
 function getDeviceLabel() {
   const ua = navigator.userAgent || '';
   if (/iPhone|Android.*Mobile/i.test(ua)) return 'Mobile phone';
@@ -1831,6 +2092,21 @@ async function initSupabase() {
   }
 }
 
+async function safeCloudSelect(table, mapper, options = {}) {
+  const c = cloudState.client;
+  try {
+    let query = c.from(table).select('*');
+    if (options.order) query = query.order(options.order, { ascending: options.ascending !== false });
+    if (options.limit) query = query.limit(options.limit);
+    const res = await query;
+    if (res.error) throw res.error;
+    return (res.data || []).map(mapper);
+  } catch (err) {
+    console.warn(`Optional cloud table unavailable or failed: ${table}`, err);
+    return [];
+  }
+}
+
 async function fetchCloudData() {
   const c = cloudState.client;
   const [itemsRes, movsRes, supsRes, scansRes] = await Promise.all([
@@ -1843,11 +2119,20 @@ async function fetchCloudData() {
   const error = itemsRes.error || movsRes.error || supsRes.error || scansRes.error;
   if (error) throw error;
 
+  const [maintenance, loans, stocktakes, auditLogs, settings] = await Promise.all([
+    safeCloudSelect('maintenance_logs', dbToMaintenance, { order:'reported_date', ascending:false }),
+    safeCloudSelect('asset_loans', dbToLoan, { order:'checkout_date', ascending:false }),
+    safeCloudSelect('stocktake_sessions', dbToStocktake, { order:'started_at', ascending:false }),
+    safeCloudSelect('audit_logs', dbToAudit, { order:'created_at', ascending:false, limit:500 }),
+    safeCloudSelect('settings', dbToSetting, { order:'updated_at', ascending:false })
+  ]);
+
   return {
     items: (itemsRes.data || []).map(dbToItem),
     movements: (movsRes.data || []).map(dbToMovement),
     suppliers: (supsRes.data || []).map(dbToSupplier),
-    scanHistory: (scansRes.data || []).map(dbToScan)
+    scanHistory: (scansRes.data || []).map(dbToScan),
+    maintenance, loans, stocktakes, auditLogs, settings
   };
 }
 
@@ -1874,6 +2159,7 @@ async function refreshFromCloud(options = {}) {
     ensureDataSchema();
     renderPage(currentPage);
     document.getElementById('lowStockBadge').textContent = getItems().filter(i => i.qty < i.minQty).length;
+  updateOperationBadges();
     cloudState.lastSyncAt = new Date();
     updateSyncStatus('cloud', 'Cloud sync active');
     if (!silent) showToast('Cloud data refreshed');
@@ -1890,13 +2176,18 @@ async function pushAllLocalDataToCloud(options = {}) {
   await persistCloudCollection('items', getItems(), []);
   await persistCloudCollection('movements', getMovements(), []);
   await persistCloudCollection('scanHistory', getScanHistory(), []);
+  await persistCloudCollection('maintenance', getMaintenance(), []);
+  await persistCloudCollection('loans', getLoans(), []);
+  await persistCloudCollection('stocktakes', getStocktakes(), []);
+  await persistCloudCollection('auditLogs', getAuditLogs(), []);
+  await persistCloudCollection('settings', getSettingsRows(), []);
   if (!options.silent) showToast('Local data pushed to cloud');
 }
 
 async function persistCloudCollection(key, data, previous = []) {
   if (!cloudState.enabled || !cloudState.client) return;
-  const table = { items: 'items', movements: 'movements', suppliers: 'suppliers', scanHistory: 'scan_history' }[key];
-  const mapper = { items: itemToDb, movements: movementToDb, suppliers: supplierToDb, scanHistory: scanToDb }[key];
+  const table = { items: 'items', movements: 'movements', suppliers: 'suppliers', scanHistory: 'scan_history', maintenance: 'maintenance_logs', loans: 'asset_loans', stocktakes: 'stocktake_sessions', auditLogs: 'audit_logs', settings: 'settings' }[key];
+  const mapper = { items: itemToDb, movements: movementToDb, suppliers: supplierToDb, scanHistory: scanToDb, maintenance: maintenanceToDb, loans: loanToDb, stocktakes: stocktakeToDb, auditLogs: auditToDb, settings: settingToDb }[key];
   if (!table || !mapper) return;
 
   try {
@@ -1918,6 +2209,11 @@ async function persistCloudCollection(key, data, previous = []) {
     updateSyncStatus('cloud', 'Cloud sync active');
   } catch (err) {
     console.error(err);
+    const optionalKeys = ['maintenance','loans','stocktakes','auditLogs','settings'];
+    if (optionalKeys.includes(key)) {
+      console.warn(`Optional table for ${key} is not available. Run the operations migration SQL to sync this section.`);
+      return;
+    }
     updateSyncStatus('local', 'Local mode only');
     showToast('Could not sync latest change to cloud');
   }
@@ -1928,7 +2224,7 @@ function setupRealtimeSubscriptions() {
   cloudState.realtimeChannels.forEach(ch => cloudState.client.removeChannel(ch));
   cloudState.realtimeChannels = [];
 
-  const tables = ['items', 'movements', 'suppliers', 'scan_history'];
+  const tables = ['items', 'movements', 'suppliers', 'scan_history', 'maintenance_logs', 'asset_loans', 'stocktake_sessions', 'audit_logs', 'settings'];
   tables.forEach(table => {
     const channel = cloudState.client
       .channel(`stockwise_${table}_changes`)
@@ -1964,6 +2260,7 @@ function ensureDataSchema() {
     if (typeof item.assetStatus === 'undefined') { item.assetStatus = 'Available'; changed = true; }
   });
   if (changed) setItems(items);
+  if (!getSettingsRows().length) setSettings(DEFAULT_APP_SETTINGS);
 }
 
 function normaliseCode(code) {
@@ -2108,7 +2405,7 @@ function navigate(el) {
   el.classList.add('active');
   document.querySelectorAll('[id^="page-"]').forEach(p => p.classList.add('hidden'));
   document.getElementById('page-' + page).classList.remove('hidden');
-  const titles = { dashboard:'Dashboard', inventory:'All Items', labels:'Print Labels', movements:'Stock Movements', lowstock:'Low Stock', suppliers:'Suppliers', reports:'Reports' };
+  const titles = { dashboard:'Dashboard', inventory:'All Items', labels:'Print Labels', movements:'Stock Movements', lowstock:'Low Stock', suppliers:'Suppliers', maintenance:'Maintenance', loans:'Loans', stocktake:'Stocktake', audit:'Audit History', settings:'Settings', help:'Help Guide', reports:'Reports' };
   document.getElementById('topbarTitle').textContent = titles[page] || page;
   currentPage = page;
   renderPage(page);
@@ -2122,6 +2419,12 @@ function renderPage(page) {
   if (page === 'movements')   renderMovements();
   if (page === 'lowstock')    renderLowStock();
   if (page === 'suppliers')   renderSuppliers();
+  if (page === 'maintenance') renderMaintenance();
+  if (page === 'loans')       renderLoans();
+  if (page === 'stocktake')   renderStocktake();
+  if (page === 'audit')       renderAudit();
+  if (page === 'settings')    renderSettingsPage();
+  if (page === 'help')        renderHelpPage();
   if (page === 'reports')     renderReports();
 }
 
@@ -2209,6 +2512,8 @@ function renderDashboard() {
     </table>`;
   }
 
+  renderDashboardOperations();
+
   // Category breakdown
   const cats = {};
   items.forEach(i => {
@@ -2240,20 +2545,6 @@ function renderDashboard() {
 // INVENTORY
 // ============================================================
 
-const inventoryState = {
-  sortKey: 'name',
-  sortDir: 'asc',
-  page: 1,
-  pageSize: 25,
-  selectedIds: new Set()
-};
-
-const INVENTORY_SORT_LABELS = {
-  name: 'Item name', sku: 'SKU', assetId: 'Asset ID', category: 'Category', qty: 'Quantity', minQty: 'Min level',
-  cost: 'Unit cost', supplier: 'Supplier', location: 'Location', stockStatus: 'Stock status', assetStatus: 'Asset status',
-  condition: 'Condition', assignedTo: 'Assigned to', purchaseDate: 'Purchase date', warrantyExpiry: 'Warranty expiry'
-};
-
 function populateFilters() {
   const items = getItems();
   const cats = [...new Set(items.map(i => i.category).filter(Boolean))].sort();
@@ -2262,52 +2553,46 @@ function populateFilters() {
 
   const fc = document.getElementById('filterCategory');
   const cur = fc.value;
-  fc.innerHTML = '<option value="">All categories</option>' + cats.map(c => `<option value="${escAttr(c)}">${esc(c)}</option>`).join('');
+  fc.innerHTML = '<option value="">All categories</option>' + cats.map(c => `<option value="${c}">${c}</option>`).join('');
   fc.value = cur;
 
   const fs = document.getElementById('filterSupplier');
   const curs = fs.value;
-  fs.innerHTML = '<option value="">All suppliers</option>' + sups.map(s => `<option value="${escAttr(s)}">${esc(s)}</option>`).join('');
+  fs.innerHTML = '<option value="">All suppliers</option>' + sups.map(s => `<option value="${s}">${s}</option>`).join('');
   fs.value = curs;
 
   const fl = document.getElementById('filterLocation');
   const curl = fl.value;
-  fl.innerHTML = '<option value="">All locations</option>' + locs.map(l => `<option value="${escAttr(l)}">${esc(l)}</option>`).join('');
+  fl.innerHTML = '<option value="">All locations</option>' + locs.map(l => `<option value="${l}">${l}</option>`).join('');
   fl.value = curl;
 
   // Datalists in modal
-  document.getElementById('categoryList').innerHTML = cats.map(c => `<option value="${escAttr(c)}">`).join('');
-  const allSups = getSuppliers().map(s => s.name).concat(sups).filter(Boolean);
-  document.getElementById('supplierList').innerHTML = [...new Set(allSups)].map(s => `<option value="${escAttr(s)}">`).join('');
-  document.getElementById('locationList').innerHTML = locs.map(l => `<option value="${escAttr(l)}">`).join('');
+  document.getElementById('categoryList').innerHTML = cats.map(c => `<option value="${c}">`).join('');
+  const allSups = getSuppliers().map(s => s.name).concat(sups);
+  document.getElementById('supplierList').innerHTML = [...new Set(allSups)].map(s => `<option value="${s}">`).join('');
+  document.getElementById('locationList').innerHTML = locs.map(l => `<option value="${l}">`).join('');
 }
 
-function resetInventoryPageAndRender() {
+const inventoryState = {
+  sortKey: 'name',
+  sortDir: 'asc',
+  page: 1,
+  pageSize: 25,
+  selectedIds: new Set()
+};
+
+function resetInventoryPage() {
   inventoryState.page = 1;
   renderInventory();
 }
 
-function getStockStatusKey(item) {
-  if (Number(item.qty || 0) === 0) return 'out';
-  if (Number(item.qty || 0) < Number(item.minQty || 0)) return 'low';
-  return 'ok';
-}
-
-function getStockStatusLabel(item) {
-  const key = getStockStatusKey(item);
-  if (key === 'out') return 'Out of stock';
-  if (key === 'low') return 'Low stock';
+function getStockStatus(item) {
+  if (Number(item.qty || 0) === 0) return 'Out of stock';
+  if (Number(item.qty || 0) < Number(item.minQty || 0)) return 'Low stock';
   return 'In stock';
 }
 
-function getStockStatusBadge(item) {
-  const key = getStockStatusKey(item);
-  if (key === 'out') return '<span class="badge badge-danger">Out of stock</span>';
-  if (key === 'low') return '<span class="badge badge-warning">Low stock</span>';
-  return '<span class="badge badge-success">In stock</span>';
-}
-
-function getInventoryFilteredItems() {
+function getFilteredInventoryItems() {
   const q = (document.getElementById('inventorySearch')?.value || '').toLowerCase();
   const cat = document.getElementById('filterCategory')?.value || '';
   const sup = document.getElementById('filterSupplier')?.value || '';
@@ -2319,14 +2604,14 @@ function getInventoryFilteredItems() {
 
   return getItems().filter(i => {
     const asset = (i.assetId || i.labelCode || '').toLowerCase();
-    const searchHaystack = [i.name, i.sku, asset, i.serialNumber, i.assignedTo, i.location].join(' ').toLowerCase();
-    if (q && !searchHaystack.includes(q)) return false;
+    const haystack = [i.name, i.sku, asset, i.serialNumber, i.assignedTo, i.location, i.supplier].join(' ').toLowerCase();
+    if (q && !haystack.includes(q)) return false;
     if (cat && i.category !== cat) return false;
     if (sup && i.supplier !== sup) return false;
     if (loc && i.location !== loc) return false;
-    if (status === 'out' && getStockStatusKey(i) !== 'out') return false;
-    if (status === 'low' && getStockStatusKey(i) !== 'low') return false;
-    if (status === 'ok' && getStockStatusKey(i) !== 'ok') return false;
+    if (status === 'out' && Number(i.qty || 0) !== 0) return false;
+    if (status === 'low' && !(Number(i.qty || 0) > 0 && Number(i.qty || 0) < Number(i.minQty || 0))) return false;
+    if (status === 'ok' && Number(i.qty || 0) < Number(i.minQty || 0)) return false;
     if (assetStatus === 'active' && inactiveStatuses.includes(i.assetStatus || 'Available')) return false;
     if (assetStatus && assetStatus !== 'active' && (i.assetStatus || 'Available') !== assetStatus) return false;
     if (condition && (i.condition || 'Good') !== condition) return false;
@@ -2334,114 +2619,67 @@ function getInventoryFilteredItems() {
   });
 }
 
-function dateSortValue(value) {
-  if (!value) return Number.POSITIVE_INFINITY;
-  const d = new Date(String(value).includes('T') ? value : value + 'T00:00:00');
-  return isNaN(d.getTime()) ? Number.POSITIVE_INFINITY : d.getTime();
+function inventorySortValue(item, key) {
+  const map = {
+    name: item.name, sku: item.sku, assetId: item.assetId || item.labelCode, category: item.category,
+    qty: Number(item.qty || 0), minQty: Number(item.minQty || 0), cost: Number(item.cost || 0),
+    supplier: item.supplier, location: item.location, stockStatus: getStockStatus(item),
+    assetStatus: item.assetStatus || 'Available', condition: item.condition || 'Good', assignedTo: item.assignedTo,
+    purchaseDate: item.purchaseDate || '', warrantyExpiry: item.warrantyExpiry || ''
+  };
+  return map[key] == null ? '' : map[key];
 }
 
-function getInventorySortValue(item, key) {
-  if (key === 'assetId') return (item.assetId || item.labelCode || '').toLowerCase();
-  if (key === 'qty') return Number(item.qty || 0);
-  if (key === 'minQty') return Number(item.minQty || 0);
-  if (key === 'cost') return Number(item.cost || 0);
-  if (key === 'stockStatus') return { out: 0, low: 1, ok: 2 }[getStockStatusKey(item)] || 3;
-  if (key === 'assetStatus') return (item.assetStatus || 'Available').toLowerCase();
-  if (key === 'condition') return (item.condition || 'Good').toLowerCase();
-  if (key === 'assignedTo') return (item.assignedTo || '').toLowerCase();
-  if (key === 'purchaseDate') return dateSortValue(item.purchaseDate);
-  if (key === 'warrantyExpiry') return dateSortValue(item.warrantyExpiry);
-  return String(item[key] || '').toLowerCase();
-}
-
-function sortInventoryItems(items) {
+function getSortedInventoryItems(items) {
   const key = inventoryState.sortKey;
   const dir = inventoryState.sortDir === 'desc' ? -1 : 1;
   return [...items].sort((a, b) => {
-    const av = getInventorySortValue(a, key);
-    const bv = getInventorySortValue(b, key);
-    let result = 0;
-    if (typeof av === 'number' && typeof bv === 'number') result = av - bv;
-    else result = String(av).localeCompare(String(bv), undefined, { numeric: true, sensitivity: 'base' });
-    if (result === 0) result = String(a.name || '').localeCompare(String(b.name || ''), undefined, { numeric: true, sensitivity: 'base' });
-    return result * dir;
+    const av = inventorySortValue(a, key);
+    const bv = inventorySortValue(b, key);
+    if (typeof av === 'number' || typeof bv === 'number') return ((Number(av) || 0) - (Number(bv) || 0)) * dir;
+    return String(av).localeCompare(String(bv), undefined, { numeric:true, sensitivity:'base' }) * dir;
   });
 }
 
 function setInventorySort(key) {
-  if (!INVENTORY_SORT_LABELS[key]) return;
   if (inventoryState.sortKey === key) inventoryState.sortDir = inventoryState.sortDir === 'asc' ? 'desc' : 'asc';
   else { inventoryState.sortKey = key; inventoryState.sortDir = 'asc'; }
   inventoryState.page = 1;
   renderInventory();
 }
 
-function updateInventorySortIndicators() {
-  document.querySelectorAll('.sort-header').forEach(btn => {
-    const key = btn.dataset.sortKey;
-    const span = document.getElementById('sortIndicator-' + key);
-    const active = key === inventoryState.sortKey;
-    btn.classList.toggle('active', active);
-    if (span) span.textContent = active ? (inventoryState.sortDir === 'asc' ? '▲' : '▼') : '↕';
+function renderSortIndicators() {
+  document.querySelectorAll('[data-sort-indicator]').forEach(el => {
+    const key = el.dataset.sortIndicator;
+    el.textContent = key === inventoryState.sortKey ? (inventoryState.sortDir === 'asc' ? '▲' : '▼') : '↕';
   });
 }
 
-function getInventoryPageItems(items) {
-  const totalPages = Math.max(1, Math.ceil(items.length / inventoryState.pageSize));
-  if (inventoryState.page > totalPages) inventoryState.page = totalPages;
-  if (inventoryState.page < 1) inventoryState.page = 1;
-  const start = (inventoryState.page - 1) * inventoryState.pageSize;
-  return items.slice(start, start + inventoryState.pageSize);
-}
-
-function setInventoryPageSize(value) {
+function changeInventoryPageSize(value) {
   inventoryState.pageSize = parseInt(value, 10) || 25;
   inventoryState.page = 1;
   renderInventory();
 }
 
-function goToInventoryPage(page) {
-  inventoryState.page = Number(page) || 1;
+function goInventoryPage(page) {
+  inventoryState.page = Math.max(1, page);
   renderInventory();
-}
-
-function inventoryPageNumbers(totalPages) {
-  const current = inventoryState.page;
-  const pages = new Set([1, totalPages, current - 1, current, current + 1]);
-  if (current <= 3) { pages.add(2); pages.add(3); }
-  if (current >= totalPages - 2) { pages.add(totalPages - 1); pages.add(totalPages - 2); }
-  return [...pages].filter(p => p >= 1 && p <= totalPages).sort((a, b) => a - b);
-}
-
-function cleanupInventorySelection() {
-  const existingIds = new Set(getItems().map(i => i.id));
-  [...inventoryState.selectedIds].forEach(id => { if (!existingIds.has(id)) inventoryState.selectedIds.delete(id); });
-}
-
-function getSelectedInventoryIds() {
-  cleanupInventorySelection();
-  return [...inventoryState.selectedIds];
 }
 
 function toggleInventorySelection(id, checked) {
-  if (checked) inventoryState.selectedIds.add(id);
-  else inventoryState.selectedIds.delete(id);
-  renderInventory();
+  if (checked) inventoryState.selectedIds.add(id); else inventoryState.selectedIds.delete(id);
+  renderInventorySelectionUI();
 }
 
-function toggleSelectVisibleInventory(checked) {
-  const filtered = sortInventoryItems(getInventoryFilteredItems());
-  const visible = getInventoryPageItems(filtered);
-  visible.forEach(item => checked ? inventoryState.selectedIds.add(item.id) : inventoryState.selectedIds.delete(item.id));
+function toggleSelectAllVisible(checked) {
+  const ids = (window.__visibleInventoryPageItems || []).map(i => i.id);
+  ids.forEach(id => checked ? inventoryState.selectedIds.add(id) : inventoryState.selectedIds.delete(id));
   renderInventory();
 }
 
 function selectAllFilteredInventory() {
-  const filtered = getInventoryFilteredItems();
-  if (!filtered.length) { showToast('No filtered items to select'); return; }
-  filtered.forEach(item => inventoryState.selectedIds.add(item.id));
+  getSortedInventoryItems(getFilteredInventoryItems()).forEach(i => inventoryState.selectedIds.add(i.id));
   renderInventory();
-  showToast(`${filtered.length} filtered item${filtered.length !== 1 ? 's' : ''} selected`);
 }
 
 function clearInventorySelection() {
@@ -2449,248 +2687,196 @@ function clearInventorySelection() {
   renderInventory();
 }
 
-function updateInventoryBulkUi(visibleItems) {
-  cleanupInventorySelection();
+function renderInventorySelectionUI() {
   const selectedCount = inventoryState.selectedIds.size;
-  const countEl = document.getElementById('inventorySelectedCount');
-  if (countEl) countEl.textContent = `${selectedCount} selected`;
-
-  document.querySelectorAll('[data-requires-selection]').forEach(el => { el.disabled = selectedCount === 0; });
-
+  const toolbar = document.getElementById('inventoryBulkToolbar');
+  const count = document.getElementById('inventorySelectedCount');
+  if (toolbar) toolbar.classList.toggle('hidden', selectedCount === 0);
+  if (count) count.textContent = selectedCount;
+  document.querySelectorAll('.row-checkbox').forEach(cb => cb.checked = inventoryState.selectedIds.has(cb.value));
+  document.querySelectorAll('.mobile-row-checkbox').forEach(cb => cb.checked = inventoryState.selectedIds.has(cb.value));
   const selectAll = document.getElementById('inventorySelectAll');
+  const visible = window.__visibleInventoryPageItems || [];
   if (selectAll) {
-    const visibleIds = visibleItems.map(i => i.id);
-    const selectedVisible = visibleIds.filter(id => inventoryState.selectedIds.has(id)).length;
-    selectAll.checked = visibleIds.length > 0 && selectedVisible === visibleIds.length;
-    selectAll.indeterminate = selectedVisible > 0 && selectedVisible < visibleIds.length;
+    selectAll.checked = visible.length > 0 && visible.every(i => inventoryState.selectedIds.has(i.id));
+    selectAll.indeterminate = visible.some(i => inventoryState.selectedIds.has(i.id)) && !selectAll.checked;
   }
 }
 
-function updateSelectedInventoryItems(mutator, message) {
-  const selected = new Set(getSelectedInventoryIds());
-  if (!selected.size) { showToast('Select at least one item first'); return; }
+function selectedInventoryItems() {
+  const ids = inventoryState.selectedIds;
+  return getItems().filter(i => ids.has(i.id));
+}
+
+function updateSelectedItems(mutator, actionLabel) {
+  const ids = new Set(inventoryState.selectedIds);
+  if (!ids.size) { showToast('Select at least one item first'); return; }
   const items = getItems();
-  let count = 0;
+  const changed = [];
   items.forEach(item => {
-    if (selected.has(item.id)) {
-      mutator(item);
-      item.updated = today();
-      count++;
-    }
+    if (!ids.has(item.id)) return;
+    const before = { ...item };
+    mutator(item);
+    item.updated = today();
+    changed.push({ item, before });
   });
   setItems(items);
-  showToast(message(count));
+  addAudit(actionLabel, '', `${changed.length} item(s) updated`, { count: changed.length });
+  showToast(`${changed.length} item(s) updated`);
   renderPage(currentPage);
 }
 
 function bulkChangeAssetStatus() {
-  const status = document.getElementById('bulkAssetStatus')?.value || '';
-  if (!status) { showToast('Choose an asset status first'); return; }
-  updateSelectedInventoryItems(item => { item.assetStatus = status; }, count => `Asset status updated for ${count} item${count !== 1 ? 's' : ''}`);
+  const value = document.getElementById('bulkAssetStatus').value;
+  if (!value) { showToast('Choose an asset status first'); return; }
+  updateSelectedItems(item => { item.assetStatus = value; }, `Bulk asset status changed to ${value}`);
 }
-
 function bulkChangeCondition() {
-  const condition = document.getElementById('bulkCondition')?.value || '';
-  if (!condition) { showToast('Choose a condition first'); return; }
-  updateSelectedInventoryItems(item => { item.condition = condition; }, count => `Condition updated for ${count} item${count !== 1 ? 's' : ''}`);
+  const value = document.getElementById('bulkCondition').value;
+  if (!value) { showToast('Choose a condition first'); return; }
+  updateSelectedItems(item => { item.condition = value; }, `Bulk condition changed to ${value}`);
 }
-
 function bulkChangeLocation() {
-  const selectedCount = getSelectedInventoryIds().length;
-  if (!selectedCount) { showToast('Select at least one item first'); return; }
-  const location = prompt(`Enter the new location for ${selectedCount} selected item${selectedCount !== 1 ? 's' : ''}:`);
-  if (location === null) return;
-  updateSelectedInventoryItems(item => { item.location = location.trim(); }, count => `Location updated for ${count} item${count !== 1 ? 's' : ''}`);
+  const value = document.getElementById('bulkLocation').value.trim();
+  if (!value) { showToast('Enter a new location first'); return; }
+  updateSelectedItems(item => { item.location = value; }, `Bulk location changed to ${value}`);
 }
-
 function bulkAssignTo() {
-  const selectedCount = getSelectedInventoryIds().length;
-  if (!selectedCount) { showToast('Select at least one item first'); return; }
-  const assignee = prompt(`Assign ${selectedCount} selected item${selectedCount !== 1 ? 's' : ''} to:`);
-  if (assignee === null) return;
-  updateSelectedInventoryItems(item => { item.assignedTo = assignee.trim(); item.assetStatus = assignee.trim() ? 'Assigned' : (item.assetStatus || 'Available'); }, count => `Assignment updated for ${count} item${count !== 1 ? 's' : ''}`);
+  const value = document.getElementById('bulkAssignedTo').value.trim();
+  if (!value) { showToast('Enter an assignee first'); return; }
+  updateSelectedItems(item => { item.assignedTo = value; item.assetStatus = 'Assigned'; }, `Bulk assigned to ${value}`);
 }
-
 function bulkDeleteSelected() {
-  const selectedIds = getSelectedInventoryIds();
-  if (!selectedIds.length) { showToast('Select at least one item first'); return; }
-  const selectedItems = getItems().filter(i => selectedIds.includes(i.id));
-  const sampleNames = selectedItems.slice(0, 5).map(i => `• ${i.name}`).join('\n');
-  const extra = selectedItems.length > 5 ? `\n…and ${selectedItems.length - 5} more` : '';
-  if (!confirm(`Permanently delete ${selectedItems.length} selected item${selectedItems.length !== 1 ? 's' : ''}?\n\n${sampleNames}${extra}\n\nMovement and scan history are kept, but the item records will be deleted. This cannot be undone.`)) return;
-  const selected = new Set(selectedIds);
-  setItems(getItems().filter(item => !selected.has(item.id)));
+  const selected = selectedInventoryItems();
+  if (!selected.length) { showToast('Select at least one item first'); return; }
+  if (!confirm(`Permanently delete ${selected.length} selected item(s)? This cannot be undone.`)) return;
+  setItems(getItems().filter(i => !inventoryState.selectedIds.has(i.id)));
+  addAudit('Bulk delete', '', `${selected.length} item(s) deleted`, { count: selected.length, itemNames: selected.map(i => i.name) });
   inventoryState.selectedIds.clear();
-  showToast(`${selectedItems.length} item${selectedItems.length !== 1 ? 's' : ''} deleted`);
+  showToast('Selected items deleted');
   renderPage(currentPage);
 }
-
-function exportSelectedInventoryCSV() {
-  const selected = new Set(getSelectedInventoryIds());
-  if (!selected.size) { showToast('Select at least one item first'); return; }
-  const rows = [[
-    'Item Name','SKU','Asset ID','Category','Quantity','Min Level','Unit Cost','Supplier','Location','Stock Status',
-    'Asset Status','Condition','Assigned To','Serial Number','Purchase Date','Warranty Expiry','Notes','Updated'
-  ]];
-  getItems().filter(i => selected.has(i.id)).forEach(i => rows.push([
-    i.name || '', i.sku || '', i.assetId || i.labelCode || '', i.category || '', i.qty || 0, i.minQty || 0,
-    Number(i.cost || 0).toFixed(2), i.supplier || '', i.location || '', getStockStatusLabel(i),
-    i.assetStatus || 'Available', i.condition || 'Good', i.assignedTo || '', i.serialNumber || '',
-    i.purchaseDate || '', i.warrantyExpiry || '', i.notes || '', i.updated || ''
-  ]));
-  downloadCSV(rows, `stockwise-selected-${today()}.csv`);
+function bulkExportSelectedCSV() {
+  const selected = selectedInventoryItems();
+  if (!selected.length) { showToast('Select at least one item first'); return; }
+  exportItemsAsCSV(selected, `stockwise-selected-assets-${today()}.csv`);
 }
-
-function printSelectedInventoryLabels() {
-  const selected = new Set(getSelectedInventoryIds());
-  if (!selected.size) { showToast('Select at least one item first'); return; }
-  const labelItems = getItems().filter(i => selected.has(i.id) && getItemCode(i));
-  if (!labelItems.length) { showToast('Selected items need an Asset ID or SKU before labels can be printed'); return; }
-  selectedLabelIds = new Set(labelItems.map(i => i.id));
+function bulkPrintSelectedLabels() {
+  const selected = selectedInventoryItems().filter(i => getItemCode(i));
+  if (!selected.length) { showToast('Selected assets do not have Asset ID/SKU labels'); return; }
+  selectedLabelIds = new Set(selected.map(i => i.id));
   navigate(document.querySelector('[data-page=labels]'));
-  showToast(`${labelItems.length} selected label${labelItems.length !== 1 ? 's' : ''} ready to print`);
-  setTimeout(() => window.print(), 250);
+  showToast('Selected labels ready to print');
 }
 
-function renderInventoryPagination(totalFiltered, totalAll, visibleCount) {
-  const count = document.getElementById('inventoryCount');
-  const countHeader = document.getElementById('inventoryCountHeader');
-  const totalPages = Math.max(1, Math.ceil(totalFiltered / inventoryState.pageSize));
-  const start = totalFiltered === 0 ? 0 : ((inventoryState.page - 1) * inventoryState.pageSize) + 1;
-  const end = totalFiltered === 0 ? 0 : Math.min(start + visibleCount - 1, totalFiltered);
-  const summary = totalFiltered === totalAll
-    ? `Showing ${start}–${end} of ${totalFiltered} items`
-    : `Showing ${start}–${end} of ${totalFiltered} filtered items (${totalAll} total)`;
-  if (countHeader) countHeader.textContent = summary;
+function exportItemsAsCSV(items, filename) {
+  const headers = ['name','sku','assetId','category','quantity','minQuantity','unitCost','supplier','location','serialNumber','condition','assignedTo','purchaseDate','warrantyExpiry','assetStatus','notes'];
+  const rows = items.map(i => [i.name,i.sku,i.assetId || i.labelCode,i.category,i.qty,i.minQty,i.cost,i.supplier,i.location,i.serialNumber,i.condition,i.assignedTo,i.purchaseDate,i.warrantyExpiry,i.assetStatus,i.notes]);
+  downloadCSV(filename, [headers, ...rows]);
+}
 
-  const pages = inventoryPageNumbers(totalPages);
-  let pageButtons = '';
-  let last = 0;
-  pages.forEach(p => {
-    if (p - last > 1) pageButtons += '<span class="pagination-ellipsis">…</span>';
-    pageButtons += `<button class="pagination-btn ${p === inventoryState.page ? 'active' : ''}" onclick="goToInventoryPage(${p})" ${p === inventoryState.page ? 'aria-current="page"' : ''}>${p}</button>`;
-    last = p;
-  });
-
-  count.innerHTML = `<div class="inventory-pagination">
-    <div>${summary}</div>
-    <div class="pagination-controls">
-      <label class="gap-row" style="gap:6px">Rows
-        <select class="page-size-select" onchange="setInventoryPageSize(this.value)">
-          ${[10,25,50,100].map(size => `<option value="${size}" ${size === inventoryState.pageSize ? 'selected' : ''}>${size}</option>`).join('')}
-        </select>
-      </label>
-      <button class="pagination-btn" onclick="goToInventoryPage(${inventoryState.page - 1})" ${inventoryState.page <= 1 ? 'disabled' : ''}>Prev</button>
-      ${pageButtons}
-      <button class="pagination-btn" onclick="goToInventoryPage(${inventoryState.page + 1})" ${inventoryState.page >= totalPages ? 'disabled' : ''}>Next</button>
-    </div>
-  </div>`;
+function renderPagination(total, start, end) {
+  const pageSizeEl = document.getElementById('inventoryPageSize');
+  if (pageSizeEl) pageSizeEl.value = String(inventoryState.pageSize);
+  const totalPages = Math.max(1, Math.ceil(total / inventoryState.pageSize));
+  if (inventoryState.page > totalPages) inventoryState.page = totalPages;
+  const controls = document.getElementById('inventoryPageControls');
+  if (!controls) return;
+  const pages = [];
+  const first = Math.max(1, inventoryState.page - 2);
+  const last = Math.min(totalPages, inventoryState.page + 2);
+  pages.push(`<button class="page-btn" ${inventoryState.page===1?'disabled':''} onclick="goInventoryPage(${inventoryState.page-1})">Prev</button>`);
+  if (first > 1) pages.push(`<button class="page-btn" onclick="goInventoryPage(1)">1</button>${first>2?'<span class="text-muted text-small">…</span>':''}`);
+  for (let p = first; p <= last; p++) pages.push(`<button class="page-btn ${p===inventoryState.page?'active':''}" onclick="goInventoryPage(${p})">${p}</button>`);
+  if (last < totalPages) pages.push(`${last<totalPages-1?'<span class="text-muted text-small">…</span>':''}<button class="page-btn" onclick="goInventoryPage(${totalPages})">${totalPages}</button>`);
+  pages.push(`<button class="page-btn" ${inventoryState.page===totalPages?'disabled':''} onclick="goInventoryPage(${inventoryState.page+1})">Next</button>`);
+  controls.innerHTML = pages.join('');
 }
 
 function renderInventory() {
-  cleanupInventorySelection();
-  updateInventorySortIndicators();
+  renderSortIndicators();
+  const filtered = getFilteredInventoryItems();
+  const sorted = getSortedInventoryItems(filtered);
+  const totalPages = Math.max(1, Math.ceil(sorted.length / inventoryState.pageSize));
+  if (inventoryState.page > totalPages) inventoryState.page = totalPages;
+  const startIndex = (inventoryState.page - 1) * inventoryState.pageSize;
+  const pageItems = sorted.slice(startIndex, startIndex + inventoryState.pageSize);
+  window.__visibleInventoryPageItems = pageItems;
 
-  const filteredItems = getInventoryFilteredItems();
-  const items = sortInventoryItems(filteredItems);
-  const pageItems = getInventoryPageItems(items);
   const tbody = document.getElementById('inventoryTableBody');
   const empty = document.getElementById('inventoryEmpty');
-  const mobileCards = document.getElementById('inventoryMobileCards');
-  const totalAll = getItems().length;
+  const count = document.getElementById('inventoryCount');
+  const countHeader = document.getElementById('inventoryCountHeader');
 
-  const pct = (qty, min) => min > 0 ? Math.min(100, Math.round(qty / (min * 2) * 100)) : 100;
-  const barColor = (qty, min) => qty === 0 ? 'var(--red)' : qty < min ? '#F59E0B' : 'var(--accent-mid)';
-
-  if (items.length === 0) {
+  if (sorted.length === 0) {
     tbody.innerHTML = '';
-    if (mobileCards) mobileCards.innerHTML = '';
+    const mobileCards = document.getElementById('inventoryMobileCards'); if (mobileCards) mobileCards.innerHTML = '';
     empty.classList.remove('hidden');
-    renderInventoryPagination(0, totalAll, 0);
-    updateInventoryBulkUi([]);
+    if (count) count.textContent = '';
+    if (countHeader) countHeader.textContent = `0 of ${getItems().length} items`;
+    renderPagination(0, 0, 0);
+    renderInventorySelectionUI();
     return;
   }
 
   empty.classList.add('hidden');
+  const showingStart = startIndex + 1;
+  const showingEnd = startIndex + pageItems.length;
+  if (count) count.textContent = `Showing ${showingStart}–${showingEnd} of ${sorted.length} filtered items`;
+  if (countHeader) countHeader.textContent = `${sorted.length} filtered of ${getItems().length} total items`;
+  renderPagination(sorted.length, showingStart, showingEnd);
+
+  const pct = (qty, min) => min > 0 ? Math.min(100, Math.round(qty / (min * 2) * 100)) : 100;
+  const barColor = (qty, min) => qty === 0 ? 'var(--red)' : qty < min ? '#F59E0B' : 'var(--accent-mid)';
 
   tbody.innerHTML = pageItems.map(item => {
-    const p = pct(Number(item.qty || 0), Number(item.minQty || 0));
+    const p = pct(item.qty, item.minQty);
     const asset = item.assetId || item.labelCode || '';
+    const stockStatus = getStockStatus(item);
+    const statusBadge = stockStatus === 'Out of stock' ? '<span class="badge badge-danger">Out of stock</span>'
+      : stockStatus === 'Low stock' ? '<span class="badge badge-warning">Low stock</span>'
+      : '<span class="badge badge-success">In stock</span>';
     const checked = inventoryState.selectedIds.has(item.id) ? 'checked' : '';
-    const selectedClass = inventoryState.selectedIds.has(item.id) ? 'inventory-selected' : '';
-    return `<tr class="${selectedClass}">
-      <td class="select-col"><input type="checkbox" ${checked} onchange="toggleInventorySelection('${item.id}', this.checked)" title="Select ${escAttr(item.name)}"></td>
-      <td><div class="fw-600">${esc(item.name)}</div><div class="text-muted text-small mt-4">${esc(item.serialNumber || 'No serial')} · ${esc(item.notes || 'No notes')}</div></td>
-      <td class="text-muted">${esc(item.sku || '—')}</td>
-      <td>${asset ? `<span class="asset-pill">${esc(asset)}</span>` : '<span class="text-muted">—</span>'}</td>
-      <td>${item.category ? `<span class="badge badge-neutral">${esc(item.category)}</span>` : '<span class="text-muted">—</span>'}</td>
-      <td>
-        <div class="stock-bar-wrap">
-          <span class="fw-600" style="min-width:28px">${Number(item.qty || 0)}</span>
-          <div class="stock-bar-track"><div class="stock-bar-fill" style="width:${p}%;background:${barColor(Number(item.qty || 0),Number(item.minQty || 0))}"></div></div>
-        </div>
-      </td>
-      <td class="text-muted">${Number(item.minQty || 0)}</td>
-      <td>$${Number(item.cost || 0).toFixed(2)}</td>
-      <td class="text-muted">${esc(item.supplier || '—')}</td>
-      <td class="text-muted">${esc(item.location || '—')}</td>
-      <td>${getStockStatusBadge(item)}</td>
-      <td><span class="badge badge-neutral">${esc(item.assetStatus || 'Available')}</span></td>
-      <td class="text-muted">${esc(item.condition || 'Good')}</td>
-      <td class="text-muted">${esc(item.assignedTo || '—')}</td>
-      <td class="text-muted text-small">${item.purchaseDate ? fmtDate(item.purchaseDate) : '—'}</td>
-      <td class="text-muted text-small">${item.warrantyExpiry ? fmtDate(item.warrantyExpiry) : '—'}</td>
-      <td>
-        <div class="gap-row">
-          <button class="btn btn-ghost btn-sm" onclick="openAssetDetails('${item.id}')" title="View asset details">View</button>
-          <button class="btn btn-ghost btn-sm" onclick="openLabelModal('${item.id}')" title="Generate QR label">QR</button>
-          <button class="btn btn-ghost btn-sm" onclick="editItem('${item.id}')" title="Edit">
-            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-          </button>
-          <button class="btn btn-ghost btn-sm" onclick="deleteItem('${item.id}')" title="Delete" style="color:var(--red)">
-            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg>
-          </button>
-        </div>
-      </td>
+    return `<tr>
+      <td><input type="checkbox" class="row-checkbox" value="${item.id}" ${checked} onchange="toggleInventorySelection('${item.id}', this.checked)"></td>
+      <td><div class="fw-600">${item.name}</div><div class="text-muted text-small mt-4">${item.serialNumber ? 'SN ' + item.serialNumber + ' · ' : ''}${item.notes || ''}</div></td>
+      <td class="text-muted">${item.sku || '—'}</td>
+      <td>${asset ? `<span class="asset-pill">${asset}</span>` : '<span class="text-muted">—</span>'}</td>
+      <td>${item.category ? `<span class="badge badge-neutral">${item.category}</span>` : '—'}</td>
+      <td><div class="stock-bar-wrap"><span class="fw-600" style="min-width:28px">${item.qty}</span><div class="stock-bar-track"><div class="stock-bar-fill" style="width:${p}%;background:${barColor(item.qty,item.minQty)}"></div></div></div></td>
+      <td class="text-muted">${item.minQty}</td>
+      <td>${getCurrencySymbol()}${Number(item.cost || 0).toFixed(2)}</td>
+      <td class="text-muted">${item.supplier || '—'}</td>
+      <td class="text-muted">${item.location || '—'}</td>
+      <td>${statusBadge}</td>
+      <td><span class="badge badge-neutral">${item.assetStatus || 'Available'}</span></td>
+      <td><span class="badge badge-neutral">${item.condition || 'Good'}</span></td>
+      <td class="text-muted">${item.assignedTo || '—'}</td>
+      <td class="text-muted text-small">${fmtDate(item.purchaseDate)}</td>
+      <td class="text-muted text-small">${fmtDate(item.warrantyExpiry)}</td>
+      <td><div class="gap-row">
+        <button class="btn btn-ghost btn-sm" onclick="openAssetDetails('${item.id}')">View</button>
+        <button class="btn btn-ghost btn-sm" onclick="openLabelModal('${item.id}')">QR</button>
+        <button class="btn btn-ghost btn-sm" onclick="editItem('${item.id}')">Edit</button>
+      </div></td>
     </tr>`;
   }).join('');
 
+  const mobileCards = document.getElementById('inventoryMobileCards');
   if (mobileCards) {
     mobileCards.innerHTML = pageItems.map(item => {
       const inactive = ['Missing','Retired','Disposed'].includes(item.assetStatus || 'Available');
       const asset = item.assetId || item.labelCode || '—';
       const checked = inventoryState.selectedIds.has(item.id) ? 'checked' : '';
-      const selectedClass = inventoryState.selectedIds.has(item.id) ? 'inventory-selected' : '';
-      return `<div class="mobile-item-card ${inactive ? 'asset-inactive' : ''} ${selectedClass}">
-        <label class="mobile-card-select"><input type="checkbox" ${checked} onchange="toggleInventorySelection('${item.id}', this.checked)"> Select asset</label>
-        <div class="gap-row" style="justify-content:space-between;align-items:flex-start">
-          <div>
-            <div class="mobile-item-card-title">${esc(item.name)}</div>
-            <div class="text-muted text-small">${esc(item.sku || '—')} · ${esc(asset)}</div>
-          </div>
-          <span class="badge badge-neutral">${esc(item.assetStatus || 'Available')}</span>
-        </div>
-        <div class="chip-row" style="margin-top:8px">
-          ${getStockStatusBadge(item)}
-          <span class="badge badge-neutral">${esc(item.condition || 'Good')}</span>
-        </div>
-        <div class="mobile-item-card-meta">
-          <div><strong>Location</strong><br>${esc(item.location || '—')}</div>
-          <div><strong>Stock</strong><br>${Number(item.qty || 0)} / Min ${Number(item.minQty || 0)}</div>
-          <div><strong>Assigned</strong><br>${esc(item.assignedTo || '—')}</div>
-          <div><strong>Warranty</strong><br>${item.warrantyExpiry ? fmtDate(item.warrantyExpiry) : '—'}</div>
-        </div>
-        <div class="mobile-card-actions">
-          <button class="btn btn-secondary btn-sm" onclick="openAssetDetails('${item.id}')">View</button>
-          <button class="btn btn-secondary btn-sm" onclick="openLabelModal('${item.id}')">QR</button>
-          <button class="btn btn-primary btn-sm" onclick="editItem('${item.id}')">Edit</button>
-        </div>
+      return `<div class="mobile-item-card ${inactive ? 'asset-inactive' : ''}">
+        <div class="mobile-select-row"><label class="gap-row"><input type="checkbox" class="mobile-row-checkbox row-checkbox" value="${item.id}" ${checked} onchange="toggleInventorySelection('${item.id}', this.checked)"> Select</label><span class="badge badge-neutral">${item.assetStatus || 'Available'}</span></div>
+        <div class="gap-row" style="justify-content:space-between;align-items:flex-start"><div><div class="mobile-item-card-title">${item.name}</div><div class="text-muted text-small">${item.sku || '—'} · ${asset}</div></div></div>
+        <div class="mobile-item-card-meta"><div><strong>Location</strong><br>${item.location || '—'}</div><div><strong>Condition</strong><br>${item.condition || 'Good'}</div><div><strong>Stock</strong><br>${item.qty} / Min ${item.minQty}</div><div><strong>Assigned</strong><br>${item.assignedTo || '—'}</div></div>
+        <div class="mobile-card-actions"><button class="btn btn-secondary btn-sm" onclick="openAssetDetails('${item.id}')">View</button><button class="btn btn-secondary btn-sm" onclick="openLabelModal('${item.id}')">QR</button><button class="btn btn-primary btn-sm" onclick="editItem('${item.id}')">Edit</button></div>
       </div>`;
     }).join('');
   }
-
-  renderInventoryPagination(items.length, totalAll, pageItems.length);
-  updateInventoryBulkUi(pageItems);
+  renderInventorySelectionUI();
 }
 
 // ============================================================
@@ -3031,11 +3217,11 @@ function openAddItemModal(prefillAssetId = '') {
   document.getElementById('itemSupplier').value = '';
   document.getElementById('itemLocation').value = '';
   document.getElementById('itemSerialNumber').value = '';
-  document.getElementById('itemCondition').value = 'Good';
+  document.getElementById('itemCondition').value = getSettings().defaultCondition || 'Good';
   document.getElementById('itemAssignedTo').value = '';
   document.getElementById('itemPurchaseDate').value = '';
   document.getElementById('itemWarrantyExpiry').value = '';
-  document.getElementById('itemAssetStatus').value = 'Available';
+  document.getElementById('itemAssetStatus').value = getSettings().defaultAssetStatus || 'Available';
   document.getElementById('itemNotes').value = '';
   openModal('itemModal');
 }
@@ -3082,6 +3268,9 @@ function saveItem() {
   if (assetId && items.some(i => i.id !== id && codeMatches(i.assetId || i.labelCode, assetId))) {
     showToast('Asset ID already exists. Use a unique label code.'); return;
   }
+  if (items.some(i => i.id !== id && codeMatches(i.sku, sku))) {
+    showToast('SKU already exists. Use a unique SKU/item code.'); return;
+  }
 
   const item = {
     id: id || uid(),
@@ -3090,11 +3279,11 @@ function saveItem() {
     supplier: document.getElementById('itemSupplier').value.trim(),
     location: document.getElementById('itemLocation').value.trim(),
     serialNumber: document.getElementById('itemSerialNumber').value.trim(),
-    condition: document.getElementById('itemCondition').value || 'Good',
+    condition: document.getElementById('itemCondition').value || getSettings().defaultCondition || 'Good',
     assignedTo: document.getElementById('itemAssignedTo').value.trim(),
     purchaseDate: document.getElementById('itemPurchaseDate').value,
     warrantyExpiry: document.getElementById('itemWarrantyExpiry').value,
-    assetStatus: document.getElementById('itemAssetStatus').value || 'Available',
+    assetStatus: document.getElementById('itemAssetStatus').value || getSettings().defaultAssetStatus || 'Available',
     notes: document.getElementById('itemNotes').value.trim(),
     updated: today()
   };
@@ -3108,6 +3297,7 @@ function saveItem() {
 
   setItems(items);
   closeModal('itemModal');
+  addAudit(id ? 'Item updated' : 'Item added', item.id, item.name, { sku:item.sku, assetId:item.assetId });
   showToast(id ? 'Item updated' : 'Item added');
   renderPage(currentPage);
   document.getElementById('lowStockBadge').textContent = getItems().filter(i => i.qty < i.minQty).length;
@@ -3117,7 +3307,6 @@ function saveItem() {
 async function deleteItem(id) {
   const item = getItems().find(i => i.id === id);
   if (!item) return;
-  if (typeof inventoryState !== 'undefined' && inventoryState.selectedIds) inventoryState.selectedIds.delete(id);
   if (!confirm(`Permanently delete "${item.name}"?
 
 This removes the asset from active inventory. Movement and scan history are kept for audit, but this item record will be deleted. This cannot be undone.`)) return;
@@ -3136,6 +3325,7 @@ This removes the asset from active inventory. Movement and scan history are kept
   }
 
   closeModal('assetDetailsModal');
+  addAudit('Item deleted', item.id, item.name, { sku:item.sku, assetId:item.assetId || item.labelCode });
   showToast(`"${item.name}" permanently deleted`);
   renderPage(currentPage);
 }
@@ -3319,12 +3509,17 @@ function exportMovementCSV() {
   downloadCSV(rows, `movements${from?'-'+from:''}.csv`);
 }
 
-function downloadCSV(rows, filename) {
-  const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+function downloadCSV(arg1, arg2) {
+  const rows = Array.isArray(arg1) ? arg1 : arg2;
+  const filename = Array.isArray(arg1) ? arg2 : arg1;
+  const csv = (rows || []).map(row => row.map(csvEscape).join(',')).join('\n');
+  const blob = new Blob([csv], { type:'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
-  a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
-  a.download = filename;
+  a.href = url;
+  a.download = filename || `stockwise-export-${today()}.csv`;
   a.click();
+  URL.revokeObjectURL(url);
   showToast('CSV exported');
 }
 
@@ -3516,6 +3711,8 @@ function openAssetDetails(itemId) {
     <button class="btn btn-secondary" onclick="openQuickMovement('${item.id}','adjustment')">Adjust Quantity</button>
     <button class="btn btn-secondary" onclick="quickChangeLocation('${item.id}')">Change Location</button>
     <button class="btn btn-secondary" onclick="openLabelModal('${item.id}')">Generate QR Label</button>
+    <button class="btn btn-secondary" onclick="closeModal('assetDetailsModal'); openMaintenanceModal('${item.id}')">Maintenance</button>
+    <button class="btn btn-secondary" onclick="closeModal('assetDetailsModal'); openLoanModal('${item.id}')">Loan out</button>
     <button class="btn btn-primary" onclick="closeModal('assetDetailsModal'); editItem('${item.id}')">Edit Item</button>
     <button class="btn btn-secondary" onclick="archiveAsset('${item.id}','Retired')">Archive / Retire</button>
     <button class="btn btn-ghost" style="color:var(--red)" onclick="deleteItem('${item.id}')">Permanent Delete</button>
@@ -3560,6 +3757,259 @@ function quickChangeLocation(itemId) {
   renderPage(currentPage);
 }
 
+
+// ============================================================
+// OPERATIONS: MAINTENANCE, LOANS, STOCKTAKE, SETTINGS, AUDIT
+// ============================================================
+
+function getCurrencySymbol() {
+  const cur = (getSettings().currency || 'SGD').toUpperCase();
+  return cur === 'SGD' || cur === 'USD' || cur === 'AUD' ? '$' : `${cur} `;
+}
+function daysUntil(dateStr) {
+  if (!dateStr) return null;
+  const todayDate = new Date(today() + 'T00:00:00');
+  const target = new Date(dateStr + 'T00:00:00');
+  if (isNaN(target.getTime())) return null;
+  return Math.ceil((target - todayDate) / 86400000);
+}
+function addAudit(action, itemId = '', itemName = '', details = {}) {
+  const logs = getAuditLogs();
+  logs.unshift({ id: uid(), action, itemId, itemName, details, createdAt: new Date().toISOString() });
+  setAuditLogs(logs.slice(0, 1000));
+}
+function updateOperationBadges() {
+  const openMaint = getMaintenance().filter(m => !['Resolved','Cancelled'].includes(m.status)).length;
+  const overdueLoans = getLoans().filter(l => !l.returnDate && l.dueDate && daysUntil(l.dueDate) < 0).length;
+  const activeLoans = getLoans().filter(l => !l.returnDate).length;
+  const mb = document.getElementById('maintenanceBadge'); if (mb) mb.textContent = openMaint;
+  const lb = document.getElementById('loanBadge'); if (lb) lb.textContent = overdueLoans || activeLoans;
+}
+function populateItemSelect(selectId, selectedId = '', includeArchived = true) {
+  const sel = document.getElementById(selectId);
+  if (!sel) return;
+  const items = getItems().filter(i => includeArchived || !['Missing','Retired','Disposed'].includes(i.assetStatus || 'Available'));
+  sel.innerHTML = '<option value="">Select asset…</option>' + items.map(i => `<option value="${i.id}">${i.name} (${i.assetId || i.sku || 'no code'})</option>`).join('');
+  sel.value = selectedId || '';
+}
+
+function renderMaintenance() {
+  updateOperationBadges();
+  const logs = getMaintenance().sort((a,b) => String(b.reportedDate).localeCompare(String(a.reportedDate)));
+  const open = logs.filter(m => m.status === 'Open').length;
+  const progress = logs.filter(m => m.status === 'In Progress').length;
+  const resolved = logs.filter(m => m.status === 'Resolved').length;
+  const totalCost = logs.reduce((s,m) => s + Number(m.cost || 0), 0);
+  const metrics = document.getElementById('maintenanceMetrics');
+  if (metrics) metrics.innerHTML = `<div class="operation-card"><h3>Open</h3><div class="big" style="color:var(--red)">${open}</div></div><div class="operation-card"><h3>In progress</h3><div class="big" style="color:var(--amber)">${progress}</div></div><div class="operation-card"><h3>Resolved</h3><div class="big">${resolved}</div></div><div class="operation-card"><h3>Total cost</h3><div class="big">${getCurrencySymbol()}${totalCost.toFixed(2)}</div></div>`;
+  const tbody = document.getElementById('maintenanceTableBody');
+  const empty = document.getElementById('maintenanceEmpty');
+  if (!logs.length) { if (tbody) tbody.innerHTML = ''; empty?.classList.remove('hidden'); return; }
+  empty?.classList.add('hidden');
+  tbody.innerHTML = logs.map(m => `<tr><td><div class="fw-600">${m.itemName || '—'}</div><div class="text-muted text-small">${m.assetCode || ''}</div></td><td>${m.issue}</td><td><span class="badge ${m.status==='Resolved'?'badge-success':m.status==='In Progress'?'badge-warning':'badge-danger'}">${m.status}</span></td><td class="text-muted text-small">${fmtDate(m.reportedDate)}</td><td class="text-muted">${m.vendor || '—'}</td><td>${getCurrencySymbol()}${Number(m.cost || 0).toFixed(2)}</td><td class="text-muted text-small">${fmtDate(m.resolvedDate)}</td><td><div class="gap-row"><button class="btn btn-ghost btn-sm" onclick="editMaintenanceLog('${m.id}')">Edit</button><button class="btn btn-ghost btn-sm" onclick="deleteMaintenanceLog('${m.id}')" style="color:var(--red)">Delete</button></div></td></tr>`).join('');
+}
+function openMaintenanceModal(itemId = '') {
+  populateItemSelect('maintenanceItem', itemId);
+  document.getElementById('maintenanceModalTitle').textContent = 'Add maintenance log';
+  document.getElementById('maintenanceId').value = '';
+  document.getElementById('maintenanceIssue').value = '';
+  document.getElementById('maintenanceReportedBy').value = '';
+  document.getElementById('maintenanceReportedDate').value = today();
+  document.getElementById('maintenanceResolvedDate').value = '';
+  document.getElementById('maintenanceStatus').value = 'Open';
+  document.getElementById('maintenanceVendor').value = '';
+  document.getElementById('maintenanceCost').value = '';
+  document.getElementById('maintenanceNotes').value = '';
+  openModal('maintenanceModal');
+}
+function editMaintenanceLog(id) {
+  const m = getMaintenance().find(x => x.id === id); if (!m) return;
+  populateItemSelect('maintenanceItem', m.itemId);
+  document.getElementById('maintenanceModalTitle').textContent = 'Edit maintenance log';
+  document.getElementById('maintenanceId').value = m.id;
+  document.getElementById('maintenanceIssue').value = m.issue;
+  document.getElementById('maintenanceReportedBy').value = m.reportedBy || '';
+  document.getElementById('maintenanceReportedDate').value = m.reportedDate || today();
+  document.getElementById('maintenanceResolvedDate').value = m.resolvedDate || '';
+  document.getElementById('maintenanceStatus').value = m.status || 'Open';
+  document.getElementById('maintenanceVendor').value = m.vendor || '';
+  document.getElementById('maintenanceCost').value = m.cost || '';
+  document.getElementById('maintenanceNotes').value = m.notes || '';
+  openModal('maintenanceModal');
+}
+function saveMaintenanceLog() {
+  const id = document.getElementById('maintenanceId').value;
+  const itemId = document.getElementById('maintenanceItem').value;
+  const issue = document.getElementById('maintenanceIssue').value.trim();
+  if (!itemId || !issue) { showToast('Choose an asset and enter the issue'); return; }
+  const item = getItems().find(i => i.id === itemId) || {};
+  const logs = getMaintenance();
+  const log = { id: id || uid(), itemId, itemName: item.name || '', assetCode: item.assetId || item.sku || '', issue, reportedBy: document.getElementById('maintenanceReportedBy').value.trim(), reportedDate: document.getElementById('maintenanceReportedDate').value || today(), resolvedDate: document.getElementById('maintenanceResolvedDate').value, status: document.getElementById('maintenanceStatus').value, vendor: document.getElementById('maintenanceVendor').value.trim(), cost: parseFloat(document.getElementById('maintenanceCost').value) || 0, notes: document.getElementById('maintenanceNotes').value.trim(), updatedAt: new Date().toISOString() };
+  const idx = logs.findIndex(m => m.id === id); if (idx > -1) logs[idx] = log; else logs.unshift(log);
+  setMaintenance(logs);
+  if (log.status !== 'Resolved' && log.status !== 'Cancelled') updateSelectedAssetFields(itemId, { assetStatus:'In Repair', condition:'Needs Repair' }, false);
+  addAudit(id ? 'Maintenance log updated' : 'Maintenance log created', itemId, item.name || '', { issue: log.issue, status: log.status });
+  closeModal('maintenanceModal'); showToast('Maintenance log saved'); renderPage(currentPage);
+}
+function deleteMaintenanceLog(id) {
+  if (!confirm('Delete this maintenance log?')) return;
+  setMaintenance(getMaintenance().filter(m => m.id !== id));
+  addAudit('Maintenance log deleted', '', '', { id }); renderPage(currentPage);
+}
+
+function renderLoans() {
+  updateOperationBadges();
+  const loans = getLoans().sort((a,b) => String(b.checkoutDate).localeCompare(String(a.checkoutDate)));
+  const active = loans.filter(l => !l.returnDate).length;
+  const overdue = loans.filter(l => !l.returnDate && l.dueDate && daysUntil(l.dueDate) < 0).length;
+  const dueSoon = loans.filter(l => !l.returnDate && l.dueDate && daysUntil(l.dueDate) >= 0 && daysUntil(l.dueDate) <= 7).length;
+  const returned = loans.filter(l => l.returnDate).length;
+  const metrics = document.getElementById('loanMetrics');
+  if (metrics) metrics.innerHTML = `<div class="operation-card"><h3>Checked out</h3><div class="big">${active}</div></div><div class="operation-card"><h3>Overdue</h3><div class="big" style="color:var(--red)">${overdue}</div></div><div class="operation-card"><h3>Due soon</h3><div class="big" style="color:var(--amber)">${dueSoon}</div></div><div class="operation-card"><h3>Returned</h3><div class="big">${returned}</div></div>`;
+  const tbody = document.getElementById('loanTableBody'); const empty = document.getElementById('loanEmpty');
+  if (!loans.length) { if (tbody) tbody.innerHTML = ''; empty?.classList.remove('hidden'); return; }
+  empty?.classList.add('hidden');
+  tbody.innerHTML = loans.map(l => {
+    const overdue = !l.returnDate && l.dueDate && daysUntil(l.dueDate) < 0;
+    const status = l.returnDate ? 'Returned' : overdue ? 'Overdue' : 'Checked Out';
+    return `<tr><td><div class="fw-600">${l.itemName || '—'}</div><div class="text-muted text-small">${l.assetCode || ''}</div></td><td>${l.borrower}</td><td class="text-muted text-small">${fmtDate(l.checkoutDate)}</td><td class="text-muted text-small">${fmtDate(l.dueDate)}</td><td class="text-muted text-small">${fmtDate(l.returnDate)}</td><td><span class="badge ${status==='Returned'?'badge-success':status==='Overdue'?'badge-danger':'badge-warning'}">${status}</span></td><td class="text-muted">${l.notes || '—'}</td><td><div class="gap-row"><button class="btn btn-ghost btn-sm" onclick="editLoan('${l.id}')">Edit</button>${!l.returnDate?`<button class="btn btn-ghost btn-sm" onclick="returnLoan('${l.id}')">Return</button>`:''}<button class="btn btn-ghost btn-sm" onclick="deleteLoan('${l.id}')" style="color:var(--red)">Delete</button></div></td></tr>`;
+  }).join('');
+}
+function openLoanModal(itemId = '') {
+  populateItemSelect('loanItem', itemId, false);
+  document.getElementById('loanModalTitle').textContent = 'Check out asset';
+  document.getElementById('loanId').value = '';
+  document.getElementById('loanBorrower').value = '';
+  document.getElementById('loanCheckoutDate').value = today();
+  document.getElementById('loanDueDate').value = '';
+  document.getElementById('loanReturnDate').value = '';
+  document.getElementById('loanNotes').value = '';
+  openModal('loanModal');
+}
+function editLoan(id) {
+  const l = getLoans().find(x => x.id === id); if (!l) return;
+  populateItemSelect('loanItem', l.itemId);
+  document.getElementById('loanModalTitle').textContent = 'Edit loan';
+  document.getElementById('loanId').value = l.id;
+  document.getElementById('loanBorrower').value = l.borrower;
+  document.getElementById('loanCheckoutDate').value = l.checkoutDate || today();
+  document.getElementById('loanDueDate').value = l.dueDate || '';
+  document.getElementById('loanReturnDate').value = l.returnDate || '';
+  document.getElementById('loanNotes').value = l.notes || '';
+  openModal('loanModal');
+}
+function saveLoan() {
+  const id = document.getElementById('loanId').value;
+  const itemId = document.getElementById('loanItem').value;
+  const borrower = document.getElementById('loanBorrower').value.trim();
+  if (!itemId || !borrower) { showToast('Choose an asset and enter borrower'); return; }
+  const item = getItems().find(i => i.id === itemId) || {};
+  const returnDate = document.getElementById('loanReturnDate').value;
+  const loans = getLoans();
+  const loan = { id: id || uid(), itemId, itemName: item.name || '', assetCode: item.assetId || item.sku || '', borrower, checkoutDate: document.getElementById('loanCheckoutDate').value || today(), dueDate: document.getElementById('loanDueDate').value, returnDate, status: returnDate ? 'Returned' : 'Checked Out', notes: document.getElementById('loanNotes').value.trim(), updatedAt: new Date().toISOString() };
+  const idx = loans.findIndex(l => l.id === id); if (idx > -1) loans[idx] = loan; else loans.unshift(loan);
+  setLoans(loans);
+  updateSelectedAssetFields(itemId, returnDate ? { assetStatus:'Available', assignedTo:'' } : { assetStatus:'Assigned', assignedTo:borrower }, false);
+  addAudit(id ? 'Loan updated' : 'Asset checked out', itemId, item.name || '', { borrower, dueDate: loan.dueDate, returned: Boolean(returnDate) });
+  closeModal('loanModal'); showToast('Loan saved'); renderPage(currentPage);
+}
+function returnLoan(id) {
+  const loans = getLoans(); const loan = loans.find(l => l.id === id); if (!loan) return;
+  loan.returnDate = today(); loan.status = 'Returned'; loan.updatedAt = new Date().toISOString(); setLoans(loans);
+  updateSelectedAssetFields(loan.itemId, { assetStatus:'Available', assignedTo:'' }, false);
+  addAudit('Asset returned', loan.itemId, loan.itemName, { borrower: loan.borrower }); renderPage(currentPage);
+}
+function deleteLoan(id) { if (!confirm('Delete this loan record?')) return; setLoans(getLoans().filter(l => l.id !== id)); addAudit('Loan deleted', '', '', { id }); renderPage(currentPage); }
+function updateSelectedAssetFields(itemId, fields, rerender = true) {
+  const items = getItems(); const item = items.find(i => i.id === itemId); if (!item) return;
+  Object.assign(item, fields, { updated: today() }); setItems(items); if (rerender) renderPage(currentPage);
+}
+
+function getActiveStocktake() { return getStocktakes().find(s => s.status === 'Open'); }
+function startStocktakeSession() {
+  const existing = getActiveStocktake();
+  if (existing && !confirm('There is already an open stocktake session. Start a new one and close the existing one?')) return;
+  const sessions = getStocktakes().map(s => s.status === 'Open' ? { ...s, status:'Closed', closedAt:new Date().toISOString() } : s);
+  const session = { id: uid(), title:`Stocktake ${fmtDate(today())}`, status:'Open', startedAt:new Date().toISOString(), closedAt:'', verifiedItemIds:[], missingItemIds:[], notes:'', updatedAt:new Date().toISOString() };
+  sessions.unshift(session); setStocktakes(sessions); addAudit('Stocktake started', '', session.title, {}); renderStocktake();
+}
+function renderStocktake() {
+  const session = getActiveStocktake();
+  const tbody = document.getElementById('stocktakeTableBody'); const empty = document.getElementById('stocktakeEmpty');
+  const metrics = document.getElementById('stocktakeMetrics');
+  const activeItems = getItems().filter(i => !['Disposed','Retired'].includes(i.assetStatus || 'Available'));
+  const verified = new Set(session?.verifiedItemIds || []);
+  const q = (document.getElementById('stocktakeSearch')?.value || '').toLowerCase();
+  const rows = activeItems.filter(i => !q || [i.name,i.sku,i.assetId || i.labelCode,i.location].join(' ').toLowerCase().includes(q));
+  const missingCount = Math.max(0, activeItems.length - verified.size);
+  if (metrics) metrics.innerHTML = `<div class="operation-card"><h3>Session</h3><div class="big" style="font-size:18px">${session ? 'Open' : 'Not started'}</div></div><div class="operation-card"><h3>Verified</h3><div class="big">${verified.size}</div></div><div class="operation-card"><h3>Unverified</h3><div class="big" style="color:var(--amber)">${session ? missingCount : activeItems.length}</div></div><div class="operation-card"><h3>Total expected</h3><div class="big">${activeItems.length}</div></div>`;
+  if (!session) { if (tbody) tbody.innerHTML = ''; empty?.classList.remove('hidden'); return; }
+  empty?.classList.add('hidden');
+  tbody.innerHTML = rows.map(i => `<tr class="${verified.has(i.id) ? 'stocktake-found' : ''}"><td><input type="checkbox" class="row-checkbox" ${verified.has(i.id)?'checked':''} onchange="toggleStocktakeFound('${i.id}', this.checked)"></td><td><div class="fw-600">${i.name}</div><div class="text-muted text-small">${i.assetId || i.labelCode || ''}</div></td><td>${i.sku || '—'}</td><td class="text-muted">${i.location || '—'}</td><td><span class="badge badge-neutral">${i.assetStatus || 'Available'}</span></td><td>${verified.has(i.id)?'<span class="badge badge-success">Found</span>':'<span class="badge badge-warning">Pending</span>'}</td></tr>`).join('');
+}
+function toggleStocktakeFound(itemId, checked) {
+  const sessions = getStocktakes(); const session = sessions.find(s => s.status === 'Open'); if (!session) return;
+  const set = new Set(session.verifiedItemIds || []); checked ? set.add(itemId) : set.delete(itemId);
+  session.verifiedItemIds = [...set]; session.updatedAt = new Date().toISOString(); setStocktakes(sessions); renderStocktake();
+}
+function markStocktakeCode() {
+  const val = document.getElementById('stocktakeSearch').value.trim(); if (!val) return;
+  const item = getItems().find(i => codeMatches(i.assetId || i.labelCode, val) || codeMatches(i.sku, val) || String(i.name || '').toLowerCase().includes(val.toLowerCase()));
+  if (!item) { showToast('No matching asset found'); return; }
+  toggleStocktakeFound(item.id, true); showToast(`${item.name} marked found`);
+}
+function clearStocktakeSession() {
+  const sessions = getStocktakes(); const session = sessions.find(s => s.status === 'Open'); if (!session) return;
+  if (!confirm('Clear all verified marks for this stocktake?')) return;
+  session.verifiedItemIds = []; session.updatedAt = new Date().toISOString(); setStocktakes(sessions); renderStocktake();
+}
+function closeStocktakeSession() {
+  const sessions = getStocktakes(); const session = sessions.find(s => s.status === 'Open'); if (!session) { showToast('No open stocktake session'); return; }
+  const expected = getItems().filter(i => !['Disposed','Retired'].includes(i.assetStatus || 'Available'));
+  const verified = new Set(session.verifiedItemIds || []);
+  session.missingItemIds = expected.filter(i => !verified.has(i.id)).map(i => i.id);
+  session.status = 'Closed'; session.closedAt = new Date().toISOString(); session.updatedAt = new Date().toISOString(); setStocktakes(sessions);
+  addAudit('Stocktake closed', '', session.title, { verified: verified.size, missing: session.missingItemIds.length }); renderStocktake(); showToast('Stocktake closed');
+}
+function exportStocktakeDiscrepancyCSV() {
+  const session = getActiveStocktake() || getStocktakes()[0]; if (!session) { showToast('No stocktake session to export'); return; }
+  const verified = new Set(session.verifiedItemIds || []);
+  const rows = getItems().filter(i => !verified.has(i.id) && !['Disposed','Retired'].includes(i.assetStatus || 'Available'));
+  downloadCSV(`stockwise-stocktake-discrepancies-${today()}.csv`, [['name','sku','assetId','location','assetStatus','condition'], ...rows.map(i => [i.name,i.sku,i.assetId || i.labelCode,i.location,i.assetStatus,i.condition])]);
+}
+
+function renderAudit() {
+  const logs = getAuditLogs().slice(0, 300); const wrap = document.getElementById('auditTimeline'); const empty = document.getElementById('auditEmpty');
+  if (!logs.length) { if (wrap) wrap.innerHTML = ''; empty?.classList.remove('hidden'); return; }
+  empty?.classList.add('hidden');
+  wrap.innerHTML = logs.map(a => `<div class="timeline-item"><div class="fw-600">${a.action}</div><div class="text-muted text-small">${fmtDateTime(a.createdAt)}${a.itemName ? ' · ' + a.itemName : ''}</div><div class="text-muted text-small">${a.details ? Object.entries(a.details).map(([k,v]) => `${k}: ${Array.isArray(v) ? v.join(', ') : v}`).join(' · ') : ''}</div></div>`).join('');
+}
+function exportAuditCSV() { const logs = getAuditLogs(); downloadCSV(`stockwise-audit-${today()}.csv`, [['createdAt','action','itemName','details'], ...logs.map(a => [a.createdAt,a.action,a.itemName,JSON.stringify(a.details || {})])]); }
+function renderSettingsPage() {
+  const set = getSettings();
+  const ids = { settingOrgName:'organisationName', settingCurrency:'currency', settingWarrantyDays:'warrantyAlertDays', settingDefaultCondition:'defaultCondition', settingDefaultStatus:'defaultAssetStatus', settingLabelSize:'labelSize' };
+  Object.entries(ids).forEach(([id,key]) => { const el = document.getElementById(id); if (el) el.value = set[key] ?? ''; });
+}
+function saveSettingsFromPage() {
+  const data = { organisationName: document.getElementById('settingOrgName').value.trim() || 'StockWise', currency: document.getElementById('settingCurrency').value.trim() || 'SGD', warrantyAlertDays: parseInt(document.getElementById('settingWarrantyDays').value, 10) || 90, defaultCondition: document.getElementById('settingDefaultCondition').value, defaultAssetStatus: document.getElementById('settingDefaultStatus').value, labelSize: document.getElementById('settingLabelSize').value };
+  setSettings(data); addAudit('Settings updated', '', '', data); showToast('Settings saved'); renderPage(currentPage);
+}
+function renderHelpPage() {}
+
+function renderDashboardOperations() {
+  const set = getSettings();
+  const windowDays = Number(set.warrantyAlertDays || 90);
+  const warranty = getItems().filter(i => i.warrantyExpiry).map(i => ({ item:i, days:daysUntil(i.warrantyExpiry) })).filter(x => x.days !== null && x.days <= windowDays).sort((a,b)=>a.days-b.days).slice(0,6);
+  const warrantyEl = document.getElementById('dashWarrantyAlerts');
+  if (warrantyEl) warrantyEl.innerHTML = warranty.length ? `<table><thead><tr><th>Asset</th><th>Warranty</th><th>Status</th></tr></thead><tbody>${warranty.map(x => `<tr><td><div class="fw-600">${x.item.name}</div><div class="text-muted text-small">${x.item.assetId || x.item.sku || ''}</div></td><td class="text-muted text-small">${fmtDate(x.item.warrantyExpiry)}</td><td>${x.days < 0 ? '<span class="badge badge-danger">Expired</span>' : `<span class="badge badge-warning">${x.days} days</span>`}</td></tr>`).join('')}</tbody></table>` : '<div class="empty-state" style="padding:24px"><h3>No warranty alerts</h3><p>Nothing expires within the alert window.</p></div>';
+  const openMaint = getMaintenance().filter(m => !['Resolved','Cancelled'].includes(m.status)).slice(0,3);
+  const overdueLoans = getLoans().filter(l => !l.returnDate && l.dueDate && daysUntil(l.dueDate) < 0).slice(0,3);
+  const opEl = document.getElementById('dashOperationalAlerts');
+  const rows = [...openMaint.map(m => ({ type:'Maintenance', label:m.itemName, note:m.status })), ...overdueLoans.map(l => ({ type:'Overdue loan', label:l.itemName, note:l.borrower }))];
+  if (opEl) opEl.innerHTML = rows.length ? `<table><thead><tr><th>Type</th><th>Asset</th><th>Note</th></tr></thead><tbody>${rows.map(r => `<tr><td><span class="badge badge-warning">${r.type}</span></td><td class="fw-600">${r.label}</td><td class="text-muted">${r.note}</td></tr>`).join('')}</tbody></table>` : '<div class="empty-state" style="padding:24px"><h3>No follow-ups</h3><p>Maintenance and loans are clear.</p></div>';
+  updateOperationBadges();
+}
+
 // ============================================================
 // UTILITIES
 // ============================================================
@@ -3598,6 +4048,11 @@ function fmtDateTime(d) {
   return date.toLocaleString('en-GB', { day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
 }
 
+
+function csvEscape(value) {
+  const s = String(value ?? '');
+  return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+}
 function exportAllData() {
   const backup = {
     exportedAt: new Date().toISOString(),
@@ -3605,7 +4060,12 @@ function exportAllData() {
     items: getItems(),
     movements: getMovements(),
     suppliers: getSuppliers(),
-    scan_history: getScanHistory()
+    scan_history: getScanHistory(),
+    maintenance: getMaintenance(),
+    loans: getLoans(),
+    stocktakes: getStocktakes(),
+    audit_logs: getAuditLogs(),
+    settings: getSettingsRows()
   };
   const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
@@ -3622,7 +4082,7 @@ function startFresh() {
     ? 'Clear local demo data/cache on this browser only? Cloud data in Supabase will not be deleted.'
     : 'Clear all local demo/inventory data in this browser? This cannot be undone.';
   if (!confirm(msg)) return;
-  ['items','movements','suppliers','scanHistory'].forEach(k => localStorage.removeItem('stockwise_' + k));
+  ['items','movements','suppliers','scanHistory','maintenance','loans','stocktakes','auditLogs','settings'].forEach(k => localStorage.removeItem('stockwise_' + k));
   localStorage.removeItem('stockwise_seeded');
   hydrateStateFromLocal();
   if (!cloudState.enabled) {
@@ -3630,6 +4090,11 @@ function startFresh() {
     appState.movements = [];
     appState.suppliers = [];
     appState.scanHistory = [];
+    appState.maintenance = [];
+    appState.loans = [];
+    appState.stocktakes = [];
+    appState.auditLogs = [];
+    appState.settings = [];
     ['items','movements','suppliers','scanHistory'].forEach(k => saveLocalData(k, appState[k] || []));
     localStorage.setItem('stockwise_seeded', '1');
   } else {
@@ -3719,7 +4184,6 @@ function normaliseDateInput(value) {
   return isNaN(d.getTime()) ? value : d.toISOString().split('T')[0];
 }
 function esc(s) { return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-function escAttr(s) { return esc(s).replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
 
 function buildCsvPreview(text) {
   const { rows } = parseCsv(text);
@@ -3820,11 +4284,13 @@ async function initApp() {
   ensureDataSchema();
   renderDashboard();
   document.getElementById('lowStockBadge').textContent = getItems().filter(i => i.qty < i.minQty).length;
+  updateOperationBadges();
 
   await initSupabase();
 
   renderPage(currentPage);
   document.getElementById('lowStockBadge').textContent = getItems().filter(i => i.qty < i.minQty).length;
+  updateOperationBadges();
 }
 
 initApp();
