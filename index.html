@@ -119,6 +119,15 @@
   .sync-pill.syncing::before { background:var(--blue); }
   .sync-pill.local { background:var(--amber-light); color:var(--amber); border-color:#FDE68A; }
   .sync-pill.local::before { background:#F59E0B; }
+  .auth-pill {
+    display:inline-flex; align-items:center; gap:6px;
+    padding:5px 10px; border-radius:999px;
+    font-size:11px; font-weight:700; letter-spacing:.2px;
+    border:1px solid var(--border); background:var(--bg); color:var(--text-muted);
+    white-space:nowrap;
+  }
+  .auth-pill.signed-in { background:var(--accent-light); color:var(--accent); border-color:#B7E4C7; }
+  .auth-pill.signed-out { background:var(--amber-light); color:var(--amber); border-color:#FDE68A; }
   .setup-note { background:var(--blue-light); color:var(--blue); border:1px solid #BFDBFE; border-radius:var(--radius); padding:12px 14px; font-size:12px; margin-bottom:16px; }
   .page-content { padding: 28px; flex: 1; }
 
@@ -655,6 +664,15 @@
     </div>
     <div class="topbar-actions">
       <span id="syncStatus" class="sync-pill local" title="Cloud sync status" onclick="openSyncSetupModal()" style="cursor:pointer">Local mode only</span>
+      <span id="authStatus" class="auth-pill signed-out" title="Supabase login status">Signed out</span>
+      <button class="btn btn-secondary btn-sm" id="signInCloudBtn" onclick="openAuthModal()" title="Sign in to Supabase">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/></svg>
+        Sign in
+      </button>
+      <button class="btn btn-secondary btn-sm hidden" id="signOutCloudBtn" onclick="signOutOfCloud()" title="Sign out of Supabase">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M10 3H6a2 2 0 00-2 2v14a2 2 0 002 2h4"/><path d="M17 16l4-4-4-4"/><path d="M21 12H9"/></svg>
+        Sign out
+      </button>
       <button class="btn btn-secondary btn-sm" onclick="openSyncSetupModal()" title="Set up or change cloud sync">
         <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M12 15.5A3.5 3.5 0 1012 8a3.5 3.5 0 000 7.5z"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09a1.65 1.65 0 00-1-1.51 1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 005 15.08a1.65 1.65 0 00-1.51-1H3.4a2 2 0 010-4h.09A1.65 1.65 0 005 8.57a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06a1.65 1.65 0 001.82.33h.01A1.65 1.65 0 0010.91 3V2.9a2 2 0 014 0V3a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019 8.92c.14.48.51.85 1 1h.09a2 2 0 010 4H20a1.65 1.65 0 00-.6 1.08z"/></svg>
         Setup Sync
@@ -1484,7 +1502,7 @@
         </div>
       </div>
       <div class="text-muted text-small">
-        This information is saved in this browser only. To transfer the template to another user, send them this HTML file, the SQL script, and the setup guide. They should use their own Supabase account/project for their own data.
+        This information is saved in this browser only. To transfer the template to another user, send them this HTML file, the SQL script, and the setup guide. They should use their own Supabase account/project for their own data. After saving, sign in with a Supabase Auth user so owner-only RLS can protect the data.
       </div>
     </div>
     <div class="modal-footer" style="justify-content:space-between">
@@ -1492,6 +1510,47 @@
       <div class="gap-row">
         <button class="btn btn-secondary" onclick="closeModal('syncSetupModal')">Cancel</button>
         <button class="btn btn-primary" onclick="saveSupabaseConfigFromModal()">Save and reload</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     MODAL: Supabase Auth Login
+============================================================ -->
+<div class="modal-overlay" id="authModal">
+  <div class="modal" style="max-width:520px">
+    <div class="modal-header">
+      <h2>Sign in to cloud sync</h2>
+      <button class="close-btn" onclick="closeModal('authModal')">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="setup-note">
+        Sign in with the Supabase Auth user you created. Cloud sync will only read and write rows owned by this signed-in user.
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-input" id="authEmail" autocomplete="email" placeholder="you@example.com">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" class="form-input" id="authPassword" autocomplete="current-password" placeholder="Your Supabase Auth password">
+        </div>
+      </div>
+      <div class="text-muted text-small">
+        Make sure Cloud Sync has been configured first with your Supabase Project URL and anon/public key. Never use a service_role key in this browser app.
+      </div>
+    </div>
+    <div class="modal-footer" style="justify-content:space-between">
+      <button class="btn btn-secondary" onclick="openSyncSetupModal()">Setup Sync</button>
+      <div class="gap-row">
+        <button class="btn btn-secondary" onclick="closeModal('authModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="signInFromModal()">Sign in</button>
       </div>
     </div>
   </div>
@@ -1639,6 +1698,9 @@ const appState = {
 const cloudState = {
   enabled: false,
   client: null,
+  user: null,
+  session: null,
+  authSubscription: null,
   realtimeChannels: [],
   syncMuted: false,
   autoRefreshTimer: null,
@@ -1746,6 +1808,135 @@ function isSupabaseConfigured() {
     !SUPABASE_CONFIG.url.includes('your-project') &&
     !SUPABASE_CONFIG.anonKey.includes('your-anon')
   );
+}
+
+function getCurrentOwnerId() {
+  return cloudState.user && cloudState.user.id ? cloudState.user.id : null;
+}
+
+function isCloudSignedIn() {
+  return Boolean(getCurrentOwnerId());
+}
+
+function updateAuthUi() {
+  const status = document.getElementById('authStatus');
+  const signInBtn = document.getElementById('signInCloudBtn');
+  const signOutBtn = document.getElementById('signOutCloudBtn');
+  const signedIn = isCloudSignedIn();
+
+  if (status) {
+    status.className = 'auth-pill ' + (signedIn ? 'signed-in' : 'signed-out');
+    status.textContent = signedIn ? `Signed in: ${cloudState.user.email || 'user'}` : 'Signed out';
+    status.title = signedIn ? `Cloud user: ${cloudState.user.email || cloudState.user.id}` : 'Sign in to use secure cloud sync';
+  }
+  if (signInBtn) signInBtn.classList.toggle('hidden', signedIn);
+  if (signOutBtn) signOutBtn.classList.toggle('hidden', !signedIn);
+}
+
+function ensureSupabaseClient() {
+  if (cloudState.client) return cloudState.client;
+  if (!isSupabaseConfigured()) {
+    updateSyncStatus('local', 'Local mode only');
+    showToast('Set up Supabase URL and anon/public key first.');
+    return null;
+  }
+  if (!window.supabase || !window.supabase.createClient) {
+    updateSyncStatus('local', 'Local mode only');
+    showToast('Supabase library could not load.');
+    return null;
+  }
+  cloudState.client = window.supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey);
+  return cloudState.client;
+}
+
+function openAuthModal() {
+  if (!isSupabaseConfigured()) {
+    showToast('Set up Supabase before signing in.');
+    openSyncSetupModal();
+    return;
+  }
+  const email = document.getElementById('authEmail');
+  const password = document.getElementById('authPassword');
+  if (email && cloudState.user && cloudState.user.email) email.value = cloudState.user.email;
+  if (password) password.value = '';
+  openModal('authModal');
+}
+
+async function signInFromModal() {
+  const client = ensureSupabaseClient();
+  if (!client) return;
+
+  const email = (document.getElementById('authEmail').value || '').trim();
+  const password = document.getElementById('authPassword').value || '';
+
+  if (!email || !password) {
+    showToast('Enter your Supabase email and password.');
+    return;
+  }
+
+  updateSyncStatus('syncing', 'Signing in…');
+  const { data, error } = await client.auth.signInWithPassword({ email, password });
+  if (error) {
+    console.error(error);
+    updateSyncStatus('local', 'Sign in required');
+    showToast(error.message || 'Sign in failed');
+    return;
+  }
+
+  cloudState.session = data.session || null;
+  cloudState.user = data.user || (data.session && data.session.user) || null;
+  updateAuthUi();
+  closeModal('authModal');
+  await completeCloudStartup();
+  showToast('Signed in to cloud sync');
+}
+
+async function signOutOfCloud() {
+  const client = ensureSupabaseClient();
+  if (!client) return;
+
+  if (!confirm('Sign out of cloud sync on this browser? Local cached data will remain on this device.')) return;
+
+  await client.auth.signOut();
+  cloudState.enabled = false;
+  cloudState.user = null;
+  cloudState.session = null;
+  updateAuthUi();
+  updateSyncStatus('local', 'Signed out');
+  showToast('Signed out');
+}
+
+function withCloudOwner(row) {
+  const ownerId = getCurrentOwnerId();
+  if (!ownerId) throw new Error('Cloud sync requires a signed-in Supabase user.');
+  return { ...row, owner_id: ownerId };
+}
+
+async function completeCloudStartup() {
+  if (!cloudState.client || !isCloudSignedIn()) {
+    cloudState.enabled = false;
+    updateAuthUi();
+    updateSyncStatus('local', 'Sign in required');
+    return false;
+  }
+
+  cloudState.enabled = true;
+  document.getElementById('refreshCloudBtn')?.classList.remove('hidden');
+
+  try {
+    updateSyncStatus('syncing', 'Syncing…');
+    await refreshFromCloud({ silent: true, keepLocalIfCloudEmpty: true });
+    setupRealtimeSubscriptions();
+    startAutoRefresh();
+    cloudState.lastSyncAt = new Date();
+    updateSyncStatus('cloud', 'Cloud sync active');
+    return true;
+  } catch (err) {
+    console.error(err);
+    updateSyncStatus('local', 'Cloud sync failed');
+    showToast(err.message || 'Cloud sync failed. Check Supabase setup and RLS policies.');
+    return false;
+  }
 }
 
 function updateSyncStatus(mode, label) {
@@ -2060,39 +2251,65 @@ async function initSupabase() {
   if (!isSupabaseConfigured()) {
     cloudState.enabled = false;
     updateSyncStatus('local', 'Local mode only');
+    updateAuthUi();
     document.getElementById('refreshCloudBtn')?.classList.add('hidden');
     return false;
   }
 
-  if (!window.supabase || !window.supabase.createClient) {
+  const client = ensureSupabaseClient();
+  if (!client) {
     cloudState.enabled = false;
-    updateSyncStatus('local', 'Local mode only');
-    showToast('Supabase library could not load. Running locally.');
+    updateAuthUi();
+    document.getElementById('refreshCloudBtn')?.classList.add('hidden');
     return false;
   }
 
-  updateSyncStatus('syncing', 'Connecting…');
-  cloudState.client = window.supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey);
-  cloudState.enabled = true;
-  document.getElementById('refreshCloudBtn')?.classList.remove('hidden');
+  updateSyncStatus('syncing', 'Checking session…');
 
   try {
-    await refreshFromCloud({ silent: true, keepLocalIfCloudEmpty: true });
-    setupRealtimeSubscriptions();
-    startAutoRefresh();
-    cloudState.lastSyncAt = new Date();
-    updateSyncStatus('cloud', 'Cloud sync active');
-    return true;
+    const { data, error } = await client.auth.getSession();
+    if (error) throw error;
+
+    cloudState.session = data.session || null;
+    cloudState.user = cloudState.session ? cloudState.session.user : null;
+    updateAuthUi();
+
+    if (!cloudState.authSubscription) {
+      const sub = client.auth.onAuthStateChange(async (_event, session) => {
+        cloudState.session = session || null;
+        cloudState.user = session ? session.user : null;
+        updateAuthUi();
+
+        if (cloudState.user) {
+          await completeCloudStartup();
+        } else {
+          cloudState.enabled = false;
+          updateSyncStatus('local', 'Sign in required');
+        }
+      });
+      cloudState.authSubscription = sub && sub.data ? sub.data.subscription : null;
+    }
+
+    if (!cloudState.user) {
+      cloudState.enabled = false;
+      updateSyncStatus('local', 'Sign in required');
+      document.getElementById('refreshCloudBtn')?.classList.add('hidden');
+      return false;
+    }
+
+    return await completeCloudStartup();
   } catch (err) {
     console.error(err);
     cloudState.enabled = false;
+    updateAuthUi();
     updateSyncStatus('local', 'Local mode only');
-    showToast('Cloud sync failed. Check Supabase setup. Running locally.');
+    showToast('Cloud auth check failed. Running locally.');
     return false;
   }
 }
 
 async function safeCloudSelect(table, mapper, options = {}) {
+  if (!cloudState.client || !isCloudSignedIn()) return [];
   const c = cloudState.client;
   try {
     let query = c.from(table).select('*');
@@ -2108,6 +2325,9 @@ async function safeCloudSelect(table, mapper, options = {}) {
 }
 
 async function fetchCloudData() {
+  if (!cloudState.client || !isCloudSignedIn()) {
+    throw new Error('Sign in to Supabase before loading cloud data.');
+  }
   const c = cloudState.client;
   const [itemsRes, movsRes, supsRes, scansRes] = await Promise.all([
     c.from('items').select('*').order('created_at', { ascending: true }),
@@ -2138,10 +2358,11 @@ async function fetchCloudData() {
 
 async function refreshFromCloud(options = {}) {
   const { silent = false, keepLocalIfCloudEmpty = false } = options;
-  if (!cloudState.enabled || !cloudState.client) {
-    if (!silent) showToast('Cloud sync is not configured yet');
+  if (!cloudState.client || !isCloudSignedIn()) {
+    if (!silent) showToast('Sign in to Supabase to refresh cloud data');
     return;
   }
+  if (!cloudState.enabled) cloudState.enabled = true;
 
   try {
     updateSyncStatus('syncing', 'Syncing…');
@@ -2171,7 +2392,8 @@ async function refreshFromCloud(options = {}) {
 }
 
 async function pushAllLocalDataToCloud(options = {}) {
-  if (!cloudState.enabled || !cloudState.client) return;
+  if (!cloudState.client || !isCloudSignedIn()) return;
+  if (!cloudState.enabled) cloudState.enabled = true;
   await persistCloudCollection('suppliers', getSuppliers(), []);
   await persistCloudCollection('items', getItems(), []);
   await persistCloudCollection('movements', getMovements(), []);
@@ -2185,14 +2407,15 @@ async function pushAllLocalDataToCloud(options = {}) {
 }
 
 async function persistCloudCollection(key, data, previous = []) {
-  if (!cloudState.enabled || !cloudState.client) return;
+  if (!cloudState.client || !isCloudSignedIn()) return;
+  if (!cloudState.enabled) cloudState.enabled = true;
   const table = { items: 'items', movements: 'movements', suppliers: 'suppliers', scanHistory: 'scan_history', maintenance: 'maintenance_logs', loans: 'asset_loans', stocktakes: 'stocktake_sessions', auditLogs: 'audit_logs', settings: 'settings' }[key];
   const mapper = { items: itemToDb, movements: movementToDb, suppliers: supplierToDb, scanHistory: scanToDb, maintenance: maintenanceToDb, loans: loanToDb, stocktakes: stocktakeToDb, auditLogs: auditToDb, settings: settingToDb }[key];
   if (!table || !mapper) return;
 
   try {
     const c = cloudState.client;
-    const rows = (data || []).map(mapper);
+    const rows = (data || []).map(mapper).map(withCloudOwner);
     if (rows.length) {
       const upsertRes = await c.from(table).upsert(rows, { onConflict: 'id' });
       if (upsertRes.error) throw upsertRes.error;
@@ -3313,9 +3536,12 @@ This removes the asset from active inventory. Movement and scan history are kept
 
   setItems(getItems().filter(i => i.id !== id));
 
-  if (cloudState.enabled && cloudState.client) {
+  if (cloudState.client && isCloudSignedIn()) {
     try {
-      const res = await cloudState.client.from('items').delete().eq('id', id);
+      let query = cloudState.client.from('items').delete().eq('id', id);
+      const ownerId = getCurrentOwnerId();
+      if (ownerId) query = query.eq('owner_id', ownerId);
+      const res = await query;
       if (res.error) throw res.error;
       updateSyncStatus('cloud', 'Cloud sync active');
     } catch (err) {
@@ -4050,8 +4276,13 @@ function fmtDateTime(d) {
 
 
 function csvEscape(value) {
-  const s = String(value ?? '');
-  return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+  let s = String(value ?? '');
+
+  // Prevent spreadsheet formula injection when CSVs are opened in Excel/Sheets.
+  // Values starting with =, +, -, @, tab, carriage return, or newline are forced to text.
+  if (/^[=+\-@\t\r\n]/.test(s)) s = "'" + s;
+
+  return '"' + s.replace(/"/g, '""') + '"';
 }
 function exportAllData() {
   const backup = {
@@ -4248,9 +4479,9 @@ async function confirmCsvImport() {
     assetStatus: row.assetStatus, reordered: false, updated: today()
   }));
   setItems([...getItems(), ...newItems]);
-  if (cloudState.enabled && cloudState.client) {
+  if (cloudState.client && isCloudSignedIn()) {
     try {
-      const res = await cloudState.client.from('items').upsert(newItems.map(itemToDb), { onConflict: 'id' });
+      const res = await cloudState.client.from('items').upsert(newItems.map(itemToDb).map(withCloudOwner), { onConflict: 'id' });
       if (res.error) throw res.error;
       updateSyncStatus('cloud', 'Cloud sync active');
     } catch (err) { console.error('Cloud import failed:', err); showToast(`Saved locally. Cloud sync failed: ${err.message || err}`); }
